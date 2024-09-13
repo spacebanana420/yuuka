@@ -1,3 +1,5 @@
+# This script is used as a fallback
+
 function cleanup () {
     
     rm *.class
@@ -12,8 +14,8 @@ function cleanup () {
     done
 }
 echo Building JAR
-javac src/*.java src/*/*.java --release 11
+javac src/*/*.java --release 11
 cd src
-jar cfe ../build/parasol.jar main *.class */*.class
+jar cfe ../build/yuuka.jar yuuka/main */*.class
 cleanup
 cd ..
