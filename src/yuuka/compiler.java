@@ -2,8 +2,24 @@ package yuuka;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class compiler {
+
+  public static String[] compile() {
+    var source_files = fileops.getSourceFiles("src");
+    String[] cmd =
+      (globalvariables.RELEASE_TARGET != "")
+      ? buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
+      : buildCommand(source_files, "javac");
+    runProcess(cmd, ".");
+    return fileops.getClassFiles(source_files);
+  }
+
+  public static void createJAR(String jarName, String main_class, String[] class_files) {
+    String[] cmd = buildJARCommand("build", jarName, main_class, class_files, "jar");
+    runProcess(cmd, "build");
+  }
 
   //todo: add output directory
   public static int runProcess(String[] cmd, String working_directory) {
@@ -21,13 +37,35 @@ public class compiler {
   }
 
   //todo: add class path to introduce library jars
-  public static String[] buildCommand(String source_path, String binary_path, String release) {
-    var source_files = fileops.getSourceFiles(source_path);
-    String[] cmd = new String[source_files.size() + 3];
+
+  public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
+    String[] cmd = new String[source_files.size() + 4];
+    cmd[0] = binary_path;
+    cmd[1] = "--release";
+    cmd[2] = "-d";
+    cmd[3] = "build";
+    for (int i = 4; i < cmd.length; i++) {cmd[i] = source_files.get(i-4);}
+    return cmd;
+  }
+
+  public static String[] buildCommand(ArrayList<String> source_files, String binary_path, String release) {
+    String[] cmd = new String[source_files.size() + 5];
     cmd[0] = binary_path;
     cmd[1] = "--release";
     cmd[2] = release;
-    for (int i = 3; i < cmd.length; i++) {cmd[i] = source_files.get(i-3);}
+    cmd[3] = "-d";
+    cmd[4] = "build";
+    for (int i = 5; i < cmd.length; i++) {cmd[i] = source_files.get(i-5);}
+    return cmd;
+  }
+
+  public static String[] buildJARCommand(String source_path, String output_path, String main_class, String[] class_files, String binary_path) {
+    String[] cmd = new String[class_files.length + 4];
+    cmd[0] = binary_path;
+    cmd[1] = "cfe";
+    cmd[2] = output_path;
+    cmd[3] = main_class;
+    for (int i = 4; i < cmd.length; i++) {cmd[i] = class_files[i-4];}
     return cmd;
   }
 }

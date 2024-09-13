@@ -28,7 +28,9 @@ public class fileops {
     String[] class_files = new String[source_files.size()];
     for (int i = 0; i < source_files.size(); i++) {
       var file = source_files.get(i);
-      class_files[i] = file.replaceFirst(".java", ".class");
+      class_files[i] = file
+        .replaceFirst("src", "build")
+        .replaceFirst(".java", ".class");
     }
     return class_files;
   }
