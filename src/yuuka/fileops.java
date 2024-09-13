@@ -15,9 +15,8 @@ public class fileops {
       File f = new File(root_path + "/" + p);
       if (f.isFile() && f.canRead() && isSourceFile(p)) {
         source_files.add(root_path + "/" + p);
-        continue;
       }
-      if (f.isDirectory() && f.canRead()) {
+      else if (f.isDirectory() && f.canRead()) {
         var files = getSourceFiles(root_path + "/" + p);
         source_files.addAll(files); 
       }
@@ -38,6 +37,22 @@ public class fileops {
     for (String file : class_files) {
       try {Files.delete(Path.of(file));}
       catch(IOException e) {return false;}
+    }
+    return true;
+  }
+
+  public static boolean deleteClassFiles(String path) {
+    var paths = new File(path).list();
+    for (String p : paths) {
+      var f = new File(p);
+      if (f.isFile() && isClassFile(p)) {
+        try {Files.delete(Path.of(p));}
+        catch(IOException e) {return false;}
+      }
+      else if (f.isDirectory()) {
+        boolean result = deleteClassFiles(path + "/" + p);
+        if (!result) {return false;}
+      }
     }
     return true;
   }

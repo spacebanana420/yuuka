@@ -1,8 +1,32 @@
 package yuuka;
 
+import java.io.File;
+
 public class main {
   public static void main(String[] args) {
     
+  }
+
+  private static void parseCLI(String[] args) {
+    for (String arg : args) {
+      switch(arg) {
+        case "init":
+          initializeProject();
+          continue;
+        case "build":
+        case "package":
+        case "run":
+        case "clean":
+          fileops.deleteClassFiles("src");
+          continue;
+      }
+    }
+  }
+
+  private static void initializeProject() {
+    new File("src").mkdir();
+    new File("lib").mkdir();
+    new File("build").mkdir();
   }
 
   private static String getHelpMessage() {
@@ -17,7 +41,8 @@ public class main {
       + "\n  * clean - deletes all .class files"
       
       + "\n\nAvailable CLI arguments:"
-      + "\n--release [number] - sets the target Java release for your software"
-      + "\n--ingore-lib - ignores all library JARs that are in lib";
+      + "\n  --release [number] - sets the target Java release for compilation"
+      + "\n  --ingore-lib - ignores all library JARs that are in lib"
+      + "\n  --verbose - displays more information on what's happening";
   }
 }
