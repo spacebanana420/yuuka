@@ -52,18 +52,24 @@ public class main {
       switch(args[i]) {
         case "init":
           initializeProject();
+          stdout.print("The directories src, build and lib have been created");
           return true;
         case "build":
+          stdout.print("Compiling project");
           compiler.compile();
           return true;
         case "package":
+          stdout.print("Compiling project");
           var class_files = compiler.compile();
-          compiler.createJAR("test.jar", "main", class_files); 
+          stdout.print("Creating JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+          compiler.createJAR(globalvariables.PROGRAM_NAME, "main", class_files);
+          stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("build");
           return true;
         case "run":
           return true;
         case "clean":
+          stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("src");
           fileops.deleteClassFiles("build");
           fileops.deleteClassFiles("lib");
