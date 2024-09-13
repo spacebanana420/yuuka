@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class compiler {
-  public static int runCompiler(String[] cmd, String working_directory) {
+
+  //todo: add output directory
+  public static int runProcess(String[] cmd, String working_directory) {
     try {
       var process =
         new ProcessBuilder(cmd)
@@ -17,6 +19,8 @@ public class compiler {
     catch (IOException e) {return -1;}
     catch (InterruptedException e) {return -2;}
   }
+
+  //todo: add class path to introduce library jars
   public static String[] buildCommand(String source_path, String binary_path, String release) {
     var source_files = fileops.getSourceFiles(source_path);
     String[] cmd = new String[source_files.size() + 3];
