@@ -22,23 +22,29 @@ public class main {
         printed_help = true;
         break;
       }
-      else if (args[i].equals("--verbose")) {
+      else if (args[i].equals("-v") || args[i].equals("--verbose")) {
         globalvariables.VERBOSE = true;
       }
-      else if (args[i].equals("--silent")) {
+      else if (args[i].equals("-s") || args[i].equals("--silent")) {
         globalvariables.SILENT = true;
       }
-      else if (args[i].equals("--ignore-lib")) {
+      else if (args[i].equals("-i") || args[i].equals("--ignore-lib")) {
         globalvariables.INGORE_LIB = true;
       }
-      else if (args[i].equals("--release") && hasArgumentValue(args, i) && isInt(args[i+1])) {
+      else if (
+        (args[i].equals("-r") || args[i].equals("--release"))
+        && hasArgumentValue(args, i) && isInt(args[i+1])
+      ) {
         globalvariables.RELEASE_TARGET = args[i+1];
       }
-      else if (args[i].equals("--main") && hasArgumentValue(args, i)) {
+      else if (
+        (args[i].equals("-m") || args[i].equals("--main"))
+        && hasArgumentValue(args, i)
+      ) {
         globalvariables.MAIN_CLASS = args[i+1];
       }
       else if (
-        args[i].equals("--output")
+        (args[i].equals("-o") || args[i].equals("--output"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
         ) {
@@ -125,12 +131,12 @@ public class main {
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h or --help or help - opens this menu"
-      + "\n  --main [class] - sets the main class"
-      + "\n  --release [number] - sets the target Java release for compilation"
-      + "\n  --ingore-lib - ignores all library JARs that are in lib"
-      + "\n  --silent - does not print any message during execution of a task"
-      + "\n  --verbose - displays more information on what's happening"
-      + "\n  --output - sets the name of the compiled JAR";
+      + "\n  -m (--main) [class] - sets the main class"
+      + "\n  -r (--release) [number] - sets the target Java release for compilation"
+      + "\n  -i (--ingore-lib) - ignores all library JARs that are in lib"
+      + "\n  -s (--silent) - does not print any message during execution of a task"
+      + "\n  -v (--verbose) - displays more information on what's happening"
+      + "\n  -o (--output) - sets the name of the compiled JAR";
   }
 
   private static String getHelpMessage_small() {
