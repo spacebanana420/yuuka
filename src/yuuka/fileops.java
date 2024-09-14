@@ -48,15 +48,19 @@ public class fileops {
     if (!new File(path).isDirectory()) {return false;}
     var paths = new File(path).list();
     if (paths == null) {return true;}
+
     for (String p : paths) {
-      var f = new File(p);
+      String full_p = path + "/" + p;
+      var f = new File(full_p);
       if (f.isFile() && isClassFile(p)) {
-        try {Files.delete(Path.of(p));}
+        try {Files.delete(Path.of(full_p));}
         catch(IOException e) {return false;}
       }
       else if (f.isDirectory()) {
-        boolean result = deleteClassFiles(path + "/" + p);
+        boolean result = deleteClassFiles(full_p);
         if (!result) {return false;}
+        try {Files.delete(Path.of(full_p));}
+        catch(IOException e) {return false;}
       }
     }
     return true;
@@ -75,17 +79,20 @@ public class fileops {
     return true;
   }
 
-  public static String findMainClass(String path, String base_dir) {
+  public static String findMainClass(String path) { //needs fix
     String[] paths = new File(path).list();
-    String file_separator = System.getProperty("file.separator");
     
     for (String p : paths) {
-      var f = new File(p);
+      String full_p = path + System.getProperty("file.separator") + p;
+      var f = new File(full_p);
       if (f.isFile() && p.contains("main.java")) {
-        return base_dir + p;
+        return
+          (full_p)
+          .replaceFirst("src/", "")
+          .replaceFirst(".java", "");
       }
-      if (f.isDirectory()) {
-        String result = findMainClass(path + file_separator + p, base_dir + p + file_separator);
+      else if (f.isDirectory()) {
+        String result = findMainClass(full_p);
         if (!result.equals("main")) {return result;}
       }
     }
