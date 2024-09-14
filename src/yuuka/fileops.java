@@ -24,13 +24,14 @@ public class fileops {
     return source_files;
   }
 
-  public static String[] getClassFiles(ArrayList<String> source_files) {
+  public static String[] getClassFiles(ArrayList<String> source_files, boolean preserve_parent) {
     String[] class_files = new String[source_files.size()];
     for (int i = 0; i < source_files.size(); i++) {
       var file = source_files.get(i);
       class_files[i] = file
-        .replaceFirst("src", "build")
         .replaceFirst(".java", ".class");
+      if (!preserve_parent) {class_files[i] = class_files[i].replaceFirst("src/", "");}
+      else {class_files[i] = class_files[i].replaceFirst("src", "build");}
     }
     return class_files;
   }
@@ -44,7 +45,9 @@ public class fileops {
   }
 
   public static boolean deleteClassFiles(String path) {
+    if (!new File(path).isDirectory()) {return false;}
     var paths = new File(path).list();
+    if (paths == null) {return true;}
     for (String p : paths) {
       var f = new File(p);
       if (f.isFile() && isClassFile(p)) {
@@ -70,5 +73,22 @@ public class fileops {
       if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
     }
     return true;
+  }
+
+  public static String findMainClass(String path, String base_dir) {
+    String[] paths = new File(path).list();
+    String file_separator = System.getProperty("file.separator");
+    
+    for (String p : paths) {
+      var f = new File(p);
+      if (f.isFile() && p.contains("main.java")) {
+        return base_dir + p;
+      }
+      if (f.isDirectory()) {
+        String result = findMainClass(path + file_separator + p, base_dir + p + file_separator);
+        if (!result.equals("main")) {return result;}
+      }
+    }
+    return "main";
   }
 }

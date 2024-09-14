@@ -31,14 +31,15 @@ public class main {
       else if (args[i].equals("--ignore-lib")) {
         globalvariables.INGORE_LIB = true;
       }
-      else if (args[i].equals("--release") && i < args.length-1 && isInt(args[i+1])) {
+      else if (args[i].equals("--release") && hasArgumentValue(args, i) && isInt(args[i+1])) {
         globalvariables.RELEASE_TARGET = args[i+1];
+      }
+      else if (args[i].equals("--main") && hasArgumentValue(args, i)) {
+        globalvariables.MAIN_CLASS = args[i+1];
       }
       else if (
         args[i].equals("--output")
-        && i < args.length-1
-        && args[i+1].length() > 0
-        && args[i+1].charAt(0) != '-'
+        && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
         ) {
         globalvariables.PROGRAM_NAME = args[i+1];
@@ -56,20 +57,24 @@ public class main {
           return true;
         case "build":
           stdout.print("Compiling project");
+          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
           return true;
         case "package":
           stdout.print("Compiling project");
+          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           var class_files = compiler.compile();
+
           stdout.print("Creating JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-          compiler.createJAR(globalvariables.PROGRAM_NAME, "main", class_files);
+          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, class_files);
+          
           stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("build");
           return true;
         case "run":
           return true;
         case "clean":
-          stdout.print("Cleaning up class files");
+          stdout.print("Cleaning up all class files");
           fileops.deleteClassFiles("src");
           fileops.deleteClassFiles("build");
           fileops.deleteClassFiles("lib");
@@ -94,6 +99,10 @@ public class main {
     new File("build").mkdir();
   }
 
+  private static boolean hasArgumentValue(String[] args, int i) {
+    return i < args.length-1 && args[i+1].length() > 0 && args[i+1].charAt(0) != '-';
+  }
+
   private static boolean isArgumentTask(String arg) {
     return
       arg.equals("init")
@@ -116,6 +125,7 @@ public class main {
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h or --help or help - opens this menu"
+      + "\n  --main [class] - sets the main class"
       + "\n  --release [number] - sets the target Java release for compilation"
       + "\n  --ingore-lib - ignores all library JARs that are in lib"
       + "\n  --silent - does not print any message during execution of a task"
@@ -135,6 +145,8 @@ class globalvariables {
   public static boolean VERBOSE = false;
   public static boolean SILENT = false;
   public static boolean INGORE_LIB = false;
+
+  public static String MAIN_CLASS = fileops.findMainClass("src", "");
   public static String RELEASE_TARGET = "";
   public static String PROGRAM_NAME = "program.jar";
 }

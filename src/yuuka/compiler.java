@@ -9,11 +9,11 @@ public class compiler {
   public static String[] compile() {
     var source_files = fileops.getSourceFiles("src");
     String[] cmd =
-      (globalvariables.RELEASE_TARGET != "")
+      (globalvariables.RELEASE_TARGET.length() > 0)
       ? buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
       : buildCommand(source_files, "javac");
     runProcess(cmd, ".");
-    return fileops.getClassFiles(source_files);
+    return fileops.getClassFiles(source_files, false);
   }
 
   public static void createJAR(String jarName, String main_class, String[] class_files) {
@@ -40,12 +40,11 @@ public class compiler {
   //todo: add class path to introduce library jars
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
-    String[] cmd = new String[source_files.size() + 4];
+    String[] cmd = new String[source_files.size() + 3];
     cmd[0] = binary_path;
-    cmd[1] = "--release";
-    cmd[2] = "-d";
-    cmd[3] = "build";
-    for (int i = 4; i < cmd.length; i++) {cmd[i] = source_files.get(i-4);}
+    cmd[1] = "-d";
+    cmd[2] = "build";
+    for (int i = 3; i < cmd.length; i++) {cmd[i] = source_files.get(i-3);}
     return cmd;
   }
 
