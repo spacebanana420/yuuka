@@ -147,6 +147,6 @@ class globalvariables {
   public static boolean INGORE_LIB = false;
 
   public static String MAIN_CLASS = fileops.findMainClass("src");
+  public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
   public static String RELEASE_TARGET = "";
-  public static String PROGRAM_NAME = "program.jar";
 }
