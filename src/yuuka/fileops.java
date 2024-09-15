@@ -79,7 +79,7 @@ public class fileops {
     return true;
   }
 
-  public static String findMainClass(String path) { //needs fix
+  public static String findMainClass(String path) {
     String[] paths = new File(path).list();
     
     for (String p : paths) {

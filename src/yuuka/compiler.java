@@ -7,7 +7,9 @@ import java.util.ArrayList;
 public class compiler {
 
   public static String[] compile() {
+    new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
+    
     String[] cmd =
       (globalvariables.RELEASE_TARGET.length() > 0)
       ? buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)

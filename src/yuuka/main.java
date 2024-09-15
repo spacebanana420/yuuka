@@ -10,8 +10,7 @@ public class main {
       return;
     }
     boolean ranTask = parseTasks(args);
-    if (!ranTask) {
-      System.out.println(getHelpMessage_small());}
+    if (!ranTask) {System.out.println(getHelpMessage_small());}
   }
 
   private static boolean parseOptions(String[] args) {
