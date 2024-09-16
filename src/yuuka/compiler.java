@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class compiler {
 
-  public static String[] compile() {
+  public static int compile() {
     new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
     
@@ -19,11 +19,14 @@ public class compiler {
       String[] libargs = lib.getLibArgs(lib.getLibraryJars());
       cmd = concatArgs(cmd, libargs);
     }
-    runProcess(cmd, ".");
-    return fileops.getClassFiles(source_files, false);
+    return runProcess(cmd, ".");
   }
 
-  public static void createJAR(String jarName, String main_class, String[] class_files) {
+  public static int createJAR(String jarName, String main_class) {
+    String[] class_files =
+      fileops.removeParent(fileops.getClassFiles("build"), "build/")
+      .toArray(new String[0]);
+      
     String[] cmd = buildJARCommand(jarName, main_class, class_files, "jar");
 
     if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) { //remove duplicate tasks later
@@ -31,7 +34,7 @@ public class compiler {
       runProcess(buildExtractCommand(jars, "jar"), ".");
       cmd = concatArgs(cmd, lib.changeBaseDirectory(jars).toArray(new String[0]));
     }
-    runProcess(cmd, "build");
+    return runProcess(cmd, "build");
   }
 
   public static int runProgram() {

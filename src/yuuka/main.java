@@ -68,10 +68,10 @@ public class main {
         case "package":
           stdout.print("Compiling project");
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-          var class_files = compiler.compile();
+          compiler.compile();
 
           stdout.print("Creating JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, class_files);
+          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS);
           
           stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("build");

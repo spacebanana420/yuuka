@@ -19,6 +19,14 @@ public class fileops {
     return getFiles_generic(root_path, ".class");
   }
 
+  public static ArrayList<String> removeParent(ArrayList<String> files, String parent) {
+    ArrayList<String> new_files = files;
+    for (int i = 0; i < files.size(); i++) {
+      new_files.set(i, new_files.get(i).replaceFirst(parent, ""));
+    }
+    return new_files;
+  }
+
   public static String[] getClassFiles(ArrayList<String> source_files, boolean preserve_parent) {
     String[] class_files = new String[source_files.size()];
     for (int i = 0; i < source_files.size(); i++) {
