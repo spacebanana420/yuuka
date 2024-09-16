@@ -41,18 +41,7 @@ public class compiler {
       var jars = lib.changeBaseDirectory(lib.getLibraryJars());
       cmd = concatArgs(cmd, lib.getLibArgs(jars));
     }
-    try {
-      stdout.print_verbose("Executing the process:\n", cmd);
-      var process =
-        new ProcessBuilder(cmd)
-        .inheritIO()
-        .directory(new File("build"))
-        .start();
-      process.waitFor();
-      return process.exitValue();
-    }
-    catch (IOException e) {return -1;}
-    catch (InterruptedException e) {return -2;}
+    return runProcess(cmd, "build");
   }
 
   //todo: add output directory
