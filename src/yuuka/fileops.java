@@ -8,27 +8,23 @@ import java.util.ArrayList;
 
 public class fileops {
   public static ArrayList<String> getSourceFiles(String root_path) {
-    String[] subpaths = new File(root_path).list();
+    return getFiles_generic(root_path, ".java");
+  }
 
-    ArrayList<String> source_files = new ArrayList<>();
-    for (String p : subpaths) {
-      File f = new File(root_path + "/" + p);
-      if (f.isFile() && f.canRead() && isSourceFile(p)) {
-        source_files.add(root_path + "/" + p);
-      }
-      else if (f.isDirectory() && f.canRead()) {
-        var files = getSourceFiles(root_path + "/" + p);
-        source_files.addAll(files); 
-      }
-    }
-    return source_files;
+  public static ArrayList<String> getJarFiles(String root_path) {
+    return getFiles_generic(root_path, ".jar");
+  }
+
+  public static ArrayList<String> getClassFiles(String root_path) {
+    return getFiles_generic(root_path, ".class");
   }
 
   public static String[] getClassFiles(ArrayList<String> source_files, boolean preserve_parent) {
     String[] class_files = new String[source_files.size()];
     for (int i = 0; i < source_files.size(); i++) {
       var file = source_files.get(i);
-      class_files[i] = file
+      class_files[i] =
+        file
         .replaceFirst(".java", ".class");
       if (!preserve_parent) {class_files[i] = class_files[i].replaceFirst("src/", "");}
       else {class_files[i] = class_files[i].replaceFirst("src", "build");}
@@ -97,5 +93,22 @@ public class fileops {
       }
     }
     return "main";
+  }
+
+  private static ArrayList<String> getFiles_generic(String root_path, String file_extension) {
+    String[] subpaths = new File(root_path).list();
+
+    ArrayList<String> source_files = new ArrayList<>();
+    for (String p : subpaths) {
+      File f = new File(root_path + "/" + p);
+      if (f.isFile() && f.canRead() && checkFileExtension(p, file_extension)) {
+        source_files.add(root_path + "/" + p);
+      }
+      else if (f.isDirectory() && f.canRead()) {
+        var files = getFiles_generic(root_path + "/" + p, file_extension);
+        source_files.addAll(files); 
+      }
+    }
+    return source_files;
   }
 }

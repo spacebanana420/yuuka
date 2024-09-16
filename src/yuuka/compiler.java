@@ -39,8 +39,6 @@ public class compiler {
     catch (InterruptedException e) {return -2;}
   }
 
-  //todo: add class path to introduce library jars
-
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
     String[] cmd = new String[source_files.size() + 3];
     cmd[0] = binary_path;
