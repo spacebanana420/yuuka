@@ -19,9 +19,8 @@ public class stdout {
 
   private static void printSeq(String title, String[] contents) {
     String txt = title;
-    for (String c : contents) {
-      txt += "\n" + c;
-    }
+    for (String c : contents) {txt += "\n  * " + c;}
+    
     System.out.println(txt);
   }
 }
