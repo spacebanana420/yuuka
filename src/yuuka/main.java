@@ -78,6 +78,13 @@ public class main {
           fileops.deleteClassFiles("lib");
           return true;
         case "run":
+          if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
+            stdout.print("Compiling project");
+            stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+            compiler.compile();
+          }
+          stdout.print("Running program");
+          compiler.runProgram();
           return true;
         case "clean":
           stdout.print("Cleaning up all class files");

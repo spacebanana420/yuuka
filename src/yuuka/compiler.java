@@ -28,11 +28,31 @@ public class compiler {
 
     if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) { //remove duplicate tasks later
       var jars = lib.getLibraryJars();
-
       runProcess(buildExtractCommand(jars, "jar"), ".");
       cmd = concatArgs(cmd, lib.changeBaseDirectory(jars).toArray(new String[0]));
     }
     runProcess(cmd, "build");
+  }
+
+  public static int runProgram() {
+    String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
+
+    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
+      var jars = lib.changeBaseDirectory(lib.getLibraryJars());
+      cmd = concatArgs(cmd, lib.getLibArgs(jars));
+    }
+    try {
+      stdout.print_verbose("Executing the process:\n", cmd);
+      var process =
+        new ProcessBuilder(cmd)
+        .inheritIO()
+        .directory(new File("build"))
+        .start();
+      process.waitFor();
+      return process.exitValue();
+    }
+    catch (IOException e) {return -1;}
+    catch (InterruptedException e) {return -2;}
   }
 
   //todo: add output directory
