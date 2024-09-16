@@ -75,6 +75,7 @@ public class main {
           
           stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("build");
+          fileops.deleteClassFiles("lib");
           return true;
         case "run":
           return true;

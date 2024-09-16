@@ -10,7 +10,7 @@ public class lib {
 
     var file_list = f.list();
     if (file_list == null || file_list.length == 0) {return false;}
-    
+
     for (String file : file_list) {if (file.contains(".jar")) {return true;}}
     return false;
   }
@@ -23,6 +23,14 @@ public class lib {
   }
   public static String[] getExtractionArgs(ArrayList<String> jar_files) {
     return mkArgs(jar_files, "-f");
+  }
+
+  public static ArrayList<String> changeBaseDirectory(ArrayList<String> jar_files) {
+    ArrayList<String> new_files = jar_files;
+    for (int i = 0; i < jar_files.size(); i++) {
+      new_files.set(i, "../" + jar_files.get(i));
+    }
+    return new_files;
   }
 
   private static String[] mkArgs(ArrayList<String> jar_files, String arg) {

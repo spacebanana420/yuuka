@@ -14,12 +14,24 @@ public class compiler {
       (globalvariables.RELEASE_TARGET.length() > 0)
       ? buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
       : buildCommand(source_files, "javac");
+
+    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
+      String[] libargs = lib.getLibArgs(lib.getLibraryJars());
+      cmd = concatArgs(cmd, libargs);
+    }
     runProcess(cmd, ".");
     return fileops.getClassFiles(source_files, false);
   }
 
   public static void createJAR(String jarName, String main_class, String[] class_files) {
-    String[] cmd = buildJARCommand("build", jarName, main_class, class_files, "jar");
+    String[] cmd = buildJARCommand(jarName, main_class, class_files, "jar");
+
+    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) { //remove duplicate tasks later
+      var jars = lib.getLibraryJars();
+
+      runProcess(buildExtractCommand(jars, "jar"), ".");
+      cmd = concatArgs(cmd, lib.changeBaseDirectory(jars).toArray(new String[0]));
+    }
     runProcess(cmd, "build");
   }
 
@@ -59,7 +71,7 @@ public class compiler {
     return cmd;
   }
 
-  public static String[] buildJARCommand(String source_path, String output_path, String main_class, String[] class_files, String binary_path) {
+  public static String[] buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {
     String[] cmd = new String[class_files.length + 4];
     cmd[0] = binary_path;
     cmd[1] = "cfe";
@@ -67,5 +79,20 @@ public class compiler {
     cmd[3] = main_class;
     for (int i = 4; i < cmd.length; i++) {cmd[i] = class_files[i-4];}
     return cmd;
+  }
+
+  public static String[] buildExtractCommand(ArrayList<String> jar_files, String binary_path) {
+    String[] cmd = new String[]{binary_path, "-x"};
+    String[] extract_args = lib.getExtractionArgs(jar_files);
+    return concatArgs(cmd, extract_args);
+  }  
+
+  private static String[] concatArgs(String[] args1, String[] args2) {
+    if (args1.length == 0) {return args2;} if (args2.length == 0) {return args1;}
+
+    String[] full = new String[args1.length + args2.length];
+    for (int i = 0; i < args1.length; i++) {full[i] = args1[i];}
+    for (int i = 0; i < args2.length; i++) {full[i+args1.length] = args2[i];}
+    return full;
   }
 }
