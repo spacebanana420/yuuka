@@ -27,19 +27,6 @@ public class fileops {
     return new_files;
   }
 
-  public static String[] getClassFiles(ArrayList<String> source_files, boolean preserve_parent) {
-    String[] class_files = new String[source_files.size()];
-    for (int i = 0; i < source_files.size(); i++) {
-      var file = source_files.get(i);
-      class_files[i] =
-        file
-        .replaceFirst(".java", ".class");
-      if (!preserve_parent) {class_files[i] = class_files[i].replaceFirst("src/", "");}
-      else {class_files[i] = class_files[i].replaceFirst("src", "build");}
-    }
-    return class_files;
-  }
-
   public static boolean deleteClassFiles(String[] class_files) {
     for (String file : class_files) {
       try {Files.delete(Path.of(file));}
@@ -74,15 +61,6 @@ public class fileops {
   public static boolean isClassFile(String name) {return checkFileExtension(name, ".class");}
   public static boolean isJarFile(String name) {return checkFileExtension(name, ".jar");}
 
-  private static boolean checkFileExtension(String name, String extension) {
-    if (name.length() <= extension.length()) return false;
-    int nl = name.length(); int el = extension.length();
-    for (int i = 0; i < el; i++) {
-      if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
-    }
-    return true;
-  }
-
   public static String findMainClass(String path) {
     String[] paths = new File(path).list();
     
@@ -101,6 +79,15 @@ public class fileops {
       }
     }
     return "main";
+  }
+
+  private static boolean checkFileExtension(String name, String extension) {
+    if (name.length() <= extension.length()) return false;
+    int nl = name.length(); int el = extension.length();
+    for (int i = 0; i < el; i++) {
+      if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
+    }
+    return true;
   }
 
   private static ArrayList<String> getFiles_generic(String root_path, String file_extension) {
