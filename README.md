@@ -27,8 +27,8 @@ bash build.sh
 ### Compiling from source (Unix-like shells)
 ```
 mkdir build
-javac src/*/*.java
-cd src
-jar cfe ../build/yuuka.jar yuuka/main */*.class
+javac src/*/*.java -d build
+cd build
+jar cfe yuuka.jar yuuka/main yuuka/*.class
 cd ..
 ```
