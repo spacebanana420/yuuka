@@ -3,4 +3,32 @@ Yuuka is a lightweight build tool for compiling your Java projects in a quick an
 
 **This is a brand new repository and the first release is under development.**
 
+## Download and run
+### Requirements
+* Java 11 or newer
 
+Download the [latest release](https://github.com/spacebanana420/yuuka/releases) and run it with `java -jar yuuka.jar`.
+
+To get started, check what commands you can run with `java -jar yuuka.jar -h`.
+
+## Compile from source
+
+### Compiling from source (using Yuuka)
+```
+yuuka package
+```
+
+### Compiling from source (using Bash)
+```
+mkdir build
+bash build.sh
+```
+
+### Compiling from source (Unix-like shells)
+```
+mkdir build
+javac src/*/*.java
+cd src
+jar cfe ../build/yuuka.jar yuuka/main */*.class
+cd ..
+```
