@@ -14,9 +14,9 @@ To get started, check what commands you can run with `java -jar yuuka.jar -h`.
 # How to use
 With Yuuka, your projects should have a simple file structure such as:
 ```
-/src # Mandatory, to store source code
-/lib # Optional, to store library JARs
-/build # Mandatory, to store the compiled project
+/src    # Mandatory, to store source code
+/lib    # Optional, to store library JARs
+/build  # Mandatory, to store the compiled project
 ```
 
 Yuuka is a CLI tool, the main tasks you can run are:
@@ -24,6 +24,7 @@ Yuuka is a CLI tool, the main tasks you can run are:
 yuuka init
 yuuka build
 yuuka package
+yuuka packagelib
 yuuka run
 yuuka clean
 ```
