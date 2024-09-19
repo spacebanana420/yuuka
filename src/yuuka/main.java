@@ -53,7 +53,7 @@ public class main {
     return printed_help;
   }
 
-  private static boolean parseTasks(String[] args) { //unfinished of course
+  private static boolean parseTasks(String[] args) {
     for (int i = 0; i < args.length; i++) {
       switch(args[i]) {
         case "init":
@@ -61,11 +61,13 @@ public class main {
           stdout.print("The directories src, build and lib have been created");
           return true;
         case "build":
+          if (projectHasNoSource()) {return true;}
           stdout.print("Compiling project");
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
           return true;
         case "package":
+          if (projectHasNoSource()) {return true;}
           stdout.print("Compiling project");
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
@@ -79,6 +81,7 @@ public class main {
           return true;
         case "run":
           if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
+            if (projectHasNoSource()) {return true;}
             stdout.print("Compiling project");
             stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
             compiler.compile();
@@ -151,6 +154,15 @@ public class main {
       "Yuuka help screen"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nType -h, --help or help to check what you can do";
+  }
+
+  private static boolean projectHasNoSource() {
+    var f = new File("src");
+    if (!f.isDirectory() || f.list() == null) {
+      stdout.print("Your project has no \"src\" directory or it is empty!");
+      return true;
+    }
+    return false;
   }
 }
 
