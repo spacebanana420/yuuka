@@ -159,7 +159,7 @@ public class main {
       + "\n  * clean - deletes all .class files"
       
       + "\n\nAvailable CLI arguments:"
-      + "\n  -h or --help or help - opens this menu"
+      + "\n  -h, --help, help - opens this menu"
       + "\n  -m (--main) [class] - sets the main class"
       + "\n  -r (--release) [number] - sets the target Java release for compilation"
       + "\n  -i (--ingore-lib) - ignores all library JARs that are in lib"
@@ -174,7 +174,7 @@ public class main {
     return
       "Yuuka version 0.2"
       + "\nBasic usage: yuuka [command] [options]"
-      + "\n\nType -h, --help or help to see what you can do";
+      + "\n\nRun \"yuuka -h\" to see what you can do";
   }
 
   private static boolean projectHasNoSource() {
