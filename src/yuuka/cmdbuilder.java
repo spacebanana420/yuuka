@@ -36,6 +36,15 @@ public class cmdbuilder {
     return cmd;
   }
 
+  public static String[] buildJARCommand(String output_path, String[] class_files, String binary_path) {
+    String[] cmd = new String[class_files.length + 3];
+    cmd[0] = binary_path;
+    cmd[1] = "cf";
+    cmd[2] = output_path;
+    for (int i = 3; i < cmd.length; i++) {cmd[i] = class_files[i-3];}
+    return cmd;
+  }
+
   public static String[] buildExtractCommand(ArrayList<String> jar_files, String binary_path) {
     String[] cmd = new String[]{binary_path, "-x"};
     String[] extract_args = lib.getExtractionArgs(jar_files);

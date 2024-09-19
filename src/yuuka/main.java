@@ -75,9 +75,21 @@ public class main {
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
 
-          stdout.print("Creating JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS);
+          stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
           
+          stdout.print("Cleaning up class files");
+          fileops.deleteClassFiles("build");
+          fileops.deleteClassFiles("lib");
+          return true;
+        case "packagelib":
+          if (projectHasNoSource()) {return true;}
+          stdout.print("Compiling project");
+          compiler.compile();
+
+          stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, true);
+
           stdout.print("Cleaning up class files");
           fileops.deleteClassFiles("build");
           fileops.deleteClassFiles("lib");
@@ -129,6 +141,7 @@ public class main {
       arg.equals("init")
       || arg.equals("build")
       || arg.equals("package")
+      || arg.equals("packagelib")
       || arg.equals("run")
       || arg.equals("clean");
   }
@@ -141,6 +154,7 @@ public class main {
       + "\n  * init - creates a project file structure"
       + "\n  * build - compiles your project"
       + "\n  * package - compiles your project and packages it into an executable JAR"
+      + "\n  * packagelib - compiles your project and packages it into a library JAR"
       + "\n  * run - compiles and runs your project"
       + "\n  * clean - deletes all .class files"
       

@@ -21,12 +21,15 @@ public class compiler {
     return runProcess(cmd, ".");
   }
 
-  public static int createJAR(String jarName, String main_class) {
+  public static int createJAR(String jarName, String main_class, boolean library_jar) {
     String[] class_files =
       fileops.removeParent(fileops.getClassFiles("build"), "build/")
       .toArray(new String[0]);
       
-    String[] cmd = cmdbuilder.buildJARCommand(jarName, main_class, class_files, "jar");
+    String[] cmd =
+      (!library_jar)
+      ? cmdbuilder.buildJARCommand(jarName, main_class, class_files, "jar")
+      : cmdbuilder.buildJARCommand(jarName, class_files, "jar");
 
     if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) { //remove duplicate tasks later
       var jars = lib.getLibraryJars();
@@ -35,6 +38,8 @@ public class compiler {
     }
     return runProcess(cmd, "build");
   }
+
+
 
   public static int runProgram() {
     String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
