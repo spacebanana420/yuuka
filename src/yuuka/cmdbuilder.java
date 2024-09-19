@@ -4,23 +4,26 @@ import java.util.ArrayList;
 
 public class cmdbuilder {
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
-    String[] cmd = new String[source_files.size() + 3];
-    cmd[0] = binary_path;
-    cmd[1] = "-d";
-    cmd[2] = "build";
-    for (int i = 3; i < cmd.length; i++) {cmd[i] = source_files.get(i-3);}
-    return cmd;
+    ArrayList<String> cmd = new ArrayList<>();
+
+    cmd.add(binary_path);
+    cmd.add("-d"); cmd.add("build");
+    if (globalvariables.DISABLE_WARNINGS) {cmd.add("-nowarn");}
+    cmd.addAll(source_files);
+
+    return cmd.toArray(new String[0]);
   }
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path, String release) {
-    String[] cmd = new String[source_files.size() + 5];
-    cmd[0] = binary_path;
-    cmd[1] = "--release";
-    cmd[2] = release;
-    cmd[3] = "-d";
-    cmd[4] = "build";
-    for (int i = 5; i < cmd.length; i++) {cmd[i] = source_files.get(i-5);}
-    return cmd;
+    ArrayList<String> cmd = new ArrayList<>();
+    
+    cmd.add(binary_path);
+    cmd.add("-d"); cmd.add("build");
+    cmd.add("--release"); cmd.add(release);
+    if (globalvariables.DISABLE_WARNINGS) {cmd.add("-nowarn");}
+    cmd.addAll(source_files);
+
+    return cmd.toArray(new String[0]);
   }
 
   public static String[] buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {

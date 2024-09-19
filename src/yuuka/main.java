@@ -21,33 +21,36 @@ public class main {
         printed_help = true;
         break;
       }
-      else if (args[i].equals("-v") || args[i].equals("--verbose")) {
+      else if (isOption(args[i], "-v", "--verbose")) {
         globalvariables.VERBOSE = true;
       }
-      else if (args[i].equals("-s") || args[i].equals("--silent")) {
+      else if (isOption(args[i], "-s", "--silent")) {
         globalvariables.SILENT = true;
       }
-      else if (args[i].equals("-i") || args[i].equals("--ignore-lib")) {
+      else if (isOption(args[i], "-i", "--ignore-lib")) {
         globalvariables.INGORE_LIB = true;
       }
       else if (
-        (args[i].equals("-r") || args[i].equals("--release"))
+        (isOption(args[i], "-r", "--release"))
         && hasArgumentValue(args, i) && isInt(args[i+1])
       ) {
         globalvariables.RELEASE_TARGET = args[i+1];
       }
       else if (
-        (args[i].equals("-m") || args[i].equals("--main"))
+        (isOption(args[i], "-m", "--main"))
         && hasArgumentValue(args, i)
       ) {
         globalvariables.MAIN_CLASS = args[i+1];
       }
       else if (
-        (args[i].equals("-o") || args[i].equals("--output"))
+        (isOption(args[i], "-o", "--output"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
         ) {
         globalvariables.PROGRAM_NAME = args[i+1];
+      }
+      else if (isOption(args[i], "-nw", "--no-warnings")) {
+        globalvariables.DISABLE_WARNINGS = true;
       }
     }
     return printed_help;
@@ -119,6 +122,8 @@ public class main {
     return i < args.length-1 && args[i+1].length() > 0 && args[i+1].charAt(0) != '-';
   }
 
+  private static boolean isOption(String arg, String opt1, String opt2) {return arg.equals(opt1) || arg.equals(opt2);}
+
   private static boolean isArgumentTask(String arg) {
     return
       arg.equals("init")
@@ -130,7 +135,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 0.1.1)"
+      "Yuuka help screen (version 0.2)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"
@@ -146,14 +151,16 @@ public class main {
       + "\n  -i (--ingore-lib) - ignores all library JARs that are in lib"
       + "\n  -s (--silent) - does not print any message during execution of a task"
       + "\n  -v (--verbose) - displays more information on what's happening"
-      + "\n  -o (--output) - sets the name of the compiled JAR";
+      + "\n  -o (--output) - sets the name of the compiled JAR"
+      + "\n  -nw (--no-warnings) - disables compiler warnings"
+      ;
   }
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka help screen"
+      "Yuuka version 0.2"
       + "\nBasic usage: yuuka [command] [options]"
-      + "\n\nType -h, --help or help to check what you can do";
+      + "\n\nType -h, --help or help to see what you can do";
   }
 
   private static boolean projectHasNoSource() {
@@ -170,6 +177,7 @@ class globalvariables {
   public static boolean VERBOSE = false;
   public static boolean SILENT = false;
   public static boolean INGORE_LIB = false;
+  public static boolean DISABLE_WARNINGS = false;
 
   public static String MAIN_CLASS = fileops.findMainClass("src");
   public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
