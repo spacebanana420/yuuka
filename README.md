@@ -19,7 +19,7 @@ With Yuuka, your projects should have a simple file structure such as:
 
 To start a new project, you can run `yuuka init` to create a new project structure.
 
-To build your project and run it locally, you can run `yuuka build` and `yuuka run`. If you want to make an executable JAR, you can run `yuuka JAR`.
+To build your project and run it locally, you can run `yuuka build` and `yuuka run`. If you want to make an executable JAR, you can run `yuuka package`.
 
 There are multiple CLI arguments that let you customize the build process, such as specifying the JAR name and main class (instead of guessing), setting verbose or silent terminal output, setting the target Java release for your program, etc.
 
