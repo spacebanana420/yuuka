@@ -62,15 +62,22 @@ public class fileops {
   public static boolean isJarFile(String name) {return checkFileExtension(name, ".jar");}
 
   public static String findMainClass(String path) {
+    String file_separator = System.getProperty("file.separator");
+    String root = "src"+file_separator;
+
+    if (new File(path + "/main.java").isFile()) {
+      return
+        (path + file_separator + "main")
+        .replaceFirst(root, "");
+    }
     String[] paths = new File(path).list();
-    
     for (String p : paths) {
-      String full_p = path + System.getProperty("file.separator") + p;
+      String full_p = path + file_separator + p;
       var f = new File(full_p);
       if (f.isFile() && p.contains("main.java")) {
         return
           (full_p)
-          .replaceFirst("src/", "")
+          .replaceFirst(root, "")
           .replaceFirst(".java", "");
       }
       else if (f.isDirectory()) {
