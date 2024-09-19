@@ -127,7 +127,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen"
+      "Yuuka help screen (version 0.1)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"

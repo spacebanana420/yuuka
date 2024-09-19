@@ -59,8 +59,14 @@ public class compiler {
       process.waitFor();
       return process.exitValue();
     }
-    catch (IOException e) {return -1;}
-    catch (InterruptedException e) {return -2;}
+    catch (IOException e) {
+      stdout.print("The process " + cmd[0] + " failed to execute!");
+      return -1;
+    }
+    catch (InterruptedException e) {
+      stdout.print("Process " + cmd[0] + " was interrupted!");
+      return -2;
+    }
   }
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
