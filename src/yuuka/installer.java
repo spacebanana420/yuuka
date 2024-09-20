@@ -9,8 +9,8 @@ public class installer {
   public static void installProgram() {
     String home = System.getProperty("user.home");
     String install_location =
-    (home.equals("/root")) ? "/usr/bin"
-    : home + "/.local/bin";
+      (home.equals("/root")) ? "/usr/bin"
+      : home + "/.local/bin";
 
     File install_file = new File(install_location);
     if (!install_file.isDirectory() || !install_file.canWrite()) {
@@ -40,7 +40,7 @@ public class installer {
 
   private static String removeExtension(String filename) {
     int point_i = -1;
-    for (int i = 0; i < filename.length(); i++) {
+    for (int i = filename.length()-1; i >= 0; i--) {
       if (filename.charAt(i) == '.') {point_i = i; break;}
     }
     if (point_i == -1) {return filename;}
