@@ -39,6 +39,7 @@ public class main {
       else if (
         (isOption(args[i], "-m", "--main"))
         && hasArgumentValue(args, i)
+        && !isArgumentTask(args[i+1])
       ) {
         globalvariables.MAIN_CLASS = args[i+1];
       }
@@ -110,6 +111,21 @@ public class main {
           fileops.deleteClassFiles("build");
           fileops.deleteClassFiles("lib");
           return true;
+        case "install":
+          if (System.getProperty("os.name").contains("Windows")) {
+            stdout.print("The install task is not available for Windows!");
+            return true;
+          }
+          if (projectHasNoSource()) {return true;}
+          stdout.print("Compiling and packaging project");
+          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+          compiler.compile();
+          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
+          
+          fileops.deleteClassFiles("build");
+          fileops.deleteClassFiles("lib");
+          stdout.print("Installing " + globalvariables.PROGRAM_NAME);
+          installer.installProgram();
       }
     }
     return false;
@@ -143,7 +159,8 @@ public class main {
       || arg.equals("package")
       || arg.equals("packagelib")
       || arg.equals("run")
-      || arg.equals("clean");
+      || arg.equals("clean")
+      || arg.equals("install");
   }
 
   private static String getHelpMessage() {
@@ -157,6 +174,7 @@ public class main {
       + "\n  * packagelib - compiles your project and packages it into a library JAR"
       + "\n  * run - compiles and runs your project"
       + "\n  * clean - deletes all .class files"
+      + "\n  * install - builds and installs your program (Unix-like only)"
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h, --help, help - opens this menu"
