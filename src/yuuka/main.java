@@ -126,6 +126,7 @@ public class main {
           fileops.deleteClassFiles("lib");
           stdout.print("Installing " + globalvariables.PROGRAM_NAME);
           installer.installProgram();
+          return true;
       }
     }
     return false;
