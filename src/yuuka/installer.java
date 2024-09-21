@@ -27,14 +27,28 @@ public class installer {
     try {
       stdout.print_verbose("Installing program at " + install_location);
       Path p_script = Path.of(script_path);
+      Path p_jar = Path.of(jar_path);
+
+      if (new File(script_path).isFile()) {
+        stdout.print_verbose("Old instance of the script found installed, deleting...");
+        Files.delete(p_script);
+      }
+      if (new File(jar_path).isFile()) {
+        stdout.print_verbose("Old instance of the JAR found installed, deleting...");
+        Files.delete(p_jar);
+      }
+
       Files.createFile(p_script);
       new File(script_path).setExecutable(true);
       Files.write(p_script, script_contents);
 
       new File(install_location + "/jars").mkdir();
-      Files.move(Path.of("build/" + globalvariables.PROGRAM_NAME), Path.of(jar_path));
+      Files.move(Path.of("build/" + globalvariables.PROGRAM_NAME), p_jar);
     }
-    catch (IOException e) {stdout.print("The installation of your program failed!");}
+    catch (IOException e) {
+      stdout.print("The installation of your program failed!");
+      return;
+    }
     stdout.print(globalvariables.PROGRAM_NAME + " has been installed at " + install_location);
   }
 
