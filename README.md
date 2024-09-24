@@ -15,6 +15,7 @@ With Yuuka, your projects should have a simple file structure such as:
 /src    # Mandatory, to store source code
 /lib    # Optional, to store library JARs
 /build  # Mandatory, to store the compiled project
+/test   # Optional, for writing and running tests
 ```
 
 To start a new project, you can run `yuuka init` to create a new project structure.

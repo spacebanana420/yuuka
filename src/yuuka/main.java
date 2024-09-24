@@ -146,6 +146,7 @@ public class main {
     new File("src").mkdir();
     new File("lib").mkdir();
     new File("build").mkdir();
+    new File("test").mkdir();
   }
 
   private static boolean hasArgumentValue(String[] args, int i) {
