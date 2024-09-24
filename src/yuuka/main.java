@@ -110,6 +110,7 @@ public class main {
           fileops.deleteClassFiles("src");
           fileops.deleteClassFiles("build");
           fileops.deleteClassFiles("lib");
+          fileops.deleteClassFiles("test");
           return true;
         case "install":
           if (System.getProperty("os.name").contains("Windows")) {

@@ -1,6 +1,5 @@
 package yuuka;
 
-import java.io.File;
 import java.util.ArrayList;
 
 //contains duplicate code, replace later maybe
@@ -10,6 +9,7 @@ public class tests {
     if (result != 0) {return false;}
     
     result = run(misc.removeExtension(source_file));
+    fileops.deleteClassFiles("test");
     return result == 0;
   }
 
