@@ -15,4 +15,16 @@ public class misc {
     }
     return name + ".jar";
   }
+  public static String removeExtension(String filename) {
+    int point_i = -1;
+    for (int i = filename.length()-1; i >= 0; i--) {
+      if (filename.charAt(i) == '.') {point_i = i; break;}
+    }
+    if (point_i == -1) {return filename;}
+    String newname = "";
+    for (int i = 0; i < point_i; i++) {
+      newname += filename.charAt(i);
+    }
+    return newname;
+  }
 }

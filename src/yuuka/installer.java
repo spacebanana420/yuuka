@@ -19,7 +19,7 @@ public class installer {
     }
 
     String jar_path = install_location + "/jars/" + globalvariables.PROGRAM_NAME;
-    String script_path = install_location + "/" + removeExtension(globalvariables.PROGRAM_NAME);
+    String script_path = install_location + "/" + misc.removeExtension(globalvariables.PROGRAM_NAME);
     byte[] script_contents =
       ("#!/bin/sh\njava -jar " + jar_path + " \"$@\"")
       .getBytes();
@@ -50,18 +50,5 @@ public class installer {
       return;
     }
     stdout.print(globalvariables.PROGRAM_NAME + " has been installed at " + install_location);
-  }
-
-  private static String removeExtension(String filename) {
-    int point_i = -1;
-    for (int i = filename.length()-1; i >= 0; i--) {
-      if (filename.charAt(i) == '.') {point_i = i; break;}
-    }
-    if (point_i == -1) {return filename;}
-    String newname = "";
-    for (int i = 0; i < point_i; i++) {
-      newname += filename.charAt(i);
-    }
-    return newname;
   }
 }

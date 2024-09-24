@@ -1,30 +1,25 @@
 package yuuka;
 
 import java.io.File;
-import java.io.IOException;
 
 public class compiler {
-
   public static int compile() {
     new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
     
     String[] cmd =
       (globalvariables.RELEASE_TARGET.length() > 0)
-      ? cmdbuilder.buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
-      : cmdbuilder.buildCommand(source_files, "javac");
+      ? process.buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
+      : process.buildCommand(source_files, "javac");
 
-    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
-      String[] libargs = lib.getLibArgs(lib.getLibraryJars());
-      cmd = cmdbuilder.concatArgs(cmd, libargs);
-    }
-    return runProcess(cmd, ".");
+    cmd = process.compiler_addlib(cmd, false);
+    return process.runProcess(cmd, ".");
   }
 
   public static int createJAR(String jarName, String main_class, boolean library_jar) {
     if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
       var jars = lib.changeBaseDirectory(lib.getLibraryJars());
-      runProcess(cmdbuilder.buildExtractCommand(jars, "jar"), "build");
+      process.runProcess(process.buildExtractCommand(jars, "jar"), "build");
     }    
     String[] class_files =
       fileops.removeParent(fileops.getClassFiles("build"), "build/")
@@ -32,42 +27,15 @@ public class compiler {
       
     String[] cmd =
       (!library_jar)
-      ? cmdbuilder.buildJARCommand(jarName, main_class, class_files, "jar")
-      : cmdbuilder.buildJARCommand(jarName, class_files, "jar");
-    return runProcess(cmd, "build");
+      ? process.buildJARCommand(jarName, main_class, class_files, "jar")
+      : process.buildJARCommand(jarName, class_files, "jar");
+    return process.runProcess(cmd, "build");
   }
-
-
 
   public static int runProgram() {
     String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
-
-    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
-      var jars = lib.changeBaseDirectory(lib.getLibraryJars());
-      cmd = cmdbuilder.concatArgs(cmd, lib.getLibArgs(jars));
-    }
-    return runProcess(cmd, "build");
-  }
-
-  //todo: add output directory
-  public static int runProcess(String[] cmd, String working_directory) {
-    try {
-      stdout.print_verbose("Executing the process:\n", cmd);
-      var process =
-        new ProcessBuilder(cmd)
-        .inheritIO()
-        .directory(new File(working_directory))
-        .start();
-      process.waitFor();
-      return process.exitValue();
-    }
-    catch (IOException e) {
-      stdout.print("The process " + cmd[0] + " failed to execute!");
-      return -1;
-    }
-    catch (InterruptedException e) {
-      stdout.print("Process " + cmd[0] + " was interrupted!");
-      return -2;
-    }
+    cmd = process.compiler_addlib(cmd, true);
+    
+    return process.runProcess(cmd, "build");
   }
 }
