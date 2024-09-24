@@ -128,6 +128,23 @@ public class main {
           stdout.print("Installing " + globalvariables.PROGRAM_NAME);
           installer.installProgram();
           return true;
+        case "runtest":
+          if (!hasArgumentValue(args, i) || isArgumentTask(args[i+1])) {
+            stdout.print
+            (
+              "The task \"runtest\" requires an argument following it!"
+              + "\nExample: \"yuuka runtest filetest\" to launch the file test/filetest.java"
+            );
+            return true;
+          }
+          String main_class = args[i+1]; String source_file = main_class + ".java";
+          if (!new File("test/"+source_file).isFile()) {
+            stdout.print("The file \"test/" + source_file + "\" does not exist!");
+            return true;
+          }
+          boolean result = tests.runTest(source_file, main_class);
+          if (!result) {stdout.print("Error during building/running the test!");}
+          return true;
       }
     }
     return false;
@@ -162,13 +179,16 @@ public class main {
       || arg.equals("package")
       || arg.equals("packagelib")
       || arg.equals("run")
+      || arg.equals("runtest")
       || arg.equals("clean")
-      || arg.equals("install");
+      || arg.equals("install")
+    ;
+
   }
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 0.2)"
+      "Yuuka help screen (version 0.3)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"
@@ -176,6 +196,7 @@ public class main {
       + "\n  * package - compiles your project and packages it into an executable JAR"
       + "\n  * packagelib - compiles your project and packages it into a library JAR"
       + "\n  * run - compiles and runs your project"
+      + "\n  * runtest - runs a test source file"
       + "\n  * clean - deletes all .class files"
       + "\n  * install - builds and installs your program (Unix-like only)"
       

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 //contains duplicate code, replace later maybe
 public class tests {
-  public static boolean runTest(String source_file) {    
+  public static boolean runTest(String source_file, String main_class) {    
     int result = compile(source_file);
     if (result != 0) {return false;}
     
-    result = run(misc.removeExtension(source_file));
+    result = run(main_class);
     fileops.deleteClassFiles("test");
     return result == 0;
   }
