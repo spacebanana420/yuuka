@@ -142,6 +142,7 @@ public class main {
             stdout.print("The file \"test/" + source_file + "\" does not exist!");
             return true;
           }
+          new File("test").mkdir();
           boolean result = tests.runTest(source_file, main_class);
           if (!result) {stdout.print("Error during building/running the test!");}
           return true;
