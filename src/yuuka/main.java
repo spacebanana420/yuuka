@@ -215,7 +215,7 @@ public class main {
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka version 0.2"
+      "Yuuka version 0.3"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nRun \"yuuka -h\" to see what you can do";
   }
