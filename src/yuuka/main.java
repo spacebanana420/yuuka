@@ -17,6 +17,7 @@ public class main {
     boolean printed_help = false;
 
     for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("--")) {break;}
       if (args[i].equals("-h") || args[i].equals("--help") || args[i].equals("help")) {
         printed_help = true;
         break;
@@ -60,6 +61,8 @@ public class main {
   private static boolean parseTasks(String[] args) {
     for (int i = 0; i < args.length; i++) {
       switch(args[i]) {
+        case "--":
+          return true;
         case "init":
           initializeProject();
           stdout.print("The directories src, build and lib have been created");
@@ -103,7 +106,7 @@ public class main {
             compiler.compile();
           }
           stdout.print("Running program");
-          compiler.runProgram();
+          compiler.runProgram(args);
           return true;
         case "clean":
           stdout.print("Cleaning up all class files");
@@ -143,7 +146,7 @@ public class main {
             return true;
           }
           new File("test").mkdir();
-          boolean result = tests.runTest(source_file, main_class);
+          boolean result = tests.runTest(source_file, main_class, args);
           if (!result) {stdout.print("Error during building/running the test!");}
           return true;
       }
@@ -191,6 +194,7 @@ public class main {
     return
       "Yuuka help screen (version 0.3)"
       + "\nBasic usage: yuuka [command] [options]"
+      + "\nPassing arguments to program execution: yuuka run/runtest [options] -- [arguments]"
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"
       + "\n  * build - compiles your project"

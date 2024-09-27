@@ -32,10 +32,12 @@ public class compiler {
     return process.runProcess(cmd, "build");
   }
 
-  public static int runProgram() {
+  public static int runProgram(String[] args) {
     String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
     cmd = process.compiler_addlib(cmd, true);
     
+    String[] exec_args = misc.getExecArgs(args);
+    cmd = process.concatArgs(cmd, exec_args);
     return process.runProcess(cmd, "build");
   }
 }

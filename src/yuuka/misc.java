@@ -1,5 +1,7 @@
 package yuuka;
 
+import java.util.ArrayList;
+
 public class misc {
   public static String guessJARName(String main_class) {
     int first_slash = -1;
@@ -26,5 +28,15 @@ public class misc {
       newname += filename.charAt(i);
     }
     return newname;
+  }
+
+  public static String[] getExecArgs(String[] args) {
+    boolean copy = false;
+    ArrayList<String> exec_args = new ArrayList<>();
+    for (String a : args) {
+      if (a.equals("--") && !copy) {copy = true; continue;}
+      if (copy) {exec_args.add(a);}
+    }
+    return exec_args.toArray(new String[0]);
   }
 }
