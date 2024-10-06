@@ -195,7 +195,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 0.3)"
+      "Yuuka help screen (version 0.4)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\nPassing arguments to program execution: yuuka run/runtest [options] -- [arguments]"
       + "\n\nAvailable commands:"
