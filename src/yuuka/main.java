@@ -153,6 +153,9 @@ public class main {
           boolean result = tests.runTest(source_file, args);
           if (!result) {stdout.print("Error during building/running the test!");}
           return true;
+        case "listtest":
+          tests.printTestFiles();
+          return true;
       }
     }
     return false;
@@ -190,6 +193,7 @@ public class main {
       || arg.equals("runtest")
       || arg.equals("clean")
       || arg.equals("install")
+      || arg.equals("listtest")
     ;
 
   }
@@ -206,6 +210,7 @@ public class main {
       + "\n  * packagelib - compiles your project and packages it into a library JAR"
       + "\n  * run - compiles and runs your project"
       + "\n  * runtest - runs a test source file"
+      + "\n  * listtest - lists available test files"
       + "\n  * clean - deletes all .class files"
       + "\n  * install - builds and installs your program (Unix-like only)"
       
