@@ -12,9 +12,9 @@ Download the [latest release](https://github.com/spacebanana420/yuuka/releases) 
 # How to use
 With Yuuka, your projects should have a simple file structure such as:
 ```
-/src    # Mandatory, to store source code
-/lib    # Optional, to store library JARs
 /build  # Mandatory, to store the compiled project
+/lib    # Optional, to store library JARs
+/src    # Mandatory, to store source code
 /test   # Optional, for writing and running tests
 ```
 
