@@ -57,9 +57,9 @@ public class fileops {
     return true;
   }
 
-  public static boolean isSourceFile(String name) {return checkFileExtension(name, ".java");}
-  public static boolean isClassFile(String name) {return checkFileExtension(name, ".class");}
-  public static boolean isJarFile(String name) {return checkFileExtension(name, ".jar");}
+  public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}
+  public static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
+  public static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
 
   public static String findMainClass(String path) {
     String file_separator = System.getProperty("file.separator");
@@ -88,22 +88,13 @@ public class fileops {
     return "main";
   }
 
-  private static boolean checkFileExtension(String name, String extension) {
-    if (name.length() <= extension.length()) return false;
-    int nl = name.length(); int el = extension.length();
-    for (int i = 0; i < el; i++) {
-      if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
-    }
-    return true;
-  }
-
   private static ArrayList<String> getFiles_generic(String root_path, String file_extension) {
     String[] subpaths = new File(root_path).list();
 
     ArrayList<String> source_files = new ArrayList<>();
     for (String p : subpaths) {
       File f = new File(root_path + "/" + p);
-      if (f.isFile() && f.canRead() && checkFileExtension(p, file_extension)) {
+      if (f.isFile() && f.canRead() && misc.checkFileExtension(p, file_extension)) {
         source_files.add(root_path + "/" + p);
       }
       else if (f.isDirectory() && f.canRead()) {

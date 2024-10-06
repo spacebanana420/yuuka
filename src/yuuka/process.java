@@ -93,11 +93,4 @@ public class process {
     }
     else {return cmd;}
   }
-
-  // public static String[] appendArg(String[] args, String new_arg) {
-  //   String[] full = new String[args.length + 1];
-  //   for (int i = 0; i < args.length; i++) {full[i] = args[i];}
-  //   args[args.length-1] = new_arg;
-  //   return full;
-  // }
 }

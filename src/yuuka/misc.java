@@ -30,6 +30,15 @@ public class misc {
     return newname;
   }
 
+  public static boolean checkFileExtension(String name, String extension) {
+    if (name.length() <= extension.length()) return false;
+    int nl = name.length(); int el = extension.length();
+    for (int i = 0; i < el; i++) {
+      if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
+    }
+    return true;
+  }
+
   public static String[] getExecArgs(String[] args) {
     boolean copy = false;
     ArrayList<String> exec_args = new ArrayList<>();

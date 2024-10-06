@@ -140,13 +140,17 @@ public class main {
             );
             return true;
           }
-          String main_class = args[i+1]; String source_file = main_class + ".java";
+          String source_file =
+            (misc.checkFileExtension(args[i+1], ".java"))
+            ? args[i+1]
+            : args[i+1] + ".java";
+          
           if (!new File("test/"+source_file).isFile()) {
             stdout.print("The file \"test/" + source_file + "\" does not exist!");
             return true;
           }
           new File("test").mkdir();
-          boolean result = tests.runTest(source_file, main_class, args);
+          boolean result = tests.runTest(source_file, args);
           if (!result) {stdout.print("Error during building/running the test!");}
           return true;
       }
