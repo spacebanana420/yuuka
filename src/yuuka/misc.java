@@ -3,6 +3,14 @@ package yuuka;
 import java.util.ArrayList;
 
 public class misc {
+  public static boolean isInt(String num) {
+    try{
+      Integer.parseInt(num);
+      return true;
+    }
+    catch(NumberFormatException e) {return false;}
+  }
+
   public static String guessJARName(String main_class) {
     int first_slash = -1;
     String name = "";

@@ -1,9 +1,12 @@
 package yuuka;
 
 import java.io.File;
+import yuuka.config.yuukaConfig;
 
 public class main {
   public static void main(String[] args) {
+    yuukaConfig.parseConfig(yuukaConfig.readConfig());
+
     boolean askedHelp = parseOptions(args);
     if (askedHelp) {
       System.out.println(getHelpMessage());
@@ -33,7 +36,7 @@ public class main {
       }
       else if (
         (isOption(args[i], "-r", "--release"))
-        && hasArgumentValue(args, i) && isInt(args[i+1])
+        && hasArgumentValue(args, i) && misc.isInt(args[i+1])
       ) {
         globalvariables.RELEASE_TARGET = args[i+1];
       }
@@ -161,20 +164,12 @@ public class main {
     return false;
   }
 
-  private static boolean isInt(String num) {
-    try{
-      Integer.parseInt(num);
-      return true;
-    }
-    catch(NumberFormatException e) {return false;}
-
-  }
-
   private static void initializeProject() {
     new File("src").mkdir();
     new File("lib").mkdir();
     new File("build").mkdir();
     new File("test").mkdir();
+    yuukaConfig.createConfig();
   }
 
   private static boolean hasArgumentValue(String[] args, int i) {
@@ -228,7 +223,7 @@ public class main {
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka version 0.3"
+      "Yuuka version 0.4"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nRun \"yuuka -h\" to see what you can do";
   }
@@ -241,15 +236,4 @@ public class main {
     }
     return false;
   }
-}
-
-class globalvariables {
-  public static boolean VERBOSE = false;
-  public static boolean SILENT = false;
-  public static boolean INGORE_LIB = false;
-  public static boolean DISABLE_WARNINGS = false;
-
-  public static String MAIN_CLASS = fileops.findMainClass("src");
-  public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
-  public static String RELEASE_TARGET = "";
 }
