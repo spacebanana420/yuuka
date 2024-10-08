@@ -16,7 +16,9 @@ public class yuukaConfig {
     (
       "Yuuka build config\nThe settings below override Yuuka's defaults\nCLI arguments override this config"
       + "\nTo enable a setting, uncomment it by removing the \"#\" at its start"
-      + "\n\n#main_class=main\n#program_name=MyProgram\n#release_target=" + System.getProperty("java.version")
+      + "\n\n#main_class=main\n#program_name=MyProgram"
+      + "\n#release_target=" + System.getProperty("java.version")
+      + "\n#graal_path=native-image"
     ).getBytes();
     try {
       var stream = new FileOutputStream("build.yuuka");
@@ -66,6 +68,7 @@ public class yuukaConfig {
     setMainClass(config);
     setProgramName(config);
     setRelease(config);
+    setGraalPath(config);
   }
 
   private static void setMainClass(String[] config) {
@@ -91,6 +94,16 @@ public class yuukaConfig {
 
     stdout.print_verbose("Setting Java target release to \"" + value + "\".");
     globalvariables.RELEASE_TARGET = value;
+  }
+
+  private static void setGraalPath(String[] config) {
+    String value = getValue(config, "graal_path");
+    if (value == null) {return;}
+    var f = new File(value);
+    if (!f.isFile() || !f.canExecute()) {return;}
+
+    stdout.print_verbose("Setting GraalVM's \"native-image\" path to \"" + value + "\".");
+    globalvariables.GRAAL_PATH = value; 
   }
 
   private static String getValue(String[] config, String setting) {
