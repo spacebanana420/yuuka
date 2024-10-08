@@ -37,25 +37,37 @@ public class main {
       else if (
         (isOption(args[i], "-r", "--release"))
         && hasArgumentValue(args, i) && misc.isInt(args[i+1])
-      ) {
+        )
+      {
         globalvariables.RELEASE_TARGET = args[i+1];
       }
       else if (
         (isOption(args[i], "-m", "--main"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
-      ) {
+        )
+      {
         globalvariables.MAIN_CLASS = args[i+1];
       }
       else if (
         (isOption(args[i], "-o", "--output"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
-        ) {
+        )
+      {
         globalvariables.PROGRAM_NAME = args[i+1];
       }
       else if (isOption(args[i], "-nw", "--no-warnings")) {
         globalvariables.DISABLE_WARNINGS = true;
+      }
+      else if (
+        (isOption(args[i], "--graal-path"))
+        && hasArgumentValue(args, i)
+        && !isArgumentTask(args[i+1])
+        )
+      {
+        var binaryf = new File(args[i+1]);
+        if (binaryf.isFile() && binaryf.canExecute()) {globalvariables.GRAAL_PATH = args[i+1];}
       }
     }
     return printed_help;
@@ -80,14 +92,15 @@ public class main {
           runTask_package();
           String[] nativecmd = new String[]
           {
-            "native-image", "--no-fallback", "--static", "-O3", "-jar",
+            globalvariables.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
             globalvariables.PROGRAM_NAME,
             "-o", misc.removeExtension(globalvariables.PROGRAM_NAME)
           };
           stdout.print("Building native binary with GraalVM");
           stdout.print_verbose("GraalVM command:", nativecmd);
           int exitstatus = process.runProcess(nativecmd, "build");
-          if (exitstatus != 0) {stdout.print("The compilation failed!");}
+          if (exitstatus == -1) {stdout.print("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
+          else if (exitstatus > 0) {stdout.print("The compilation failed!");}
           return true;
         case "package":
           runTask_package();
@@ -172,6 +185,7 @@ public class main {
   }
 
   private static boolean isOption(String arg, String opt1, String opt2) {return arg.equals(opt1) || arg.equals(opt2);}
+  private static boolean isOption(String arg, String opt) {return arg.equals(opt);}
 
   private static boolean isArgumentTask(String arg) {
     return
@@ -215,6 +229,7 @@ public class main {
       + "\n  -v (--verbose) - displays more information on what's happening"
       + "\n  -o (--output) - sets the name of the compiled JAR"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
+      + "\n  --graal-path - sets a custom path for the GraalVM \"native-image\" binary"
       ;
   }
 
