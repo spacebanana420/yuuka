@@ -76,18 +76,21 @@ public class main {
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
           return true;
+        case "buildnative": //duplicate code
+          runTask_package();
+          String[] nativecmd = new String[]
+          {
+            "native-image", "--no-fallback", "--static", "-O3", "-jar",
+            globalvariables.PROGRAM_NAME,
+            "-o", misc.removeExtension(globalvariables.PROGRAM_NAME)
+          };
+          stdout.print("Building native binary with GraalVM");
+          stdout.print_verbose("GraalVM command:", nativecmd);
+          int exitstatus = process.runProcess(nativecmd, "build");
+          if (exitstatus != 0) {stdout.print("The compilation failed!");}
+        return true;
         case "package":
-          if (projectHasNoSource()) {return true;}
-          stdout.print("Compiling project");
-          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-          compiler.compile();
-
-          stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
-          
-          stdout.print("Cleaning up class files");
-          fileops.deleteClassFiles("build");
-          fileops.deleteClassFiles("lib");
+          runTask_package();
           return true;
         case "packagelib":
           if (projectHasNoSource()) {return true;}
@@ -123,15 +126,7 @@ public class main {
             stdout.print("The install task is not available for Windows!");
             return true;
           }
-          if (projectHasNoSource()) {return true;}
-          stdout.print("Compiling and packaging project");
-          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-          compiler.compile();
-          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
-          
-          fileops.deleteClassFiles("build");
-          fileops.deleteClassFiles("lib");
-          stdout.print("Installing " + globalvariables.PROGRAM_NAME);
+          runTask_package();
           installer.installProgram();
           return true;
         case "runtest":
@@ -235,5 +230,19 @@ public class main {
       return true;
     }
     return false;
+  }
+
+  private static void runTask_package() {
+    if (projectHasNoSource()) {return;}
+    stdout.print("Compiling project");
+    stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+    compiler.compile();
+
+    stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+    compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
+    
+    stdout.print("Cleaning up class files");
+    fileops.deleteClassFiles("build");
+    fileops.deleteClassFiles("lib");
   }
 }
