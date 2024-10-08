@@ -46,7 +46,7 @@ bash build.sh
 ### In a Unix-like shell
 ```
 mkdir build
-javac src/*/*.java -d build
+javac src/*/*.java src/*/*/*.java -d build
 cd build
 jar cfe yuuka.jar yuuka/main yuuka/*.class
 cd ..
