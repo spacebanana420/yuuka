@@ -76,7 +76,7 @@ public class main {
           stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
           compiler.compile();
           return true;
-        case "buildnative": //duplicate code
+        case "buildnative":
           runTask_package();
           String[] nativecmd = new String[]
           {
@@ -88,7 +88,7 @@ public class main {
           stdout.print_verbose("GraalVM command:", nativecmd);
           int exitstatus = process.runProcess(nativecmd, "build");
           if (exitstatus != 0) {stdout.print("The compilation failed!");}
-        return true;
+          return true;
         case "package":
           runTask_package();
           return true;
@@ -177,6 +177,7 @@ public class main {
     return
       arg.equals("init")
       || arg.equals("build")
+      || arg.equals("buildnative")
       || arg.equals("package")
       || arg.equals("packagelib")
       || arg.equals("run")
@@ -198,6 +199,7 @@ public class main {
       + "\n  * build - compiles your project"
       + "\n  * package - compiles your project and packages it into an executable JAR"
       + "\n  * packagelib - compiles your project and packages it into a library JAR"
+      + "\n  * buildnative - compiles your project into a native binary (requires GraalVM)"
       + "\n  * run - compiles and runs your project"
       + "\n  * runtest - runs a test source file"
       + "\n  * listtest - lists available test files"
