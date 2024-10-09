@@ -200,7 +200,6 @@ public class main {
       || arg.equals("install")
       || arg.equals("listtest")
     ;
-
   }
 
   private static String getHelpMessage() {
