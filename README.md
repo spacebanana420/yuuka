@@ -12,10 +12,11 @@ Download the [latest release](https://github.com/spacebanana420/yuuka/releases) 
 # How to use
 With Yuuka, your projects should have a simple file structure such as:
 ```
-/build  # Mandatory, to store the compiled project
-/lib    # Optional, to store library JARs
-/src    # Mandatory, to store source code
-/test   # Optional, for writing and running tests
+/build        # Mandatory, to store the compiled project
+/lib          # Optional, to store library JARs
+/src          # Mandatory, to store source code
+/test         # Optional, for writing and running tests
+/build.yuuka  # Optional, for configuring your project
 ```
 
 To start a new project, you can run `yuuka init` to create a new project structure.
@@ -24,7 +25,7 @@ To build your project and run it locally, you can run `yuuka build` and `yuuka r
 
 There are multiple CLI arguments that let you customize the build process, such as specifying the JAR name and main class (instead of guessing), setting verbose or silent terminal output, setting the target Java release for your program, etc.
 
-For the automatic main class detection to work, it's recommended that your main file is called "main.java".
+For the automatic main class detection to work, it's recommended that your main file is called "main.java", otherwise you can define the main class manually either from the CLI or in `build.yuuka`.
 
 # Compile from source
 
