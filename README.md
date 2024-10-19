@@ -49,6 +49,6 @@ bash build.sh
 mkdir build
 javac src/yuuka/*.java src/yuuka/*/*.java -d build
 cd build
-jar cfe yuuka.jar yuuka/main yuuka/*.class
+jar cfe yuuka.jar yuuka/main yuuka/*.class yuuka/*/*.class
 cd ..
 ```

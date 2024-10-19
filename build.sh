@@ -16,6 +16,6 @@ function cleanup () {
 echo Building JAR
 javac src/yuuka/*.java src/yuuka/*/*.java --release 11
 cd src
-jar cfe ../build/yuuka.jar yuuka/main */*.class
+jar cfe ../build/yuuka.jar yuuka/main yuuka/*.class yuuka/*/*.class
 cleanup
 cd ..
