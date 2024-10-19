@@ -19,11 +19,11 @@ public class process {
       return process.exitValue();
     }
     catch (IOException e) {
-      stdout.print("The process " + cmd[0] + " failed to execute!");
+      stdout.print("Error running \"" + cmd[0] + "\": program does not exist!");
       return -1;
     }
     catch (InterruptedException e) {
-      stdout.print("Process " + cmd[0] + " was interrupted!");
+      stdout.print("Error running \"" + cmd[0] + "\": process was interrupted!");
       return -2;
     }
   }
