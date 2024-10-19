@@ -7,25 +7,48 @@ import java.nio.file.Path;
 
 public class installer {
   public static void installProgram() {
+    String install_location = getInstallLocation();
+    String jar_path = install_location + "/jars/" + globalvariables.PROGRAM_NAME;
+    String script_path = install_location + "/" + misc.removeExtension(globalvariables.PROGRAM_NAME);
+    
+    install(globalvariables.PROGRAM_NAME, "build/" + globalvariables.PROGRAM_NAME, jar_path, script_path, install_location);
+  }
+
+  public static void installProgram(String jar) {
+    String name = new File(jar).getName();
+    String install_location = getInstallLocation();
+    String jar_path = install_location + "/jars/" + name;   
+    String script_path = install_location + "/" + misc.removeExtension(name);
+
+    install(name, jar, jar_path, script_path, install_location);
+  }
+
+  private static String getInstallLocation() {
     String home = System.getProperty("user.home");
-    String install_location =
+    return
       (home.equals("/root")) ? "/usr/bin"
       : home + "/.local/bin";
+  }
 
+  private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
     File install_file = new File(install_location);
     if (!install_file.isDirectory() || !install_file.canWrite()) {
       stdout.print("The installation path " + install_location + " does not exist or lacks write permissions! Cancelling installation.");
       return;
     }
-
-    String jar_path = install_location + "/jars/" + globalvariables.PROGRAM_NAME;
-    String script_path = install_location + "/" + misc.removeExtension(globalvariables.PROGRAM_NAME);
     byte[] script_contents =
       ("#!/bin/sh\njava -jar " + jar_path + " \"$@\"")
       .getBytes();
 
     try {
-      stdout.print_verbose("Installing program at " + install_location);
+      stdout.print("Installing program at " + install_location);
+      stdout.print_verbose
+        (
+          "\nJAR path: " + source_jar
+          + "\nName: " + name
+          + "\nOutput JAR: " + jar_path
+          + "\nOutput script " + script_path
+        );
       Path p_script = Path.of(script_path);
       Path p_jar = Path.of(jar_path);
 
@@ -43,12 +66,12 @@ public class installer {
       Files.write(p_script, script_contents);
 
       new File(install_location + "/jars").mkdir();
-      Files.move(Path.of("build/" + globalvariables.PROGRAM_NAME), p_jar);
+      Files.move(Path.of(source_jar), p_jar);
     }
     catch (IOException e) {
       stdout.print("The installation of your program failed!");
       return;
     }
-    stdout.print(globalvariables.PROGRAM_NAME + " has been installed at " + install_location);
+    stdout.print(name + " has been installed at " + install_location);
   }
 }

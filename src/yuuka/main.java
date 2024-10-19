@@ -139,8 +139,14 @@ public class main {
             stdout.print("The install task is not available for Windows!");
             return true;
           }
-          runTask_package();
-          installer.installProgram();
+
+          if (hasArgumentValue(args, i) && new File(args[i+1]).isFile()
+            && misc.checkFileExtension(args[i+1], ".jar"))
+            {installer.installProgram(args[i+1]);}
+          else {
+            runTask_package();
+            installer.installProgram();
+          }
           return true;
         case "runtest":
           if (!hasArgumentValue(args, i) || isArgumentTask(args[i+1])) {
@@ -204,7 +210,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 0.4)"
+      "Yuuka help screen (version 0.5)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\nPassing arguments to program execution: yuuka run/runtest [options] -- [arguments]"
       + "\n\nAvailable commands:"
@@ -218,6 +224,7 @@ public class main {
       + "\n  * listtest - lists available test files"
       + "\n  * clean - deletes all .class files"
       + "\n  * install - builds and installs your program (Unix-like only)"
+      + "\n  * install [jar path] - installs an existing JAR file"
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h, --help, help - opens this menu"
@@ -234,7 +241,7 @@ public class main {
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka version 0.4"
+      "Yuuka version 0.5"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nRun \"yuuka -h\" to see what you can do";
   }
