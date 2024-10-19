@@ -1,8 +1,9 @@
 package yuuka;
 
 public class globalvariables {
-  public static boolean VERBOSE = false;
-  public static boolean SILENT = false;
+  //0 - silent    1 - normal    2 - verbose   3 - debug
+  public static byte PRINT_LEVEL = 1;
+
   public static boolean INGORE_LIB = false;
   public static boolean DISABLE_WARNINGS = false;
 

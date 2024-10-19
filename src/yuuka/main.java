@@ -25,11 +25,14 @@ public class main {
         printed_help = true;
         break;
       }
+      else if (isOption(args[i], "-d", "--debug")) {
+        globalvariables.PRINT_LEVEL = 3;
+      }
       else if (isOption(args[i], "-v", "--verbose")) {
-        globalvariables.VERBOSE = true;
+        globalvariables.PRINT_LEVEL = 2;
       }
       else if (isOption(args[i], "-s", "--silent")) {
-        globalvariables.SILENT = true;
+        globalvariables.PRINT_LEVEL = 0;
       }
       else if (isOption(args[i], "-i", "--ignore-lib")) {
         globalvariables.INGORE_LIB = true;
@@ -231,8 +234,9 @@ public class main {
       + "\n  -m (--main) [class] - sets the main class"
       + "\n  -r (--release) [number] - sets the target Java release for compilation"
       + "\n  -i (--ingore-lib) - ignores all library JARs that are in lib"
-      + "\n  -s (--silent) - does not print any message during execution of a task"
-      + "\n  -v (--verbose) - displays more information on what's happening"
+      + "\n  -s (--silent) - enables silent output, disables printing"
+      + "\n  -v (--verbose) - prints more information"
+      + "\n  -d (--debug) - prints even further information"
       + "\n  -o (--output) - sets the name of the compiled JAR"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
       + "\n  --graal-path - sets a custom path for the GraalVM \"native-image\" binary"
