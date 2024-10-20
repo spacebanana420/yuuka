@@ -9,6 +9,8 @@ public class tests {
 
     cmd = process.compiler_addlib(cmd, true);
     String[] exec_args = misc.getExecArgs(args);
+    stdout.print_debug("Passing the following arguments to test execution:", exec_args);
+
     cmd = process.concatArgs(cmd, exec_args);
 
     return process.runProcess(cmd, "test") == 0;
