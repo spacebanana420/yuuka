@@ -20,18 +20,21 @@ public class tasks {
     yuukaConfig.createConfig();
   }
 
-  public static void runTask_package() {
-    if (parser.projectHasNoSource()) {return;}
+  public static int runTask_package() {
+    if (parser.projectHasNoSource()) {return -3;}
     stdout.print("Compiling project");
     stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-    compiler.compile();
+    int result = 0;
+    result = compiler.compile();
+    if (result != 0) {return result;}
 
     stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-    compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
+    result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
     
     stdout.print("Cleaning up class files");
     fileops.deleteClassFiles("build");
     fileops.deleteClassFiles("lib");
+    return result;
   }
 
   public static void buildNativeBinary() {

@@ -131,8 +131,8 @@ public static boolean parseOptions(String[] args) {
             && misc.checkFileExtension(args[i+1], ".jar"))
             {installer.installProgram(args[i+1]);}
           else {
-            tasks.runTask_package();
-            installer.installProgram();
+            int result = tasks.runTask_package();
+            if (result == 0) {installer.installProgram();}
           }
           return true;
         case "runtest":
