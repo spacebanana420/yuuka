@@ -71,6 +71,7 @@ public class fileops {
         .replaceFirst(root, "");
     }
     String[] paths = new File(path).list();
+    if (paths == null) {paths = new String[0];}
     for (String p : paths) {
       String full_p = path + file_separator + p;
       var f = new File(full_p);
