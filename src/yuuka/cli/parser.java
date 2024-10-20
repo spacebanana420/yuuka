@@ -57,7 +57,7 @@ public static boolean parseOptions(String[] args) {
         globalvariables.DISABLE_WARNINGS = true;
       }
       else if (
-        (isOption(args[i], "--graal-path"))
+        (isOption(args[i], "-gp", "--graal-path"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
         )

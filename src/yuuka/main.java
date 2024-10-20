@@ -24,8 +24,8 @@ public class main {
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"
       + "\n  * build - compiles your project"
-      + "\n  * package - compiles your project and packages it into an executable JAR"
-      + "\n  * packagelib - compiles your project and packages it into a library JAR"
+      + "\n  * package - compiles your project into an executable JAR"
+      + "\n  * packagelib - compiles your project into a library JAR"
       + "\n  * buildnative - compiles your project into a native binary (requires GraalVM)"
       + "\n  * run - compiles and runs your project"
       + "\n  * runtest - runs a test source file"
@@ -44,7 +44,7 @@ public class main {
       + "\n  -d (--debug) - prints even further information"
       + "\n  -o (--output) - sets the name of the compiled JAR"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
-      + "\n  --graal-path - sets a custom path for the GraalVM \"native-image\" binary"
+      + "\n  -gp (--graal-path) - sets a custom path for the GraalVM \"native-image\" binary"
       ;
   }
 
