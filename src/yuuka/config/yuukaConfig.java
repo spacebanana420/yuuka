@@ -63,6 +63,7 @@ public class yuukaConfig {
   }
 
   public static void parseConfig(String[] config) {
+    if (config.length == 0) {return;}
     stdout.print_verbose("Found build file \"build.yuuka\", reading file.");
 
     setMainClass(config);
