@@ -18,6 +18,15 @@ public class tasks {
     new File("build").mkdir();
     new File("test").mkdir();
     yuukaConfig.createConfig();
+    stdout.print("The directories src, build and lib have been created");
+  }
+
+  public static int build() {
+    if (parser.projectHasNoSource()) {return -3;}
+    stdout.print("Compiling project");
+    stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+
+    return compiler.compile();
   }
 
   public static int runTask_package() {
@@ -37,6 +46,21 @@ public class tasks {
     return result;
   }
 
+  public static int packageLib() {
+    stdout.print("Compiling project");
+    int result = 0;
+    result = compiler.compile();
+    if (result != 0) {return result;}
+
+    stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+    result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, true);
+
+    stdout.print("Cleaning up class files");
+    fileops.deleteClassFiles("build");
+    fileops.deleteClassFiles("lib");
+    return result;
+  }
+
   public static void buildNativeBinary() {
     String[] nativecmd = new String[]
     {
@@ -49,6 +73,17 @@ public class tasks {
     int exitstatus = process.runProcess(nativecmd, "build");
     if (exitstatus == -1) {stdout.print("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
     else if (exitstatus > 0) {stdout.print("The compilation failed!");}
+  }
+
+  public static void runProgram(String[] args) {
+    if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
+      if (parser.projectHasNoSource()) {return;}
+      stdout.print("Compiling project");
+      stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+      compiler.compile();
+    }
+    stdout.print("Running program");
+    compiler.runProgram(args);
   }
 
   public static void runTest(String args[], String source_arg) {

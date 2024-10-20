@@ -6,7 +6,6 @@ import yuuka.stdout;
 import yuuka.fileops;
 import yuuka.misc;
 import yuuka.tests;
-import yuuka.compiler;
 import yuuka.installer;
 
 public class parser {
@@ -77,13 +76,9 @@ public static boolean parseOptions(String[] args) {
           return true;
         case "init":
           tasks.initializeProject();
-          stdout.print("The directories src, build and lib have been created");
           return true;
         case "build":
-          if (projectHasNoSource()) {return true;}
-          stdout.print("Compiling project");
-          stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-          compiler.compile();
+          tasks.build();
           return true;
         case "buildnative":
           tasks.runTask_package();
@@ -94,25 +89,10 @@ public static boolean parseOptions(String[] args) {
           return true;
         case "packagelib":
           if (projectHasNoSource()) {return true;}
-          stdout.print("Compiling project");
-          compiler.compile();
-
-          stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-          compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, true);
-
-          stdout.print("Cleaning up class files");
-          fileops.deleteClassFiles("build");
-          fileops.deleteClassFiles("lib");
+          tasks.packageLib();
           return true;
         case "run":
-          if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
-            if (projectHasNoSource()) {return true;}
-            stdout.print("Compiling project");
-            stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-            compiler.compile();
-          }
-          stdout.print("Running program");
-          compiler.runProgram(args);
+          tasks.runProgram(args);
           return true;
         case "clean":
           stdout.print("Cleaning up all class files");
