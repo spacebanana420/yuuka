@@ -78,10 +78,10 @@ public class process {
     String[] extract_args = lib.getExtractionArgs(jar_files);
     return concatArgs(cmd, extract_args);
   }  
-
+  
   public static String[] concatArgs(String[] args1, String[] args2) {
     if (args1.length == 0) {return args2;} if (args2.length == 0) {return args1;}
-
+  
     String[] full = new String[args1.length + args2.length];
     for (int i = 0; i < args1.length; i++) {full[i] = args1[i];}
     for (int i = 0; i < args2.length; i++) {full[i+args1.length] = args2[i];}
@@ -89,11 +89,16 @@ public class process {
   }
 
   public static String[] compiler_addlib(String[] cmd, boolean change_base_directory) {
-    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {
-      var jars = lib.getLibraryJars();
-      if (change_base_directory) {jars = lib.changeBaseDirectory(jars);}
-      return process.concatArgs(cmd, lib.getLibArgs(jars));
-    }
-    else {return cmd;}
+    if (globalvariables.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
+    
+    var jars = lib.getLibraryJars();
+    if (change_base_directory) {jars = lib.changeBaseDirectory(jars);}
+    String[] libargs = lib.getLibArgs(jars);
+    
+    String[] finalcmd = new String[cmd.length + libargs.length];
+    finalcmd[0] = cmd[0];
+    for (int i = 0; i < libargs.length; i++) {finalcmd[i+1] = libargs[i];}
+    for (int i = 1; i < cmd.length; i++) {finalcmd[i+libargs.length] = cmd[i];}
+    return finalcmd;
   }
 }
