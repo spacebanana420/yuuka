@@ -46,6 +46,7 @@ public class main {
       + "\n  -nw (--no-warnings) - disables compiler warnings"
       + "\n  -gp (--graal-path) - sets a custom path for the GraalVM \"native-image\" binary"
       + "\n  -ip (--install-path) - sets a custom installation path for the \"install\" task"
+      + "\n --include-src - imports the project's source code when running tests"
       ;
   }
 

@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 public class tests {
   public static boolean runTest(String source_file, String[] args) {    
-    String[] cmd = new String[]{"java", source_file};
+    String[] cmd =
+      (globalvariables.TESTS_INCLUDE_PROJECT && new File("build/"+globalvariables.PROGRAM_NAME).isFile())
+      ? new String[]{"java", "--class-path", ".:../build/"+globalvariables.PROGRAM_NAME, source_file}
+      : new String[]{"java", source_file};
+      
 
     cmd = process.compiler_addlib(cmd, true);
     String[] exec_args = misc.getExecArgs(args);

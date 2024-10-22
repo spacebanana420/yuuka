@@ -13,4 +13,6 @@ public class globalvariables {
   public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
   public static String RELEASE_TARGET = "";
   public static String INSTALL_PATH = installer.getInstallLocation();
+
+  public static boolean TESTS_INCLUDE_PROJECT = false;
 }

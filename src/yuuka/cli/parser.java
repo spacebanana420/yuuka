@@ -74,6 +74,9 @@ public static boolean parseOptions(String[] args) {
         var installf = new File(args[i+1]);
         if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
       }
+      else if (isOption(args[i], "--include-src")) {
+        globalvariables.TESTS_INCLUDE_PROJECT = true;
+      }
     }
     return printed_help;
   }
@@ -132,6 +135,9 @@ public static boolean parseOptions(String[] args) {
               + "\nExample: \"yuuka runtest filetest\" to launch the file test/filetest.java"
             );
             return true;
+          }
+          if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {
+            tasks.packageLib();
           }
           tasks.runTest(args, args[i+1]);
           return true;
