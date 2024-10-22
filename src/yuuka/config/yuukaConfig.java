@@ -21,6 +21,7 @@ public class yuukaConfig {
       + "\n#release_target=" + System.getProperty("java.version")
       + "\n#graal_path=native-image"
       + "\n#install_path="
+      + "\n#tests_include_src=true"
     ).getBytes();
     try {
       var stream = new FileOutputStream("build.yuuka");
@@ -73,6 +74,15 @@ public class yuukaConfig {
     setRelease(config);
     setGraalPath(config);
     setInstallPath(config);
+    setSrcInclusion(config);
+  }
+
+  private static void setSrcInclusion(String[] config) {
+    String value = getValue(config, "tests_include_src");
+    if (value == null || value.toLowerCase() != "true") {return;}
+
+    stdout.print_verbose("Enabling project source inclusion into tests.");
+    globalvariables.TESTS_INCLUDE_PROJECT = true;
   }
 
   private static void setInstallPath(String[] config) {
