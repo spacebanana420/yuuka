@@ -65,6 +65,15 @@ public static boolean parseOptions(String[] args) {
         var binaryf = new File(args[i+1]);
         if (binaryf.isFile() && binaryf.canExecute()) {globalvariables.GRAAL_PATH = args[i+1];}
       }
+      else if (
+        isOption(args[i], "-ip", "--install-path")
+        && hasArgumentValue(args, i)
+        && !isArgumentTask(args[i+1])
+      )
+      {
+        var installf = new File(args[i+1]);
+        if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
+      }
     }
     return printed_help;
   }

@@ -45,6 +45,7 @@ public class main {
       + "\n  -o (--output) - sets the name of the compiled JAR"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
       + "\n  -gp (--graal-path) - sets a custom path for the GraalVM \"native-image\" binary"
+      + "\n  -ip (--install-path) - sets a custom installation path for the \"install\" task"
       ;
   }
 
