@@ -16,9 +16,11 @@ public class yuukaConfig {
     (
       "Yuuka build config\nThe settings below override Yuuka's defaults\nCLI arguments override this config"
       + "\nTo enable a setting, uncomment it by removing the \"#\" at its start"
+      + "\nEmpty or invalid settings are ignored"
       + "\n\n#main_class=main\n#program_name=MyProgram"
       + "\n#release_target=" + System.getProperty("java.version")
       + "\n#graal_path=native-image"
+      + "\n#install_path="
     ).getBytes();
     try {
       var stream = new FileOutputStream("build.yuuka");
@@ -70,6 +72,31 @@ public class yuukaConfig {
     setProgramName(config);
     setRelease(config);
     setGraalPath(config);
+    setInstallPath(config);
+  }
+
+  private static void setInstallPath(String[] config) {
+    String value = getValue(config, "install_path");
+    if (value == null) {return;}
+    var f = new File(value);
+    if (!f.isDirectory()) {
+      stdout.print_verbose
+      (
+        "The installation path " + value + " is not real"
+        + "\nDefaulting to " + globalvariables.INSTALL_PATH
+      );
+      return;
+    }
+    if (!f.canRead() || !f.canWrite()) {
+      stdout.print_verbose
+      (
+        "Yuuka lacks permissions to read or write at the installation path " + value
+        + "\nDefaulting to " + globalvariables.INSTALL_PATH
+      );      
+      return;
+    }
+    stdout.print_verbose("Setting installation path to \"" + value + "\".");
+    globalvariables.INSTALL_PATH = value;
   }
 
   private static void setMainClass(String[] config) {

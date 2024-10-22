@@ -16,17 +16,17 @@ public class installer {
 
   public static void installProgram(String jar) {
     String name = new File(jar).getName();
-    String install_location = getInstallLocation();
+    String install_location = globalvariables.INSTALL_PATH;
     String jar_path = install_location + "/jars/" + name;   
     String script_path = install_location + "/" + misc.removeExtension(name);
 
     install(name, jar, jar_path, script_path, install_location);
   }
 
-  private static String getInstallLocation() {
+  public static String getInstallLocation() {
     String home = System.getProperty("user.home");
     return
-      (home.equals("/root")) ? "/usr/bin"
+      (home.equals("/root")) ? "/usr/local/bin"
       : home + "/.local/bin";
   }
 
