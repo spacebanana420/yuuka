@@ -1,10 +1,10 @@
 # Yuuka
-Yuuka is a lightweight build tool for compiling your Java projects from the CLI in a simple way. Yuuka implements the Java compiler and JAR management tool to build, manage and clean up your projects in a platform-agnostic way.
+Yuuka is a lightweight build tool for compiling your Java projects from the CLI in a fast and simple way. Yuuka implements the Java compiler and JAR management tool to build, manage and clean up your projects in a platform-agnostic way. Optionally, you can configure your projects declaratively from a build file too.
 
 ## Requirements
 * Java 11 or newer
 
-Yuuka currently requires that you have Java installed in your system (in your $PATH).
+Yuuka currently requires that you have Java installed in your system (in your $PATH) to execute the Java compiler, JAR packager and Java runtime.
 
 # Download and run
 Download the [latest release](https://github.com/spacebanana420/yuuka/releases) and run it with `java -jar yuuka.jar`.
