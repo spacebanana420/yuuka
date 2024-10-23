@@ -20,7 +20,7 @@ public class main {
     return
       "Yuuka help screen (version 0.5)"
       + "\nBasic usage: yuuka [command] [options]"
-      + "\nPassing arguments to program execution: yuuka run/runtest [options] -- [arguments]"
+      + "\nPassing arguments to program execution: yuuka run/test [options] -- [arguments]"
       + "\n\nAvailable commands:"
       + "\n  * init - creates a project file structure"
       + "\n  * build - compiles your project"
