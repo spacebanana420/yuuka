@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 public class installer {
   public static void installProgram() {
-    String install_location = getInstallLocation();
+    String install_location = globalvariables.INSTALL_PATH;
     String jar_path = install_location + "/jars/" + globalvariables.PROGRAM_NAME;
     String script_path = install_location + "/" + misc.removeExtension(globalvariables.PROGRAM_NAME);
     
