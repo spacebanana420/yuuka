@@ -11,7 +11,7 @@ public class tests {
       : new String[]{"java", source_file};
       
 
-    cmd = process.compiler_addlib(cmd, true);
+    cmd = process.addLibArgs(cmd, true);
     String[] exec_args = misc.getExecArgs(args);
     stdout.print_debug("Passing the following arguments to test execution:", exec_args);
 

@@ -88,7 +88,7 @@ public class process {
     return full;
   }
 
-  public static String[] compiler_addlib(String[] cmd, boolean change_base_directory) {
+  public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
     if (globalvariables.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
     
     var jars = lib.getLibraryJars();

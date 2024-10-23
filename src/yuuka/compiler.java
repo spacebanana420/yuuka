@@ -12,7 +12,7 @@ public class compiler {
       ? process.buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
       : process.buildCommand(source_files, "javac");
 
-    cmd = process.compiler_addlib(cmd, false);
+    cmd = process.addLibArgs(cmd, false);
     return process.runProcess(cmd, ".");
   }
 
@@ -34,7 +34,7 @@ public class compiler {
 
   public static int runProgram(String[] args) {
     String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
-    cmd = process.compiler_addlib(cmd, true);
+    cmd = process.addLibArgs(cmd, true);
     
     String[] exec_args = misc.getExecArgs(args);
     stdout.print_verbose("Passing the following arguments to program execution:", exec_args);

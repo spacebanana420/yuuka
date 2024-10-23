@@ -127,7 +127,7 @@ public static boolean parseOptions(String[] args) {
             if (result == 0) {installer.installProgram();}
           }
           return true;
-        case "runtest":
+        case "test":
           if (!hasArgumentValue(args, i) || isArgumentTask(args[i+1])) {
             stdout.print
             (
@@ -141,7 +141,7 @@ public static boolean parseOptions(String[] args) {
           }
           tasks.runTest(args, args[i+1]);
           return true;
-        case "listtest":
+        case "tests":
           tests.printTestFiles();
           return true;
       }
