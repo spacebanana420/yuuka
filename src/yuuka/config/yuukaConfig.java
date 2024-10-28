@@ -17,11 +17,14 @@ public class yuukaConfig {
       "Yuuka build config\nThe settings below override Yuuka's defaults\nCLI arguments override this config"
       + "\nTo enable a setting, uncomment it by removing the \"#\" at its start"
       + "\nEmpty or invalid settings are ignored"
-      + "\n\n#main_class=main\n#program_name=MyProgram"
+      + "\n"
+      + "\n#main_class=main"
+      + "\n#program_name=MyProgram"
       + "\n#release_target=" + System.getProperty("java.version")
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
+      + "\n#verbose_level=1"
     ).getBytes();
     try {
       var stream = new FileOutputStream("build.yuuka");
@@ -75,6 +78,17 @@ public class yuukaConfig {
     setGraalPath(config);
     setInstallPath(config);
     setSrcInclusion(config);
+    setVerboseLevel(config);
+  }
+
+  private static void setVerboseLevel(String[] config) {
+    String value = getValue(config, "verbose_level");
+    if (value == null) {return;}
+
+    byte level = misc.toByte(value);
+    if (level < 0 || level > 3) {return;}
+    stdout.print_verbose("Setting verbosity level to " + value);
+    globalvariables.PRINT_LEVEL = level;
   }
 
   private static void setSrcInclusion(String[] config) {

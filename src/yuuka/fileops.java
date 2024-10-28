@@ -43,7 +43,7 @@ public class fileops {
     for (String p : paths) {
       String full_p = path + "/" + p;
       var f = new File(full_p);
-      if (f.isFile() && isClassFile(p) || p.equals("MANIFEST.MF")) {
+      if (f.isFile() && (isClassFile(p) || p.equals("MANIFEST.MF"))) {
         try {Files.delete(Path.of(full_p));}
         catch(IOException e) {return false;}
       }
