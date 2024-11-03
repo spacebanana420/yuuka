@@ -25,9 +25,10 @@ public class installer {
 
   public static String getInstallLocation() {
     String home = System.getProperty("user.home");
-    return
-      (home.equals("/root")) ? "/usr/local/bin"
-      : home + "/.local/bin";
+    String os = System.getProperty("os.name");
+    if (home.equals("/root")) {return "/usr/local/bin";}
+    if (os.equals("FreeBSD")) {return home + "/bin";}
+    return home + "/.local/bin";
   }
 
   private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
