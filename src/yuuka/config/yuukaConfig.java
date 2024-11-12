@@ -20,7 +20,7 @@ public class yuukaConfig {
       + "\n"
       + "\n#main_class=main"
       + "\n#program_name=MyProgram"
-      + "\n#release_target=" + System.getProperty("java.version")
+      + "\n#release_target=" + truncateVersion(System.getProperty("java.version"))
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
@@ -92,11 +92,9 @@ public class yuukaConfig {
   }
 
   private static void setSrcInclusion(String[] config) {
-    String value = getValue(config, "tests_include_src");
-    if (value == null || value.toLowerCase() != "true") {return;}
-
-    stdout.print_verbose("Enabling project source inclusion into tests.");
-    globalvariables.TESTS_INCLUDE_PROJECT = true;
+    boolean value = getBool(config, "tests_include_src");
+    if (value) {stdout.print_verbose("Enabling project source inclusion into tests.");}
+    globalvariables.TESTS_INCLUDE_PROJECT = value;
   }
 
   private static void setInstallPath(String[] config) {
@@ -158,6 +156,13 @@ public class yuukaConfig {
     globalvariables.GRAAL_PATH = value; 
   }
 
+  private static boolean getBool(String[] config, String setting) {
+    String value = getValue(config, setting);
+    if (value == null) {return false;}
+    value = value.toLowerCase();
+    return value.equals("true") || value.equals("yes");
+  }
+
   private static String getValue(String[] config, String setting) {
     String setting_line = null;
     for (int i = 0; i < config.length; i++) {
@@ -186,5 +191,15 @@ public class yuukaConfig {
       if (line.charAt(i) != setting.charAt(i)) {return false;}
     }
     return true;
+  }
+
+  private static String truncateVersion(String ver) {
+    String truncated = "";
+    for (int i = 0; i < ver.length(); i++) {
+      char c = truncated.charAt(i);
+      if (c == '.') {return truncated;}
+      truncated += c;
+    }
+    return truncated;
   }
 }
