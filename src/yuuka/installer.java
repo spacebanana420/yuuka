@@ -63,7 +63,7 @@ public class installer {
       }
 
       Files.createFile(p_script);
-      new File(script_path).setExecutable(true);
+      new File(script_path).setExecutable(true, false);
       Files.write(p_script, script_contents);
 
       new File(install_location + "/jars").mkdir();

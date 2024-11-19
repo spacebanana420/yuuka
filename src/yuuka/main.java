@@ -18,7 +18,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 0.5)"
+      "Yuuka help screen (version 0.5.1)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\nPassing arguments to program execution: yuuka run/test [options] -- [arguments]"
       + "\n\nAvailable commands:"
@@ -52,7 +52,7 @@ public class main {
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka version 0.5"
+      "Yuuka version 0.5.1"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nRun \"yuuka -h\" to see what you can do";
   }
