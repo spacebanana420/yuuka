@@ -73,10 +73,9 @@ public class process {
     return cmd;
   }
 
-  public static String[] buildExtractCommand(ArrayList<String> jar_files, String binary_path) {
-    String[] cmd = new String[]{binary_path, "-x"};
-    String[] extract_args = lib.getExtractionArgs(jar_files);
-    return concatArgs(cmd, extract_args);
+  public static String[] buildExtractCommand(String jar_file, String binary_path) {
+    String[] cmd = new String[]{binary_path, "-x", "-f", jar_file};
+    return cmd;
   }  
   
   public static String[] concatArgs(String[] args1, String[] args2) {

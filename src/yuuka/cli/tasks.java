@@ -39,7 +39,8 @@ public class tasks {
     if (parser.projectHasNoSource()) {return -3;}
     stdout.print("Compiling project");
     stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-    int result = 0;
+    int result = fetchLibs();
+    if (result != 0) {return result;}
     result = compiler.compile();
     if (result != 0) {return result;}
 

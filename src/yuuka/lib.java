@@ -21,10 +21,7 @@ public class lib {
   public static String[] getLibArgs(ArrayList<String> jar_files) {
     return mkArgs(jar_files, "--class-path");
   }
-  public static String[] getExtractionArgs(ArrayList<String> jar_files) {
-    return mkArgs(jar_files, "-f");
-  }
-
+  
   public static ArrayList<String> changeBaseDirectory(ArrayList<String> jar_files) {
     ArrayList<String> new_files = jar_files;
     for (int i = 0; i < jar_files.size(); i++) {
