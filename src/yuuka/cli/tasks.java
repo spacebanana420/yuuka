@@ -3,6 +3,9 @@ package yuuka.cli;
 import java.io.File;
 
 import yuuka.config.yuukaConfig;
+import yuuka.config.libconf;
+import yuuka.libfetch.maven;
+import yuuka.libfetch.MavenLibrary;
 import yuuka.stdout;
 import yuuka.globalvariables;
 import yuuka.compiler;
@@ -18,11 +21,14 @@ public class tasks {
     new File("build").mkdir();
     new File("test").mkdir();
     yuukaConfig.createConfig();
-    stdout.print("The directories src, build and lib have been created");
+    libconf.createConfig();
+    stdout.print("Project structure created");
   }
 
   public static int build() {
     if (parser.projectHasNoSource()) {return -3;}
+    int result = fetchLibs();
+    if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
     stdout.print("Compiling project");
     stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
 
@@ -99,5 +105,21 @@ public class tasks {
     new File("test").mkdir();
     boolean result = tests.runTest(source_file, args);
     if (!result) {stdout.print("Error during building/running the test!");}
+  }
+
+  public static int fetchLibs() {
+    int result = libconf.createConfig();
+    if (result == 1) {return 0;}
+    else if (result != 0) {return result;}
+    
+    MavenLibrary[] libs = libconf.getLibraries();
+    if (libs.length == 0) {return 0;}
+
+    stdout.print("Fetching dependencies");
+    for (MavenLibrary lib : libs) {
+      result = maven.fetchLibrary(lib);
+      if (result != 0) {return result;}
+    }
+    return 0;
   }
 }

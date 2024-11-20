@@ -6,10 +6,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import yuuka.stdout;
+import yuuka.libfetch.MavenLibrary;
 
 public class libconf {
-  public static void createConfig() {
-    if (new File("libs.yuuka").isFile()) {return;}
+  public static int createConfig() {
+    if (new File("libs.yuuka").isFile()) {return 1;}
     String conf =
       "#Yuuka dependency file"
       +"\n#Yuuka fetches library dependencies that are written here, based on the Maven repository"
@@ -20,8 +21,9 @@ public class libconf {
       var os = new FileOutputStream("libs.yuuka");
       os.write(conf.getBytes());
       os.close();
+      return 0;
     }
-    catch (IOException e) {stdout.print("Failed to create dependency config file!");}
+    catch (IOException e) {stdout.print("Failed to create dependency config file!"); return -1;}
   }
 
   public static MavenLibrary[] getLibraries() {
@@ -49,14 +51,4 @@ public class libconf {
     }
     if (lib.isValid()) {libs.add(lib);}
   }
-}
-
-class MavenLibrary {
-  public String[] properties = new String[]{null, null, null};
-
-  public String group() {return properties[0];}
-  public String name() {return properties[1];}
-  public String version() {return properties[2];}
-
-  public boolean isValid() {return properties[0] != null && properties[1] != null && properties[2] != null;}
 }
