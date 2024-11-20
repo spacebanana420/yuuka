@@ -1,7 +1,6 @@
 package yuuka.config;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -20,7 +19,7 @@ public class yuukaConfig {
       + "\n"
       + "\n#main_class=main"
       + "\n#program_name=MyProgram"
-      + "\n#release_target=" + truncateVersion(System.getProperty("java.version"))
+      + "\n#release_target=" + confreader.truncateVersion(System.getProperty("java.version"))
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
@@ -35,37 +34,9 @@ public class yuukaConfig {
     catch (IOException e) {return false;}
   }
 
-  public static String[] readConfig() {
-    var f = new File("build.yuuka");
-    if (!f.isFile() || !f.canRead()) {return new String[0];}
-    try {
-      var is = new FileInputStream("build.yuuka");
-      String config = new String(is.readAllBytes());
-      is.close();
-
-      int line_count = 0;
-      for (int i = 0; i < config.length(); i++) {
-        if (config.charAt(i) == '\n') {line_count++;}
-      }
-      String line = "";
-      String[] final_cfg = new String[line_count];
-      line_count = 0;
-      for (int i = 0; i < config.length(); i++) {
-        char c = config.charAt(i);
-        if (c == '\n') {
-          if (line != "") {
-            final_cfg[line_count] = line;
-            line_count++;
-            line = "";
-          }
-          continue;
-        }
-        line += c;
-      }
-      if (line != "") {final_cfg[line_count] = line;}
-      return final_cfg;
-    }
-    catch (IOException e) {return new String[0];}
+  public static void parseConfig(String conf_path) {
+    String[] conf = confreader.readConfig(conf_path);
+    parseConfig(conf);
   }
 
   public static void parseConfig(String[] config) {
@@ -82,7 +53,7 @@ public class yuukaConfig {
   }
 
   private static void setVerboseLevel(String[] config) {
-    String value = getValue(config, "verbose_level");
+    String value = confreader.getValue(config, "verbose_level");
     if (value == null) {return;}
 
     byte level = misc.toByte(value);
@@ -92,13 +63,13 @@ public class yuukaConfig {
   }
 
   private static void setSrcInclusion(String[] config) {
-    boolean value = getBool(config, "tests_include_src");
+    boolean value = confreader.getBool(config, "tests_include_src");
     if (value) {stdout.print_verbose("Enabling project source inclusion into tests.");}
     globalvariables.TESTS_INCLUDE_PROJECT = value;
   }
 
   private static void setInstallPath(String[] config) {
-    String value = getValue(config, "install_path");
+    String value = confreader.getValue(config, "install_path");
     if (value == null) {return;}
     var f = new File(value);
     if (!f.isDirectory()) {
@@ -122,7 +93,7 @@ public class yuukaConfig {
   }
 
   private static void setMainClass(String[] config) {
-    String value = getValue(config, "main_class");
+    String value = confreader.getValue(config, "main_class");
     if (value == null) {return;}
 
     stdout.print_verbose("Setting main class to \"" + value + "\".");
@@ -131,7 +102,7 @@ public class yuukaConfig {
   }
 
   private static void setProgramName(String[] config) {
-    String value = getValue(config, "program_name");
+    String value = confreader.getValue(config, "program_name");
     if (value == null) {return;}
 
     stdout.print_verbose("Setting program_name to \"" + value + "\".");
@@ -139,7 +110,7 @@ public class yuukaConfig {
   }
 
   private static void setRelease(String[] config) {
-    String value = getValue(config, "release_version");
+    String value = confreader.getValue(config, "release_version");
     if (value == null || !misc.isInt(value)) {return;}
 
     stdout.print_verbose("Setting Java target release to \"" + value + "\".");
@@ -147,59 +118,12 @@ public class yuukaConfig {
   }
 
   private static void setGraalPath(String[] config) {
-    String value = getValue(config, "graal_path");
+    String value = confreader.getValue(config, "graal_path");
     if (value == null) {return;}
     var f = new File(value);
     if (!f.isFile() || !f.canExecute()) {return;}
 
     stdout.print_verbose("Setting GraalVM's \"native-image\" path to \"" + value + "\".");
     globalvariables.GRAAL_PATH = value; 
-  }
-
-  private static boolean getBool(String[] config, String setting) {
-    String value = getValue(config, setting);
-    if (value == null) {return false;}
-    value = value.toLowerCase();
-    return value.equals("true") || value.equals("yes");
-  }
-
-  private static String getValue(String[] config, String setting) {
-    String setting_line = null;
-    for (int i = 0; i < config.length; i++) {
-      String line = config[i];
-      if (isSetting(line, setting)) {setting_line = line; break;}
-    }
-    if (setting_line == null) {return null;}
-    String value = parseLine(setting, setting);
-    if (value.length() == 0) {return null;}
-    return value;
-  }
-
-  private static String parseLine(String line, String setting) {
-    String buf = "";
-    for (int i = setting.length(); i < line.length(); i++) {
-      buf += line.charAt(i);
-    }
-    return buf;
-  }
-
-  private static boolean isSetting(String line, String setting) {
-    if (line.length() <= setting.length() || line.charAt(setting.length()) != '=')
-    {return false;}
-
-    for (int i = 0; i < setting.length(); i++) {
-      if (line.charAt(i) != setting.charAt(i)) {return false;}
-    }
-    return true;
-  }
-
-  private static String truncateVersion(String ver) {
-    String truncated = "";
-    for (int i = 0; i < ver.length(); i++) {
-      char c = truncated.charAt(i);
-      if (c == '.') {return truncated;}
-      truncated += c;
-    }
-    return truncated;
   }
 }

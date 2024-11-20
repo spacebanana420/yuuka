@@ -5,7 +5,7 @@ import yuuka.cli.parser;
 
 public class main {
   public static void main(String[] args) {
-    yuukaConfig.parseConfig(yuukaConfig.readConfig());
+    yuukaConfig.parseConfig("build.yuuka");
 
     boolean askedHelp = parser.parseOptions(args);
     if (askedHelp) {
