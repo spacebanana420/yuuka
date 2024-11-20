@@ -14,10 +14,17 @@ public class libconf {
     if (new File("libs.yuuka").isFile()) {return 1;}
     String conf =
       "#Yuuka dependency file"
-      +"\n#Use this file to fetch third-party libraries from the Maven repository"
+      +"\n"
+      +"\n#Use this file to fetch third-party libraries"
       +"\n#If a library file is already in \"lib\", then it won't be re-downloaded to spare resources"
+      +"\n#Use \"library\" to fetch Maven libraries being hosted in repo1.maven.org"
+      +"\n#use \"library_custom\" to fetch a JAR from anywhere else"
+      +"\n"
       +"\n#Format: library=GROUP%NAME%VERSION"
+      +"\n#Format: library_custom=JAR_FILENAME%URL"
+      +"\n"
       +"\n#Example: library=org.randomdev%pngdecoder%1.0.2"
+      +"\n#Example: library_custom=name.jar%https://repo.com/library/library.jar"
     ;
     try {
       var os = new FileOutputStream("libs.yuuka");
