@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import yuuka.stdout;
 import yuuka.libfetch.MavenLibrary;
+import yuuka.libfetch.CustomLibrary;
 
 public class libconf {
   public static int createConfig() {
@@ -27,7 +28,7 @@ public class libconf {
     catch (IOException e) {stdout.print("Failed to create dependency config file!"); return -1;}
   }
 
-  public static MavenLibrary[] getLibraries() {
+  public static MavenLibrary[] getMavenLibraries() {
     String[] conf = confreader.readConfig("libs.yuuka");
     var libs = new ArrayList<MavenLibrary>();
     for (String line : conf) {addLib(libs, line);}
@@ -35,9 +36,17 @@ public class libconf {
     return libs.toArray(new MavenLibrary[0]);
   }
 
+  public static CustomLibrary[] getCustomLibraries() {
+    String[] conf = confreader.readConfig("libs.yuuka");
+    var libs = new ArrayList<CustomLibrary>();
+    for (String line : conf) {addLib_custom(libs, line);}
+    
+    return libs.toArray(new CustomLibrary[0]);
+  }
+
   private static void addLib(ArrayList<MavenLibrary> libs, String line) {
-    String value = confreader.parseLine(line, "library=");
-    if (value.equals("")) {return;}
+    String value = confreader.getValue(line, "library");
+    if (value == null || value.equals("")) {return;}
     
     stdout.print_debug("Found dependency: " + value);
     var lib = new MavenLibrary();
@@ -60,6 +69,35 @@ public class libconf {
         + "\nGroup found: " + lib.group()
         + "\nName found: " + lib.name()
         + "\nVersion found: " + lib.version()
+      );
+    }
+  }
+
+  //lots of duplicate code
+  private static void addLib_custom(ArrayList<CustomLibrary> libs, String line) {
+    String value = confreader.getValue(line, "library_custom");
+    if (value == null || value.equals("")) {return;}
+
+    stdout.print_debug("Found dependency: " + value);  
+    var lib = new CustomLibrary();
+    int lib_i = 0;
+    String temp = "";
+    for (int i = 0; i < value.length() && lib_i < 2; i++) {
+      char c = value.charAt(i);
+      if (c == '%') {
+        if (!temp.equals("")) {lib.properties[lib_i] = temp;}
+        lib_i++;
+        temp = "";
+      }
+      else {temp+=c;}
+    }
+    if (lib_i < 2 && temp != null) {lib.properties[lib_i] = temp;}
+    if (lib.isValid()) {libs.add(lib);}
+    else {
+      stdout.print_debug(
+        "Incorrect dependency configuration"
+        + "\nFile name: " + lib.filename()
+        + "\nURL: " + lib.url()
       );
     }
   }

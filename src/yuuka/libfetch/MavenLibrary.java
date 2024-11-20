@@ -24,7 +24,7 @@ public class MavenLibrary {
     }
     String url =
       "https://repo1.maven.org/maven2/"
-      +group().replaceAll(".", "/")
+      +group().replace('.', '/')
       +"/"+name()
       +"/"+version()
       +"/"+jar_name

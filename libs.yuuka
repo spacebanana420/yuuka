@@ -4,4 +4,5 @@
 #Format: library=GROUP%NAME%VERSION
 #Example: library=org.randomdev%pngdecoder%1.0.2
 
-library=org.renjin.cran%png%0.1-7-b291
+library_custom=png.jar%https://nexus.bedatadriven.com/content/groups/public/org/renjin/cran/png/0.1-7-b291/png-0.1-7-b291.jar
+library=com.squareup.okio%okio%3.9.1

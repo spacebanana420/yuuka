@@ -5,6 +5,7 @@ import java.io.File;
 import yuuka.config.yuukaConfig;
 import yuuka.config.libconf;
 import yuuka.libfetch.MavenLibrary;
+import yuuka.libfetch.CustomLibrary;
 import yuuka.stdout;
 import yuuka.globalvariables;
 import yuuka.compiler;
@@ -110,13 +111,33 @@ public class tasks {
     int result = libconf.createConfig();
     if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
     else if (result < 0) {return result;}
-    
-    MavenLibrary[] libs = libconf.getLibraries();
+
+    result = fetchMavenLibs();
+    if (result != 0) {return result;}
+    result = fetchCustomLibs();
+    return result;
+  }
+
+  private static int fetchMavenLibs() {
+    MavenLibrary[] libs = libconf.getMavenLibraries();
     if (libs.length == 0) {return 0;}
 
-    stdout.print("Fetching dependencies");
-    result = 0;
+    stdout.print("Fetching Maven Dependencies");
+    int result = 0;
     for (MavenLibrary lib : libs) {
+      result = lib.fetchLibrary();
+      if (result != 0) {return result;}
+    }
+    return 0;
+  }
+
+  private static int fetchCustomLibs() {
+    CustomLibrary[] libs = libconf.getCustomLibraries();
+    if (libs.length == 0) {return 0;}
+
+    stdout.print("Fetching Custom Dependencies");
+    int result = 0;
+    for (CustomLibrary lib : libs) {
       result = lib.fetchLibrary();
       if (result != 0) {return result;}
     }

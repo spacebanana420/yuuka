@@ -50,8 +50,14 @@ public class confreader {
       if (isSetting(line, setting)) {setting_line = line; break;}
     }
     if (setting_line == null) {return null;}
-    String value = parseLine(setting, setting);
+    String value = parseLine(setting_line, setting+"=");
     if (value.length() == 0) {return null;}
+    return value;
+  }
+
+  public static String getValue(String line, String setting) {
+    if (!isSetting(line, setting)) {return null;}
+    String value = parseLine(line, setting+"=");
     return value;
   }
 
