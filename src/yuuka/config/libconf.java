@@ -38,10 +38,12 @@ public class libconf {
   private static void addLib(ArrayList<MavenLibrary> libs, String line) {
     String value = confreader.parseLine(line, "library=");
     if (value.equals("")) {return;}
+    
+    stdout.print_debug("Found dependency: " + value);
     var lib = new MavenLibrary();
     int lib_i = 0;
     String temp = "";
-    for (int i = 0; i < value.length() || i < 3; i++) {
+    for (int i = 0; i < value.length() && lib_i < 3; i++) {
       char c = value.charAt(i);
       if (c == '%') {
         if (!temp.equals("")) {lib.properties[lib_i] = temp;}
@@ -50,6 +52,15 @@ public class libconf {
       }
       else {temp+=c;}
     }
+    if (lib_i < 3 && temp != null) {lib.properties[lib_i] = temp;}
     if (lib.isValid()) {libs.add(lib);}
+    else {
+      stdout.print_debug(
+        "Incorrect dependency configuration"
+        + "\nGroup found: " + lib.group()
+        + "\nName found: " + lib.name()
+        + "\nVersion found: " + lib.version()
+      );
+    }
   }
 }

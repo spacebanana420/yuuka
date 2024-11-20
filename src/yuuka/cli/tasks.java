@@ -108,13 +108,14 @@ public class tasks {
 
   public static int fetchLibs() {
     int result = libconf.createConfig();
-    if (result == 1) {return 0;}
-    else if (result != 0) {return result;}
+    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
+    else if (result < 0) {return result;}
     
     MavenLibrary[] libs = libconf.getLibraries();
     if (libs.length == 0) {return 0;}
 
     stdout.print("Fetching dependencies");
+    result = 0;
     for (MavenLibrary lib : libs) {
       result = lib.fetchLibrary();
       if (result != 0) {return result;}

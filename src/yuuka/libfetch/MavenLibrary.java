@@ -23,19 +23,19 @@ public class MavenLibrary {
       return 0;
     }
     String url =
-      "https://mvnrepository.com/artifact/"
-      +group()
+      "https://repo1.maven.org/maven2/"
+      +group().replaceAll(".", "/")
       +"/"+name()
       +"/"+version()
       +"/"+jar_name
     ;
 
     stdout.print_verbose("Fetching dependency: " + name());
-    stdout.print_debug("Group: " + group() + "\nVersion: " + version());
+    stdout.print_debug("  Group: " + group() + "\n  Version: " + version());
 
     int result = download.get(url, "lib/"+jar_name);
     if (result != 0) {
-      stdout.print("Error fetching library" + name() + "!");
+      stdout.print("Error fetching library " + name() + "!");
     }
     return result;
   }

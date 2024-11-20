@@ -1,0 +1,13 @@
+Yuuka build config
+The settings below override Yuuka's defaults
+CLI arguments override this config
+To enable a setting, uncomment it by removing the "#" at its start
+Empty or invalid settings are ignored
+
+#main_class=main
+#program_name=MyProgram
+#release_target=21
+#graal_path=native-image
+#install_path=
+#tests_include_src=true
+#verbose_level=1

@@ -3,6 +3,7 @@ package yuuka.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class confreader {
   public static String[] readConfig(String path) {
@@ -13,30 +14,27 @@ public class confreader {
       String config = new String(is.readAllBytes());
       is.close();
 
-      int line_count = 0;
-      for (int i = 0; i < config.length(); i++) {
-        if (config.charAt(i) == '\n') {line_count++;}
-      }
+      var cfg_lines = new ArrayList<String>(); 
+      
       String line = "";
-      String[] final_cfg = new String[line_count];
-      line_count = 0;
       for (int i = 0; i < config.length(); i++) {
         char c = config.charAt(i);
         if (c == '\n') {
-          if (line != "") {
-            final_cfg[line_count] = line;
-            line_count++;
-            line = "";
+          if (isLineValid(line)) {
+            cfg_lines.add(line);
           }
+          line = "";
           continue;
         }
         line += c;
       }
-      if (line != "") {final_cfg[line_count] = line;}
-      return final_cfg;
+      if (isLineValid(line)) {cfg_lines.add(line);}
+      return cfg_lines.toArray(new String[0]);
     }
     catch (IOException e) {return new String[0];}
   }
+
+  private static boolean isLineValid(String line) {return line != null && line.length() > 0  && line.charAt(0) != '#';}
 
   public static boolean getBool(String[] config, String setting) {
     String value = getValue(config, setting);
