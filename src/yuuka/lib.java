@@ -35,9 +35,10 @@ public class lib {
 
   private static String[] mkArgs(ArrayList<String> jar_files, String arg) {
     String[] cli_args = new String[jar_files.size() * 2];
-
-    for (int i = 0; i < jar_files.size(); i++) {
-      cli_args[i] = arg; cli_args[i+1] = jar_files.get(i);
+    int files_i = 0;
+    for (int i = 0; i < cli_args.length; i+=2) {
+      cli_args[i] = arg; cli_args[i+1] = jar_files.get(files_i);
+      files_i++;
     }
     return cli_args;
   }
