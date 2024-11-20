@@ -13,7 +13,8 @@ public class libconf {
     if (new File("libs.yuuka").isFile()) {return 1;}
     String conf =
       "#Yuuka dependency file"
-      +"\n#Yuuka fetches library dependencies that are written here, based on the Maven repository"
+      +"\n#Use this file to fetch third-party libraries from the Maven repository"
+      +"\n#If a library file is already in \"lib\", then it won't be re-downloaded to spare resources"
       +"\n#Format: library=GROUP%NAME%VERSION"
       +"\n#Example: library=org.randomdev%pngdecoder%1.0.2"
     ;

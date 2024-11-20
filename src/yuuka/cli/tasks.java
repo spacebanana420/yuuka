@@ -4,7 +4,6 @@ import java.io.File;
 
 import yuuka.config.yuukaConfig;
 import yuuka.config.libconf;
-import yuuka.libfetch.maven;
 import yuuka.libfetch.MavenLibrary;
 import yuuka.stdout;
 import yuuka.globalvariables;
@@ -117,7 +116,7 @@ public class tasks {
 
     stdout.print("Fetching dependencies");
     for (MavenLibrary lib : libs) {
-      result = maven.fetchLibrary(lib);
+      result = lib.fetchLibrary();
       if (result != 0) {return result;}
     }
     return 0;
