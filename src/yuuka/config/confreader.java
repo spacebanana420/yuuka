@@ -78,7 +78,7 @@ public class confreader {
   public static String truncateVersion(String ver) {
     String truncated = "";
     for (int i = 0; i < ver.length(); i++) {
-      char c = truncated.charAt(i);
+      char c = ver.charAt(i);
       if (c == '.') {return truncated;}
       truncated += c;
     }
