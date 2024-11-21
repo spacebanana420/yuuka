@@ -5,12 +5,15 @@ import java.io.File;
 import yuuka.config.yuukaConfig;
 import yuuka.config.libconf;
 import yuuka.config.confreader;
+
 import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
+
 import yuuka.stdout;
 import yuuka.globalvariables;
 import yuuka.fileops;
 import yuuka.misc;
+
 import yuuka.jdk.process;
 import yuuka.jdk.compiler;
 import yuuka.jdk.tests;
@@ -27,7 +30,7 @@ public class tasks {
   }
 
   public static int build() {
-    if (parser.projectHasNoSource()) {return -3;}
+    if (cli.projectHasNoSource()) {return -3;}
     int result = fetchLibs();
     if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
     stdout.print("Compiling project");
@@ -37,7 +40,7 @@ public class tasks {
   }
 
   public static int runTask_package() {
-    if (parser.projectHasNoSource()) {return -3;}
+    if (cli.projectHasNoSource()) {return -3;}
     stdout.print("Compiling project");
     stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
     int result = fetchLibs();
@@ -84,7 +87,7 @@ public class tasks {
 
   public static void runProgram(String[] args) {
     if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
-      if (parser.projectHasNoSource()) {return;}
+      if (cli.projectHasNoSource()) {return;}
       stdout.print("Compiling project");
       stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
       compiler.compile();

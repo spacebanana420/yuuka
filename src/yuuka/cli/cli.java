@@ -8,7 +8,7 @@ import yuuka.misc;
 import yuuka.jdk.tests;
 import yuuka.installer;
 
-public class parser {
+public class cli {
 public static boolean parseOptions(String[] args) {
     boolean printed_help = false;
 

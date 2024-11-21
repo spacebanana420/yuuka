@@ -1,18 +1,18 @@
 package yuuka;
 
 import yuuka.config.yuukaConfig;
-import yuuka.cli.parser;
+import yuuka.cli.cli;
 
 public class main {
   public static void main(String[] args) {
     yuukaConfig.parseConfig("build.yuuka");
 
-    boolean askedHelp = parser.parseOptions(args);
+    boolean askedHelp = cli.parseOptions(args);
     if (askedHelp) {
       System.out.println(getHelpMessage());
       return;
     }
-    boolean ranTask = parser.parseTasks(args);
+    boolean ranTask = cli.parseTasks(args);
     if (!ranTask) {System.out.println(getHelpMessage_small());}
   }
 
