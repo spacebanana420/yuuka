@@ -1,7 +1,9 @@
-package yuuka;
+package yuuka.jdk;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import yuuka.fileops;
 
 public class lib {
   public static boolean projectHasLibraries() {

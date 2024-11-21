@@ -1,8 +1,11 @@
-package yuuka;
+package yuuka.jdk;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import yuuka.stdout;
+import yuuka.globalvariables;
 
 public class process {
 

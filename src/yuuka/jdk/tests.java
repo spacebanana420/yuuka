@@ -1,7 +1,11 @@
-package yuuka;
+package yuuka.jdk;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import yuuka.globalvariables;
+import yuuka.stdout;
+import yuuka.misc;
 
 public class tests {
   public static boolean runTest(String source_file, String[] args) {    

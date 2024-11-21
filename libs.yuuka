@@ -1,0 +1,12 @@
+#Yuuka dependency file
+
+#Use this file to fetch third-party libraries
+#If a library file is already in "lib", then it won't be re-downloaded to spare resources
+#Use "library" to fetch Maven libraries being hosted in repo1.maven.org
+#use "library_custom" to fetch a JAR from anywhere else
+
+#Format: library=GROUP%NAME%VERSION
+#Format: library_custom=JAR_FILENAME%URL
+
+#Example: library=org.randomdev%pngdecoder%1.0.2
+#Example: library_custom=name.jar%https://repo.com/library/library.jar

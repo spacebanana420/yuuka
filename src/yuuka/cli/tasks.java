@@ -9,11 +9,11 @@ import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 import yuuka.stdout;
 import yuuka.globalvariables;
-import yuuka.compiler;
 import yuuka.fileops;
 import yuuka.misc;
-import yuuka.process;
-import yuuka.tests;
+import yuuka.jdk.process;
+import yuuka.jdk.compiler;
+import yuuka.jdk.tests;
 
 public class tasks {
   public static void initializeProject() {

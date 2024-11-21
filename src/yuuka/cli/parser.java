@@ -5,7 +5,7 @@ import yuuka.globalvariables;
 import yuuka.stdout;
 import yuuka.fileops;
 import yuuka.misc;
-import yuuka.tests;
+import yuuka.jdk.tests;
 import yuuka.installer;
 
 public class parser {
