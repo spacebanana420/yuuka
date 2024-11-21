@@ -35,16 +35,14 @@ public class libconf {
     catch (IOException e) {stdout.print("Failed to create dependency config file!"); return -1;}
   }
 
-  public static MavenLibrary[] getMavenLibraries() {
-    String[] conf = confreader.readConfig("libs.yuuka");
+  public static MavenLibrary[] getMavenLibraries(String[] conf) {
     var libs = new ArrayList<MavenLibrary>();
     for (String line : conf) {addLib(libs, line);}
 
     return libs.toArray(new MavenLibrary[0]);
   }
 
-  public static CustomLibrary[] getCustomLibraries() {
-    String[] conf = confreader.readConfig("libs.yuuka");
+  public static CustomLibrary[] getCustomLibraries(String[] conf) {
     var libs = new ArrayList<CustomLibrary>();
     for (String line : conf) {addLib_custom(libs, line);}
     

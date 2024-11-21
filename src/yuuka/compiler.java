@@ -17,7 +17,7 @@ public class compiler {
   }
 
   public static int createJAR(String jarName, String main_class, boolean library_jar) {
-    if (!globalvariables.INGORE_LIB && lib.projectHasLibraries()) {extractLibraries();}    
+    extractLibraries();   
     String[] class_files =
       fileops.removeParent(fileops.getClassFiles("build"), "build/")
       .toArray(new String[0]);
@@ -29,7 +29,8 @@ public class compiler {
     return process.runProcess(cmd, "build");
   }
 
-  private static void extractLibraries() {    
+  private static void extractLibraries() {
+    if (globalvariables.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
     var jars = lib.changeBaseDirectory(lib.getLibraryJars());
     for (String jar : jars) {
       process.runProcess(process.buildExtractCommand(jar, "jar"), "build");

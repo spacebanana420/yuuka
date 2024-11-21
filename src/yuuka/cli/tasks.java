@@ -4,6 +4,7 @@ import java.io.File;
 
 import yuuka.config.yuukaConfig;
 import yuuka.config.libconf;
+import yuuka.config.confreader;
 import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 import yuuka.stdout;
@@ -55,8 +56,7 @@ public class tasks {
 
   public static int packageLib() {
     stdout.print("Compiling project");
-    int result = 0;
-    result = compiler.compile();
+    int result = compiler.compile();
     if (result != 0) {return result;}
 
     stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
@@ -113,14 +113,15 @@ public class tasks {
     if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
     else if (result < 0) {return result;}
 
-    result = fetchMavenLibs();
+    String[] conf = confreader.readConfig("libs.yuuka");
+    result = fetchMavenLibs(conf);
     if (result != 0) {return result;}
-    result = fetchCustomLibs();
+    result = fetchCustomLibs(conf);
     return result;
   }
 
-  private static int fetchMavenLibs() {
-    MavenLibrary[] libs = libconf.getMavenLibraries();
+  private static int fetchMavenLibs(String[] config) {
+    MavenLibrary[] libs = libconf.getMavenLibraries(config);
     if (libs.length == 0) {return 0;}
 
     stdout.print("Fetching Maven Dependencies");
@@ -132,8 +133,8 @@ public class tasks {
     return 0;
   }
 
-  private static int fetchCustomLibs() {
-    CustomLibrary[] libs = libconf.getCustomLibraries();
+  private static int fetchCustomLibs(String[] config) {
+    CustomLibrary[] libs = libconf.getCustomLibraries(config);
     if (libs.length == 0) {return 0;}
 
     stdout.print("Fetching Custom Dependencies");
