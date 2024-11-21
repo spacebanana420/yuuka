@@ -29,25 +29,21 @@ public class tasks {
     stdout.print("Project structure created");
   }
 
-  public static int build() {
+  public static int build() {return build(true);}
+
+  public static int build(boolean display_main) {
     if (cli.projectHasNoSource()) {return -3;}
     int result = fetchLibs();
     if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
     stdout.print("Compiling project");
-    stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
+    if (display_main) {stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);}
 
     return compiler.compile();
   }
 
   public static int runTask_package() {
-    if (cli.projectHasNoSource()) {return -3;}
-    stdout.print("Compiling project");
-    stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-    int result = fetchLibs();
+    int result = build(true);
     if (result != 0) {return result;}
-    result = compiler.compile();
-    if (result != 0) {return result;}
-
     stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
     result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
     
@@ -58,8 +54,7 @@ public class tasks {
   }
 
   public static int packageLib() {
-    stdout.print("Compiling project");
-    int result = compiler.compile();
+    int result = build(false);
     if (result != 0) {return result;}
 
     stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
@@ -86,12 +81,11 @@ public class tasks {
   }
 
   public static void runProgram(String[] args) {
-    if (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile()) {
-      if (cli.projectHasNoSource()) {return;}
-      stdout.print("Compiling project");
-      stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);
-      compiler.compile();
-    }
+    int result =
+      (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile())
+      ? build(true)
+      : 0;
+    if (result != 0) {return;}
     stdout.print("Running program");
     compiler.runProgram(args);
   }

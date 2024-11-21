@@ -100,7 +100,6 @@ public static boolean parseOptions(String[] args) {
           tasks.runTask_package();
           return true;
         case "packagelib":
-          if (projectHasNoSource()) {return true;}
           tasks.packageLib();
           return true;
         case "run":
