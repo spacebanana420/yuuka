@@ -104,10 +104,11 @@ public class fileops {
   }
 
   //start of path must be "src"
-  public static void copyLicensesToBuild(String path) {
+  public static boolean copyLicensesToBuild(String path) {
     String[] subpaths = new File(path).list();
-    if (subpaths == null || subpaths.length == 0) {return;}
+    if (subpaths == null || subpaths.length == 0) {return false;}
 
+    int copied_licenses = 0;
     for (String subp : subpaths)
     {
       String path_in = path + "/" + subp;
@@ -122,11 +123,12 @@ public class fileops {
           +"\n  Input path: " + path_in
           +"\n  Output path: " + path_out
         );
-        try {Files.copy(pin, pout);}
+        try {Files.copy(pin, pout); copied_licenses++;}
         catch (IOException e) {stdout.print("Error copying license file " + subp + " into build!");}
       }
       else if (f.isDirectory()) {copyLicensesToBuild(path_in);}
     }
+    return copied_licenses > 0;
   }
 
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String... file_extension) {
