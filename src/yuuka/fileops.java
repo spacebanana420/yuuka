@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 public class fileops {
   public static ArrayList<String> getSourceFiles(String root_path) {
-    return getFiles_generic(root_path, ".java");
+    return getFiles_generic(root_path, false, ".java");
   }
 
   public static ArrayList<String> getJarFiles(String root_path) {
-    return getFiles_generic(root_path, ".jar");
+    return getFiles_generic(root_path, false, ".jar");
   }
 
-  public static ArrayList<String> getClassFiles(String root_path) {
-    return getFiles_generic(root_path, ".class");
+  public static ArrayList<String> getClassFiles(String root_path, boolean addlicenses) {
+    return getFiles_generic(root_path, addlicenses, ".class");
   }
 
   public static ArrayList<String> removeParent(ArrayList<String> files, String parent) {
@@ -89,20 +89,60 @@ public class fileops {
     return "main";
   }
 
-  private static ArrayList<String> getFiles_generic(String root_path, String file_extension) {
+  //start of path must be "src"
+  public static void copyLicensesToBuild(String path) {
+    String[] subpaths = new File(path).list();
+    if (subpaths == null || subpaths.length == 0) {return;}
+
+    for (String subp : subpaths)
+    {
+      var f = new File(subp);
+      if (f.isFile() && isLicense(subp)) {
+        String new_path = subp.replaceFirst("src", "build");
+        var pin = Path.of(subp);
+        var pout = Path.of(new_path);
+        try {Files.copy(pin, pout);}
+        catch (IOException e) {stdout.print("Error copying license file " + subp + " into build!");}
+      }
+      else if (f.isDirectory()) {copyLicensesToBuild(path + "/"+ subp);}
+    }
+  }
+
+  private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String... file_extension) {
     String[] subpaths = new File(root_path).list();
 
     ArrayList<String> source_files = new ArrayList<>();
-    for (String p : subpaths) {
+    for (String p : subpaths)
+    {
       File f = new File(root_path + "/" + p);
-      if (f.isFile() && f.canRead() && misc.checkFileExtension(p, file_extension)) {
+      if (f.isFile() && f.canRead() && (checkAllExtensions(p, file_extension) || isLicense(p, checklicenses)))
+      {
         source_files.add(root_path + "/" + p);
       }
-      else if (f.isDirectory() && f.canRead()) {
-        var files = getFiles_generic(root_path + "/" + p, file_extension);
+      else if (f.isDirectory() && f.canRead())
+      {
+        var files = getFiles_generic(root_path + "/" + p, checklicenses, file_extension);
         source_files.addAll(files); 
       }
     }
     return source_files;
+  }
+
+  private static boolean checkAllExtensions(String filename, String... extensions) {
+    for (String e : extensions) {
+      boolean result = misc.checkFileExtension(filename, e);
+      if (result) {return true;}
+    }
+    return false;
+  }
+
+  private static boolean isLicense(String path, boolean checklicenses) {
+    if (!checklicenses) {return true;}
+    return isLicense(path);
+  }
+
+  private static boolean isLicense(String path) {
+    String name = new File(path).getName();
+    return name.equals("LICENSE");
   }
 }
