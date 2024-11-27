@@ -108,7 +108,7 @@ public static boolean parseOptions(String[] args) {
         case "clean":
           stdout.print("Cleaning up all class files");
           fileops.deleteClassFiles("src");
-          fileops.deleteClassFiles("build");
+          fileops.deleteBuildFiles("build");
           fileops.deleteClassFiles("lib");
           fileops.deleteClassFiles("test");
           return true;

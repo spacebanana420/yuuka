@@ -35,27 +35,41 @@ public class fileops {
     return true;
   }
 
-  public static boolean deleteClassFiles(String path) {
+  public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false);}
+
+  public static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory) {
     if (!new File(path).isDirectory()) {return false;}
     var paths = new File(path).list();
-    if (paths == null) {return true;}
+    if (paths == null || paths.length == 0) {return true;}
 
-    for (String p : paths) {
+    for (String p : paths)
+    {
       String full_p = path + "/" + p;
       var f = new File(full_p);
-      if (f.isFile() && (isClassFile(p) || p.equals("MANIFEST.MF"))) {
+      var isfile = f.isFile();
+      if (f.isFile() && deletableFile(p, deleteAll)) {
         try {Files.delete(Path.of(full_p));}
         catch(IOException e) {return false;}
       }
       else if (f.isDirectory()) {
-        boolean result = deleteClassFiles(full_p);
+        boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory);
         if (!result) {return false;}
+        if (!deleteDirectory) {continue;}
+        
         try {Files.delete(Path.of(full_p));}
         catch(IOException e) {return false;}
       }
     }
     return true;
   }
+
+  private static boolean deletableFile(String name, boolean deleteAll) {
+    if (isJarFile(name)) {return false;}
+    if (deleteAll) {return true;}
+    return isClassFile(name) || name.equals("MANIFEST.MF");
+  }
+
+  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
 
   public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}
   public static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
@@ -96,15 +110,22 @@ public class fileops {
 
     for (String subp : subpaths)
     {
-      var f = new File(subp);
+      String path_in = path + "/" + subp;
+      var f = new File(path_in);
       if (f.isFile() && isLicense(subp)) {
-        String new_path = subp.replaceFirst("src", "build");
-        var pin = Path.of(subp);
-        var pout = Path.of(new_path);
+        String path_out = path_in.replaceFirst("src", "build");
+        var pin = Path.of(path_in);
+        var pout = Path.of(path_out);
+        stdout.print_debug
+        (
+          "License file found in source"
+          +"\n  Input path: " + path_in
+          +"\n  Output path: " + path_out
+        );
         try {Files.copy(pin, pout);}
         catch (IOException e) {stdout.print("Error copying license file " + subp + " into build!");}
       }
-      else if (f.isDirectory()) {copyLicensesToBuild(path + "/"+ subp);}
+      else if (f.isDirectory()) {copyLicensesToBuild(path_in);}
     }
   }
 
@@ -137,7 +158,7 @@ public class fileops {
   }
 
   private static boolean isLicense(String path, boolean checklicenses) {
-    if (!checklicenses) {return true;}
+    if (!checklicenses) {return false;}
     return isLicense(path);
   }
 
