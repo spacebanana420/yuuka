@@ -135,9 +135,7 @@ public static boolean parseOptions(String[] args) {
             );
             return true;
           }
-          if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {
-            tasks.packageLib();
-          }
+          if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {tasks.packageLib();}
           tasks.runTest(args, args[i+1]);
           return true;
         case "tests":

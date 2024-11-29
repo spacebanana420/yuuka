@@ -103,6 +103,7 @@ public class tasks {
     new File("test").mkdir();
     boolean result = tests.runTest(source_file, args);
     if (!result) {stdout.print("Error during building/running the test!");}
+    fileops.deleteBuildFiles("build");
   }
 
   public static int fetchLibs() {

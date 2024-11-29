@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import yuuka.globalvariables;
 import yuuka.stdout;
 import yuuka.misc;
+import yuuka.fileops;
 
 public class tests {
   public static boolean runTest(String source_file, String[] args) {    

@@ -63,13 +63,13 @@ public class fileops {
     return true;
   }
 
+  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
+
   private static boolean deletableFile(String name, boolean deleteAll) {
     if (isJarFile(name)) {return false;}
     if (deleteAll) {return true;}
     return isClassFile(name) || name.equals("MANIFEST.MF");
   }
-
-  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
 
   public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}
   public static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
