@@ -15,4 +15,9 @@ public class globalvariables {
   public static String INSTALL_PATH = installer.getInstallLocation();
 
   public static boolean TESTS_INCLUDE_PROJECT = false;
+  
+  public static void setProgramName(String name) {
+    if (name.contains(".jar")) {PROGRAM_NAME = name;}
+    else {PROGRAM_NAME = name + ".jar";}
+  }
 }

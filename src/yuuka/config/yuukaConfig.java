@@ -106,7 +106,7 @@ public class yuukaConfig {
     if (value == null) {return;}
 
     stdout.print_verbose("Setting program_name to \"" + value + "\".");
-    globalvariables.PROGRAM_NAME = value;
+    globalvariables.setProgramName(value);
   }
 
   private static void setRelease(String[] config) {
