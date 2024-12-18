@@ -51,7 +51,7 @@ public static boolean parseOptions(String[] args) {
         && !isArgumentTask(args[i+1])
         )
       {
-        globalvariables.PROGRAM_NAME = args[i+1];
+        globalvariables.setProgramName(args[i+1]);
       }
       else if (isOption(args[i], "-nw", "--no-warnings")) {
         globalvariables.DISABLE_WARNINGS = true;

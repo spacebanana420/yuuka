@@ -18,7 +18,7 @@ public class yuukaConfig {
       + "\nEmpty or invalid settings are ignored"
       + "\n"
       + "\n#main_class=main"
-      + "\n#program_name=MyProgram"
+      + "\n#program_name=MyProgram.jar"
       + "\n#release_target=" + confreader.truncateVersion(System.getProperty("java.version"))
       + "\n#graal_path=native-image"
       + "\n#install_path="
@@ -57,7 +57,10 @@ public class yuukaConfig {
     if (value == null) {return;}
 
     byte level = misc.toByte(value);
-    if (level < 0 || level > 3) {return;}
+    if (level < 0 || level > 3) {
+      stdout.print_verbose("Verbosity level " + value + " is incorrect, ignoring. Accepted values range between 0 and 3.");
+      return;
+    }
     stdout.print_verbose("Setting verbosity level to " + value);
     globalvariables.PRINT_LEVEL = level;
   }
@@ -80,10 +83,10 @@ public class yuukaConfig {
       );
       return;
     }
-    if (!f.canRead() || !f.canWrite()) {
+    if (!f.canWrite()) {
       stdout.print_verbose
       (
-        "Yuuka lacks permissions to read or write at the installation path " + value
+        "Yuuka lacks permissions to write at the installation path " + value
         + "\nDefaulting to " + globalvariables.INSTALL_PATH
       );      
       return;
