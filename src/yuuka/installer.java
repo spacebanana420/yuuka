@@ -32,11 +32,18 @@ public class installer {
   }
 
   private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
-    File install_file = new File(install_location);
-    if (!install_file.isDirectory() || !install_file.canWrite()) {
-      stdout.print("The installation path " + install_location + " does not exist or lacks write permissions! Cancelling installation.");
+    File install_f = new File(install_location);
+    boolean path_isDir = install_f.isDirectory();
+    boolean path_canWrite install_f.canWrite();
+    if (!path_isDir) {
+      stdout.print("The installation path " + install_location + " does not exist! Cancelling installation.");
       return;
     }
+    if (!path_canWrite) {
+      stdout.print("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
+      return;
+    }
+    
     byte[] script_contents =
       ("#!/bin/sh\njava -jar " + jar_path + " \"$@\"")
       .getBytes();
