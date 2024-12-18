@@ -10,62 +10,54 @@ import yuuka.installer;
 
 public class cli {
 public static boolean parseOptions(String[] args) {
-    boolean printed_help = false;
+    int parse_break = findParseBreak(args);
+    
+    if (hasArgument(args, parse_break, "-h", "--help")) {return true;}
+    
+    if (hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
+    else if (hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
+    else if (hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
+    
+    if (hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
+    if (hasArgument(args, "--include-src", parse_break)) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
+    if (hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
 
-    for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("--")) {break;}
-      if (args[i].equals("-h") || args[i].equals("--help") || args[i].equals("help")) {
-        printed_help = true;
-        break;
-      }
-      else if (isOption(args[i], "-d", "--debug")) {
-        globalvariables.PRINT_LEVEL = 3;
-      }
-      else if (isOption(args[i], "-v", "--verbose")) {
-        globalvariables.PRINT_LEVEL = 2;
-      }
-      else if (isOption(args[i], "-s", "--silent")) {
-        globalvariables.PRINT_LEVEL = 0;
-      }
-      else if (isOption(args[i], "-i", "--ignore-lib")) {
-        globalvariables.INGORE_LIB = true;
-      }
-      else if (
+    for (int i = 0; i < parse_break; i++) { //legacy parsing
+      if
+      (
         (isOption(args[i], "-r", "--release"))
         && hasArgumentValue(args, i) && misc.isInt(args[i+1])
-        )
-      {
-        globalvariables.RELEASE_TARGET = args[i+1];
-      }
-      else if (
+      )
+      {globalvariables.RELEASE_TARGET = args[i+1];}
+      
+      else if
+      (
         (isOption(args[i], "-m", "--main"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
-        )
-      {
-        globalvariables.MAIN_CLASS = args[i+1];
-      }
-      else if (
+      )
+      {globalvariables.MAIN_CLASS = args[i+1];}
+      
+      else if
+      (
         (isOption(args[i], "-o", "--output"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
-        )
-      {
-        globalvariables.setProgramName(args[i+1]);
-      }
-      else if (isOption(args[i], "-nw", "--no-warnings")) {
-        globalvariables.DISABLE_WARNINGS = true;
-      }
-      else if (
+      )
+      {globalvariables.setProgramName(args[i+1]);}
+      
+      else if
+      (
         (isOption(args[i], "-gp", "--graal-path"))
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
-        )
+      )
       {
         var binaryf = new File(args[i+1]);
         if (binaryf.isFile() && binaryf.canExecute()) {globalvariables.GRAAL_PATH = args[i+1];}
       }
-      else if (
+      else if
+      (
         isOption(args[i], "-ip", "--install-path")
         && hasArgumentValue(args, i)
         && !isArgumentTask(args[i+1])
@@ -74,11 +66,8 @@ public static boolean parseOptions(String[] args) {
         var installf = new File(args[i+1]);
         if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
       }
-      else if (isOption(args[i], "--include-src")) {
-        globalvariables.TESTS_INCLUDE_PROJECT = true;
-      }
     }
-    return printed_help;
+    return false;
   }
 
   public static boolean parseTasks(String[] args) {
@@ -145,7 +134,38 @@ public static boolean parseOptions(String[] args) {
     }
     return false;
   }
+  
+  static int findParseBreak(String[] args) {
+    for (int i = 0; i < args.length; i++) {if (args[i].equals("--")) {return i;}}
+    return args.length;
+  }
 
+  static int findArgument(String[] args, String arg, int parse_break) {
+    for (int i = 0; i < parse_break; i++) {
+      if (args[i].equals(arg)) {return i;}
+    }
+    return -1;
+  }
+  
+  static String getArgumentValue(String[] args, String arg, int parse_break) {
+    int i = findArgument(args, arg, parse_break);
+    if (i == -1 || i == args.length-1) {return null;}
+    String value = args[i+1];
+    if (value == null || value.charAt(0) == '-') {return null;}
+    return value; 
+  }
+
+  static boolean hasArgument(String[] args, String arg, int parse_break) {
+    return findArgument(args, arg, parse_break) != -1;
+  }
+  
+  static boolean hasArgument(String[] args, int parse_break, String... arg) {
+    for (String a : arg) {
+      if (findArgument(args, a, parse_break) != -1) {return true;}
+    }
+    return false;
+  }
+  
   static boolean hasArgumentValue(String[] args, int i) {
     return i < args.length-1 && args[i+1].length() > 0 && args[i+1].charAt(0) != '-';
   }
