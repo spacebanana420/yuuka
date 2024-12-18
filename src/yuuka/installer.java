@@ -34,7 +34,7 @@ public class installer {
   private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
     File install_f = new File(install_location);
     boolean path_isDir = install_f.isDirectory();
-    boolean path_canWrite install_f.canWrite();
+    boolean path_canWrite = install_f.canWrite();
     if (!path_isDir) {
       stdout.print("The installation path " + install_location + " does not exist! Cancelling installation.");
       return;
