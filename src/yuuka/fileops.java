@@ -153,10 +153,7 @@ public class fileops {
     return source_files;
   }
 
-  private static boolean isLicense(String path, boolean checklicenses) {
-    if (!checklicenses) {return false;}
-    return isLicense(path);
-  }
+  private static boolean isLicense(String path, boolean checkLicenses) {return checkLicenses && isLicense(path);}
 
   private static boolean isLicense(String path) {
     String name = new File(path).getName();
