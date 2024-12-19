@@ -19,7 +19,7 @@ public static boolean parseOptions(String[] args) {
     else if (hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
     
     if (hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
-    if (hasArgument(args, "--include-src", parse_break)) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
+    if (hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
     if (hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
 
     for (int i = 0; i < parse_break; i++) { //legacy parsing
