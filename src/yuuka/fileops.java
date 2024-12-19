@@ -75,28 +75,30 @@ public class fileops {
   public static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
   public static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
 
-  public static String findMainClass(String path) {
+  public static String findMainClass() {
     String file_separator = System.getProperty("file.separator");
     String root = "src"+file_separator;
-
-    if (new File(path + "/main.java").isFile()) {
-      return
-        (path + file_separator + "main")
-        .replaceFirst(root, "");
-    }
+    return findMainClass("src", root, file_separator);
+  }
+  
+  private static String findMainClass(String path, String root, String file_separator) {
     String[] paths = new File(path).list();
     if (paths == null) {paths = new String[0];}
-    for (String p : paths) {
+    for (String p : paths)
+    {
       String full_p = path + file_separator + p;
       var f = new File(full_p);
-      if (f.isFile() && p.contains("main.java")) {
+      boolean canRead = f.canRead();
+      if (f.isFile() && canRead && p.contains("main.java"))
+      {
         return
           (full_p)
           .replaceFirst(root, "")
           .replaceFirst(".java", "");
       }
-      else if (f.isDirectory()) {
-        String result = findMainClass(full_p);
+      else if (f.isDirectory() && canRead)
+      {
+        String result = findMainClass(full_p, root, file_separator);
         if (!result.equals("main")) {return result;}
       }
     }

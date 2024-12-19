@@ -12,10 +12,7 @@ public class process {
   //todo: add output directory
   public static int runProcess(String[] cmd, String working_directory) {
     try {
-      stdout.print_debug(
-        "Working directory: " + working_directory
-        +"\nExecuting the process:\n", cmd
-        );
+      stdout.print_debug("Working directory: " + working_directory +"\nExecuting the process:\n", cmd);
       var process =
         new ProcessBuilder(cmd)
         .inheritIO()

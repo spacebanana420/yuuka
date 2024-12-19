@@ -56,8 +56,9 @@ public class misc {
   public static boolean checkFileExtension(String name, String extension) {
     if (name.length() <= extension.length()) return false;
     int nl = name.length(); int el = extension.length();
+    int name_position = nl-el;
     for (int i = 0; i < el; i++) {
-      if (extension.charAt(i) != name.charAt(nl-el+i)) {return false;} 
+      if (extension.charAt(i) != name.charAt(name_position+i)) {return false;} 
     }
     return true;
   }
