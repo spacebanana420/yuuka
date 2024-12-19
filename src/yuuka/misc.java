@@ -53,6 +53,14 @@ public class misc {
     return newname;
   }
 
+  public static boolean checkFileExtension(String filename, String... extensions) {
+    for (String e : extensions) {
+      boolean result = checkFileExtension(filename, e);
+      if (result) {return true;}
+    }
+    return false;
+  }
+
   public static boolean checkFileExtension(String name, String extension) {
     if (name.length() <= extension.length()) return false;
     int nl = name.length(); int el = extension.length();

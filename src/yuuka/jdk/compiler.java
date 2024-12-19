@@ -22,7 +22,7 @@ public class compiler {
 
   public static int createJAR(String jarName, String main_class, boolean library_jar) {
     extractLibraries();
-    boolean copyresult = fileops.copyLicensesToBuild("src");
+    boolean copyresult = fileops.copyLicensesToBuild();
     if (copyresult) {stdout.print_verbose("Found and copied license files into final JAR");}
     String[] class_files =
       fileops.removeParent(fileops.getClassFiles("build", true), "build/")

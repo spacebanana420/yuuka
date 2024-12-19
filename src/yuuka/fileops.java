@@ -105,8 +105,8 @@ public class fileops {
     return "main";
   }
 
-  //start of path must be "src"
-  public static boolean copyLicensesToBuild(String path) {
+  public static boolean copyLicensesToBuild() {return copyLicensesToBuild("src");}
+  private static boolean copyLicensesToBuild(String path) {
     String[] subpaths = new File(path).list();
     if (subpaths == null || subpaths.length == 0) {return false;}
 
@@ -140,7 +140,7 @@ public class fileops {
     for (String p : subpaths)
     {
       File f = new File(root_path + "/" + p);
-      if (f.isFile() && f.canRead() && (checkAllExtensions(p, file_extension) || isLicense(p, checklicenses)))
+      if (f.isFile() && f.canRead() && (misc.checkFileExtension(p, file_extension) || isLicense(p, checklicenses)))
       {
         source_files.add(root_path + "/" + p);
       }
@@ -151,14 +151,6 @@ public class fileops {
       }
     }
     return source_files;
-  }
-
-  private static boolean checkAllExtensions(String filename, String... extensions) {
-    for (String e : extensions) {
-      boolean result = misc.checkFileExtension(filename, e);
-      if (result) {return true;}
-    }
-    return false;
   }
 
   private static boolean isLicense(String path, boolean checklicenses) {
