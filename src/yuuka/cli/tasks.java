@@ -1,6 +1,9 @@
 package yuuka.cli;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import yuuka.config.yuukaConfig;
 import yuuka.config.libconf;
@@ -116,6 +119,29 @@ public class tasks {
     if (result != 0) {return result;}
     result = fetchCustomLibs(conf);
     return result;
+  }
+  
+  public static void uninstallProgram(String program_name) {
+    String install_path = globalvariables.INSTALL_PATH;
+    var f_script = new File(install_path + "/" + program_name);
+    var f_jar = new File(install_path + "/jars/" + program_name + ".jar");
+    
+    if (!f_script.isFile() || !f_jar.isFile()) {
+      stdout.print("Program " + program_name + " not found! Failed to uninstall!");
+      return;
+    }
+    if (!f_script.canWrite() || !f_jar.canWrite()) {
+      stdout.print("Could not uninstall program " + program_name + "! Make sure you have write access in " + install_path);
+      return;
+    }
+    var p_script = Path.of(install_path + "/" + program_name);
+    var p_jar = Path.of(install_path + "/jars/" + program_name + ".jar");
+    try {
+      Files.delete(p_script);
+      Files.delete(p_jar);
+      stdout.print("Successfully deleted " + program_name + " located in " + install_path);
+    }
+    catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
   }
 
   private static int fetchMavenLibs(String[] config) {

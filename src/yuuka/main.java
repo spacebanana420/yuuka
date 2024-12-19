@@ -18,7 +18,7 @@ public class main {
 
   private static String getHelpMessage() {
     return
-      "Yuuka help screen (version 1.0.2)"
+      "Yuuka help screen (version 1.0.3)"
       + "\nBasic usage: yuuka [command] [options]"
       + "\nPassing arguments to program execution: yuuka run/test [options] -- [arguments]"
       + "\n\nAvailable commands:"
@@ -33,6 +33,7 @@ public class main {
       + "\n  * clean - deletes all .class files"
       + "\n  * install - builds and installs your program (Unix-like only)"
       + "\n  * install [jar path] - installs an existing JAR file"
+      + "\n  * unintsall [name] - uninstalls a program, removes its script and JAR file"
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h, --help, help - opens this menu"
@@ -42,7 +43,7 @@ public class main {
       + "\n  -s (--silent) - enables silent output, disables printing"
       + "\n  -v (--verbose) - prints more information"
       + "\n  -d (--debug) - prints even further information"
-      + "\n  -o (--output) - sets the name of the compiled JAR"
+      + "\n  -o (--output) [JAR filename] - sets the name of the compiled JAR"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
       + "\n  -gp (--graal-path) - sets a custom path for the GraalVM \"native-image\" binary"
       + "\n  -ip (--install-path) - sets a custom installation path for the \"install\" task"
@@ -52,7 +53,7 @@ public class main {
 
   private static String getHelpMessage_small() {
     return
-      "Yuuka version 1.0.2"
+      "Yuuka version 1.0.3"
       + "\nBasic usage: yuuka [command] [options]"
       + "\n\nRun \"yuuka -h\" to see what you can do";
   }

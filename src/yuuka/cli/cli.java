@@ -115,6 +115,12 @@ public static boolean parseOptions(String[] args) {
             if (result == 0) {installer.installProgram();}
           }
           return true;
+        case "uninstall":
+          if (hasArgumentValue(args, i)) {
+            tasks.uninstallProgram(args[i+1]);
+          }
+          else {stdout.print("Failed to run uninstall task! You must specify the name of the program to uninstall!");}
+          return true;
         case "test":
           if (!hasArgumentValue(args, i) || isArgumentTask(args[i+1])) {
             stdout.print
@@ -182,6 +188,7 @@ public static boolean parseOptions(String[] args) {
       || arg.equals("clean")
       || arg.equals("install")
       || arg.equals("tests")
+      || arg.equals("uninstall")
     ;
   }
 
