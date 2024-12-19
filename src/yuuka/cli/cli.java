@@ -119,7 +119,7 @@ public static boolean parseOptions(String[] args) {
           if (!hasArgumentValue(args, i) || isArgumentTask(args[i+1])) {
             stdout.print
             (
-              "The task \"runtest\" requires an argument following it!"
+              "The task \"test\" requires an argument following it!"
               + "\nExample: \"yuuka runtest filetest\" to launch the file test/filetest.java"
             );
             return true;
@@ -178,10 +178,10 @@ public static boolean parseOptions(String[] args) {
       || arg.equals("package")
       || arg.equals("packagelib")
       || arg.equals("run")
-      || arg.equals("runtest")
+      || arg.equals("test")
       || arg.equals("clean")
       || arg.equals("install")
-      || arg.equals("listtest")
+      || arg.equals("tests")
     ;
   }
 
