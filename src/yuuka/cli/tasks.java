@@ -35,7 +35,7 @@ public class tasks {
   public static int build() {return build(true);}
 
   public static int build(boolean display_main) {
-    if (cli.projectHasNoSource()) {return -3;}
+    if (projectHasNoSource()) {return -3;}
     int result = fetchLibs();
     if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
     stdout.print("Compiling project");
@@ -94,19 +94,31 @@ public class tasks {
   }
 
   public static void runTest(String args[], String source_arg) {
-    String source_file =
+    new File("test").mkdir();
+    
+    String file_java =
       (misc.checkFileExtension(source_arg, ".java"))
       ? source_arg
       : source_arg + ".java";
+    File f_source = new File("test/"+source_arg);
+    File f_java = new File("test/"+file_java);
+    boolean isJavaFile = f_java.isFile();
+    boolean isExecutableFile = f_source.isFile() && f_source.canExecute();
   
-    if (!new File("test/"+source_file).isFile()) {
-      stdout.print("The file \"test/" + source_file + "\" does not exist!");
+    if (!isJavaFile && !isExecutableFile) {
+      stdout.print("The file with name \"test/" + source_arg + "\" does not exist!");
       return;
     }
-    new File("test").mkdir();
-    boolean result = tests.runTest(source_file, args);
+    
+    boolean result;
+    if (isJavaFile) {
+      if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {packageLib();}
+      result = tests.runTest_java(file_java, args);
+      fileops.deleteBuildFiles("build");
+    }
+    else {result = tests.runTest_native(f_source.getAbsolutePath(), args);}
+      
     if (!result) {stdout.print("Error during building/running the test!");}
-    fileops.deleteBuildFiles("build");
   }
 
   public static int fetchLibs() {
@@ -142,6 +154,15 @@ public class tasks {
       stdout.print("Successfully deleted " + program_name + " located in " + install_path);
     }
     catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
+  }
+  
+  private static boolean projectHasNoSource() {
+    var f = new File("src");
+    if (!f.isDirectory() || f.list() == null) {
+      stdout.print("Your project has no \"src\" directory or it is empty!");
+      return true;
+    }
+    return false;
   }
 
   private static int fetchMavenLibs(String[] config) {

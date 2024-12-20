@@ -127,10 +127,10 @@ public static boolean parseOptions(String[] args) {
             (
               "The task \"test\" requires an argument following it!"
               + "\nExample: \"yuuka runtest filetest\" to launch the file test/filetest.java"
+              + "\nYou can also run other executable files: \"yuuka runtest somescript\" to launch the file test/somescript.sh"
             );
             return true;
           }
-          if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {tasks.packageLib();}
           tasks.runTest(args, args[i+1]);
           return true;
         case "tests":
@@ -194,13 +194,4 @@ public static boolean parseOptions(String[] args) {
 
   static boolean isOption(String arg, String opt1, String opt2) {return arg.equals(opt1) || arg.equals(opt2);}
   static boolean isOption(String arg, String opt) {return arg.equals(opt);}
-
-  static boolean projectHasNoSource() {
-    var f = new File("src");
-    if (!f.isDirectory() || f.list() == null) {
-      stdout.print("Your project has no \"src\" directory or it is empty!");
-      return true;
-    }
-    return false;
-  }
 }
