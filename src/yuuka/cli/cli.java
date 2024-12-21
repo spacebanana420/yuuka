@@ -9,10 +9,50 @@ import yuuka.jdk.tests;
 import yuuka.installer;
 
 public class cli {
-public static boolean parseOptions(String[] args) {
+  static boolean askedForHelp(String[] args, int parse_break) {
+    int help_i = findArgument(args, "-h", parse_break);
+    if (help_i == -1) {help_i = findArgument(args, "--help", parse_break);}
+    if (help_i == -1) {return false;}
+    
+    String help_message;
+    if (hasArgumentValue(args, help_i)) {
+      String command = args[help_i+1];
+      switch (command) {
+        case "init":
+          help_message = help.help_init(); break;
+        case "build":
+          help_message = help.help_build(); break;
+        case "package":
+          help_message = help.help_package(); break;
+        case "packagelib":
+          help_message = help.help_packagelib(); break;
+        case "buildnative":
+          help_message = help.help_buildnative(); break;
+        case "run":
+          help_message = help.help_run(); break;
+        case "test":
+          help_message = help.help_test(); break;
+        case "tests":
+          help_message = help.help_tests(); break;
+        case "clean":
+          help_message = help.help_clean(); break;
+        case "install":
+          help_message = help.help_install(); break;
+        case "uninstall":
+          help_message = help.help_uninstall(); break;
+        default: help_message = help.getHelpMessage();
+      }
+    }
+    else {help_message = help.getHelpMessage();}
+    
+    System.out.println(help_message);
+    return true;
+  }
+  
+  public static boolean parseOptions(String[] args) {
     int parse_break = findParseBreak(args);
     
-    if (hasArgument(args, parse_break, "-h", "--help")) {return true;}
+    if (askedForHelp(args, parse_break)) {return true;}
     
     if (hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
     else if (hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
