@@ -2,7 +2,7 @@ package yuuka.cli;
 
 public class help {
   
-    private static String title() {return "Yuuka version 1.0.3";}
+    private static String title() {return "Yuuka version 1.1";}
   
     public static String getHelpMessage() {
     return
@@ -66,9 +66,9 @@ public class help {
       title()
       + "\nbuild command"
       + "\n\nThe build command compiles your source code as .class files stored in /build. It calls the \"javac\" program to build your source files, and keeps in mind all the library files you have locally or in libs.yuuka."
-      + "\nThere are multiple CLI arguments you can pass to customize the compilation process, here's a few examples:"
-      + "\n\"yuuka build -r 11\" - builds and packages your project, targetting Java 11. Java 11's feature-set and standard library are considered for your source parsing, and the compiled class files are compatible with Java 11 or newer."
-      + "\n\"yuuka build -main projectname/mainfile\" - if you did not configure the path to the main source file in build.yuuka and Yuuka could not automatically find it, you can manually specify its path."
+      + "\n\nThere are multiple CLI arguments you can pass to customize the compilation process, here's a few examples:"
+      + "\n * \"yuuka build -r 11\" - builds and packages your project, targetting Java 11. Java 11's feature-set and standard library are considered for your source parsing, and the compiled class files are compatible with Java 11 or newer."
+      + "\n * \"yuuka build -main projectname/mainfile\" - if you did not configure the path to the main source file in build.yuuka and Yuuka could not automatically find it, you can manually specify its path."
     ;
   }
 
@@ -78,8 +78,8 @@ public class help {
       + "\npackage command"
       + "\n\nThe package command compiles your source code into an executable JAR. It calls the \"jar\" program to package your program, and includes the library files you have locally or in libs.yuuka."
       + "\nThere are multiple CLI arguments you can pass to customize the compilation and packaging processes, here's a few examples:"
-      + "\n\"yuuka package -r 11\" - builds your project, targetting Java 11. Java 11's feature-set and standard library are considered for your source parsing, and the compiled class files are compatible with Java 11 or newer."
-      + "\n\"yuuka package -main projectname/mainfile -o myprogram.jar\" - if you did not configure the path to the main source file in build.yuuka and Yuuka could not automatically find it, you can manually specify its path. When the main class is not configured and automatically detected, the JAR's name defaults to program.jar, and so you can also override this."
+      + "\n * \"yuuka package -r 11\" - builds your project, targetting Java 11. Java 11's feature-set and standard library are considered for your source parsing, and the compiled class files are compatible with Java 11 or newer."
+      + "\n * \"yuuka package -main projectname/mainfile -o myprogram.jar\" - if you did not configure the path to the main source file in build.yuuka and Yuuka could not automatically find it, you can manually specify its path. When the main class is not configured and automatically detected, the JAR's name defaults to program.jar, and so you can also override this."
     ;
   }
   
@@ -121,7 +121,7 @@ public class help {
       + "\n\nThe test command executes any tests you have inside the test directory."
       + "\nTo run tests written in Java, they must have a main function so they are executable. They can also import other source files that do not have a main function."
       + "\nYou can also import your source code from your tests, as long as you enable this feature in build.yuuka, or you use the -is or --include-src argument."
-      + "\nFor a test file named mytest.java, you can run it with \"yuuka test mytest\" or \"yuuka test mytest.java\"."
+      + "\n\nFor a test file named mytest.java, you can run it with \"yuuka test mytest\" or \"yuuka test mytest.java\"."
       + "\nFor an executable test script named mytest.sh, you can run it with \"yuuka test mytest\"."
       + "\nTo pass any CLI arguments to your program, you need to use the argument \"--\" to tell Yuuka where to know where they are:"
       + "\n\"yuuka test mytest -- -argument1 -argument2\" - All arguments after \"--\" are passed to your program."
@@ -151,7 +151,7 @@ public class help {
       + "\ninstall command"
       + "\n\nThe install command builds your project into an executable JAR and then intsalls it in your system, so you can run the command anywhere by writing its name, just like any other CLI application. It does this by storing your JAR program inside a newly-created \"jars\" directory, and then it creates a shell script that executes your program and passes all arguments to it. The script uses /bin/sh as its shell and interpreter."
       + "\nThis command does not work on Windows, as it specifically relies on traditional Unix paths and shell."
-      + "\nBy default, Yuuka autodetects the installation path based on the typical Unix paths that are part of the system's $PATH:"
+      + "\n\nBy default, Yuuka autodetects the installation path based on the typical Unix paths that are part of the system's $PATH:"
       + "\n * Running Yuuka as root: The default installation path is \"/usr/local/bin\". This path comes with your system, is already assigned to $PATH and will work for all users in your system, and so this is the recommended method."
       + "\n * Running Yuuka as user (Linux, OpenBSD, NetBSD, etc): if you run Yuuka without root, it assumes \"~/.local/bin\". This path normally doesn't exist and must be created and added to the $PATH by you."
       + "\n * Running Yuuka as user (FreeBSD): Yuuka will default to \"~/bin\", since this path is in the system's $PATH variable for all users you create."
