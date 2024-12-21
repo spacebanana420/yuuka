@@ -41,10 +41,11 @@ public class tests {
     if (files == null || files.length == 0) {return new String[0];}
 
     ArrayList<String> source_files = new ArrayList<>();
-    for (String file : files) {
-      if (misc.checkFileExtension(file, ".java")) {
-        source_files.add(file);
-      }
+    for (String file : files)
+    {
+      File test_f = new File("test/"+file);
+      boolean validTest = misc.checkFileExtension(file, ".java") || test_f.canExecute();
+      if (f.isFile() || validTest) {source_files.add(file);}
     }
     return source_files.toArray(new String[0]);
   }
