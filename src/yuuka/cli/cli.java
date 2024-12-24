@@ -61,16 +61,12 @@ public class cli {
     if (hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
     if (hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
     if (hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
+    
+    String target = getJavaTarget(args, parse_break, 0);
+    if (target != null) {globalvariables.setReleaseTarget(target);}
 
     for (int i = 0; i < parse_break; i++) { //legacy parsing
       if
-      (
-        (isOption(args[i], "-r", "--release"))
-        && hasArgumentValue(args, i) && misc.isInt(args[i+1])
-      )
-      {globalvariables.RELEASE_TARGET = args[i+1];}
-      
-      else if
       (
         (isOption(args[i], "-m", "--main"))
         && hasArgumentValue(args, i)
@@ -179,6 +175,23 @@ public class cli {
       }
     }
     return false;
+  }
+  
+  //mode must be 0, 1 or 2 for release, source and target
+  static String getJavaTarget(String[] args, int parse_break, int mode) {
+    if (mode < 0 || mode > 2) {return null;}
+    String[] target_args = new String[]{"-r", "-src", "-t"};
+    String[] target_args_long = new String[]{"--release", "--source", "--target"};
+    
+    for (int i = 0; i < parse_break; i++) {
+      if
+      (
+        (isOption(args[i], target_args[mode], target_args_long[mode]))
+        && hasArgumentValue(args, i) && misc.isInt(args[i+1])
+      )
+      {return args[i+1];}
+    }
+    return null;
   }
   
   static int findParseBreak(String[] args) {

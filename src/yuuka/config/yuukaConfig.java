@@ -19,7 +19,7 @@ public class yuukaConfig {
       + "\n"
       + "\n#main_class=main"
       + "\n#program_name=MyProgram.jar"
-      + "\n#release_target=" + confreader.truncateVersion(System.getProperty("java.version"))
+      + "\n#release_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
@@ -117,7 +117,7 @@ public class yuukaConfig {
     if (value == null || !misc.isInt(value)) {return;}
 
     stdout.print_verbose("Setting Java target release to \"" + value + "\".");
-    globalvariables.RELEASE_TARGET = value;
+    globalvariables.setReleaseTarget(value);
   }
 
   private static void setGraalPath(String[] config) {
