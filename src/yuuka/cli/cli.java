@@ -62,8 +62,15 @@ public class cli {
     if (hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
     if (hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
     
-    String target = getJavaTarget(args, parse_break, 0);
+    String target;
+    target = getJavaTarget(args, parse_break, 0);
     if (target != null) {globalvariables.setReleaseTarget(target);}
+    
+    target = getJavaTarget(args, parse_break, 1);
+    if (target != null) {globalvariables.setSourceTarget(target);}
+    
+    target = getJavaTarget(args, parse_break, 2);
+    if (target != null) {globalvariables.setClassTarget(target);}
 
     for (int i = 0; i < parse_break; i++) { //legacy parsing
       if

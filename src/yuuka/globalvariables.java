@@ -11,7 +11,11 @@ public class globalvariables {
 
   public static String MAIN_CLASS = fileops.findMainClass();
   public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
-  public static String RELEASE_TARGET = "";
+  
+  public static String RELEASE_TARGET = null;
+  public static String SOURCE_TARGET = null;
+  public static String CLASS_TARGET = null;
+  
   public static String INSTALL_PATH = installer.getInstallLocation();
 
   public static boolean TESTS_INCLUDE_PROJECT = false;
@@ -26,6 +30,16 @@ public class globalvariables {
   public static void setReleaseTarget(String version) {
     int version_num = intJavaVersion(version);
     if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {RELEASE_TARGET = version;}
+  }
+  
+  public static void setSourceTarget(String version) {
+    int version_num = intJavaVersion(version);
+    if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {SOURCE_TARGET = version;}
+  }
+  
+  public static void setClassTarget(String version) {
+    int version_num = intJavaVersion(version);
+    if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {CLASS_TARGET = version;}
   }
   
   private static int getRuntimeVersion() {

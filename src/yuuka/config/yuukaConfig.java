@@ -113,11 +113,23 @@ public class yuukaConfig {
   }
 
   private static void setRelease(String[] config) {
-    String value = confreader.getValue(config, "release_version");
-    if (value == null || !misc.isInt(value)) {return;}
-
-    stdout.print_verbose("Setting Java target release to \"" + value + "\".");
-    globalvariables.setReleaseTarget(value);
+    String value;
+    
+    value = confreader.getValue(config, "release_version");
+    if (value != null && misc.isInt(value)) {
+      stdout.print_verbose("Setting Java target release to \"" + value + "\".");
+      globalvariables.setReleaseTarget(value);
+    }
+    value = confreader.getValue(config, "source_version");
+    if (value != null && misc.isInt(value)) {
+      stdout.print_verbose("Setting Java source target version to \"" + value + "\".");
+      globalvariables.setSourceTarget(value);
+    }
+    value = confreader.getValue(config, "class_version");
+    if (value != null && misc.isInt(value)) {
+      stdout.print_verbose("Setting Java class target version to \"" + value + "\".");
+      globalvariables.setClassTarget(value);
+    }
   }
 
   private static void setGraalPath(String[] config) {
