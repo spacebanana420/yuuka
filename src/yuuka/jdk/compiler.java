@@ -11,11 +11,7 @@ public class compiler {
     new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
     
-    String[] cmd =
-      (globalvariables.RELEASE_TARGET.length() > 0)
-      ? process.buildCommand(source_files, "javac", globalvariables.RELEASE_TARGET)
-      : process.buildCommand(source_files, "javac");
-
+    String[] cmd = process.buildCommand(source_files, "javac");
     cmd = process.addLibArgs(cmd, false);
     return process.runProcess(cmd, ".");
   }

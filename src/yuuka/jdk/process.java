@@ -33,21 +33,11 @@ public class process {
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
     ArrayList<String> cmd = new ArrayList<>();
+    String release = globalvariables.RELEASE_TARGET;
 
     cmd.add(binary_path);
     cmd.add("-d"); cmd.add("build");
-    if (globalvariables.DISABLE_WARNINGS) {cmd.add("-nowarn");}
-    cmd.addAll(source_files);
-
-    return cmd.toArray(new String[0]);
-  }
-
-  public static String[] buildCommand(ArrayList<String> source_files, String binary_path, String release) {
-    ArrayList<String> cmd = new ArrayList<>();
-    
-    cmd.add(binary_path);
-    cmd.add("-d"); cmd.add("build");
-    cmd.add("--release"); cmd.add(release);
+    if (release != null) {cmd.add("--release"); cmd.add(release);}
     if (globalvariables.DISABLE_WARNINGS) {cmd.add("-nowarn");}
     cmd.addAll(source_files);
 
