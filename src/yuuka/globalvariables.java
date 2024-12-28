@@ -58,12 +58,13 @@ public class globalvariables {
   //manual conversion to int prevents having to try catch
   private static int intJavaVersion(String version) {
     int len = version.length();
+    byte[] ver_bytes = version.getBytes();
     int version_number = 0;
-    char[] digits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    
     for (int i = 0; i < len; i++) {
       double scale = Math.pow(10, len-i-1);
-      char c = version.charAt(i);
-      for (int d = 0; d < digits.length; d++) {if (c == digits[d]) {version_number += (int)(d * scale); break;}}
+      int digit = ver_bytes[i]-48; //48 is the uft8 and ascii value of 0
+      version_number += (digit * scale);
     }
     return version_number;
   }
