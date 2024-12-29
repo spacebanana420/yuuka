@@ -138,19 +138,28 @@ public class tasks {
     var f_script = new File(install_path + "/" + program_name);
     var f_jar = new File(install_path + "/jars/" + program_name + ".jar");
     
-    if (!f_script.isFile() || !f_jar.isFile()) {
+    boolean executable_exists = f_script.isFile();
+    boolean executable_canWrite = f_script.canWrite();
+    boolean jar_exists = f_jar.isFile();
+    boolean jar_canWrite = f_jar.canWrite();
+    
+    if (!executable_exists) {
       stdout.print("Program " + program_name + " not found! Failed to uninstall!");
       return;
     }
-    if (!f_script.canWrite() || !f_jar.canWrite()) {
+    if (!executable_canWrite) {
       stdout.print("Could not uninstall program " + program_name + "! Make sure you have write access in " + install_path);
       return;
+    }
+    if (jar_exists && !jar_canWrite) {
+      stdout.print("Could not uninstall the JAR file of program " + program_name + "! Make sure you have write access to it");
     }
     var p_script = Path.of(install_path + "/" + program_name);
     var p_jar = Path.of(install_path + "/jars/" + program_name + ".jar");
     try {
       Files.delete(p_script);
-      Files.delete(p_jar);
+      if (jar_exists && jar_canWrite) {Files.delete(p_jar);}
+      
       stdout.print("Successfully deleted " + program_name + " located in " + install_path);
     }
     catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
