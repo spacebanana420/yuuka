@@ -7,6 +7,8 @@ Empty or invalid settings are ignored
 #main_class=main
 #program_name=MyProgram.jar
 #release_target=21
+#source_target=21
+#class_target=21
 #graal_path=native-image
 #install_path=
 #tests_include_src=true
