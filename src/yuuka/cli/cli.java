@@ -26,7 +26,7 @@ public class cli {
           help_message = help.help_package(); break;
         case "packagelib":
           help_message = help.help_packagelib(); break;
-        case "buildnative":
+        case "build-native":
           help_message = help.help_buildnative(); break;
         case "run":
           help_message = help.help_run(); break;
@@ -38,6 +38,8 @@ public class cli {
           help_message = help.help_clean(); break;
         case "install":
           help_message = help.help_install(); break;
+        case "install-native":
+          help_message = help.help_install_native(); break;
         case "uninstall":
           help_message = help.help_uninstall(); break;
         default: help_message = help.getHelpMessage();
@@ -158,6 +160,15 @@ public class cli {
             if (result == 0) {installer.installProgram();}
           }
           return true;
+        case "install-native":
+          if (System.getProperty("os.name").contains("Windows")) {
+            stdout.print("The install-native task is not available for Windows!");
+            return true;
+          }
+          int result = tasks.runTask_package();
+          if (result == 0) {result = tasks.buildNativeBinary();}
+          if (result == 0) {installer.installProgram_native();}
+          return true;
         case "uninstall":
           if (hasArgumentValue(args, i)) {
             tasks.uninstallProgram(args[i+1]);
@@ -240,13 +251,14 @@ public class cli {
     return
       arg.equals("init")
       || arg.equals("build")
-      || arg.equals("buildnative")
+      || arg.equals("build-native")
       || arg.equals("package")
       || arg.equals("packagelib")
       || arg.equals("run")
       || arg.equals("test")
       || arg.equals("clean")
       || arg.equals("install")
+      || arg.equals("install-native")
       || arg.equals("tests")
       || arg.equals("uninstall")
     ;

@@ -2,7 +2,7 @@ package yuuka.cli;
 
 public class help {
   
-    private static String title() {return "Yuuka version 1.1.1";}
+    private static String title() {return "Yuuka version 1.2";}
   
     public static String getHelpMessage() {
     return
@@ -14,13 +14,14 @@ public class help {
       + "\n  * build - compiles your project"
       + "\n  * package - compiles your project into an executable JAR"
       + "\n  * packagelib - compiles your project into a library JAR"
-      + "\n  * buildnative - compiles your project into a native binary (requires GraalVM)"
+      + "\n  * build-native - compiles your project into a native binary (requires GraalVM)"
       + "\n  * run - compiles and runs your project"
       + "\n  * test - runs a test source file"
       + "\n  * tests - lists available test files"
       + "\n  * clean - deletes all .class files"
       + "\n  * install - builds and installs your program (Unix-like only)"
       + "\n  * install [jar path] - installs an existing JAR file"
+      + "\n  * install-native - builds your program natively with GraalVM and installs it (experimental)"
       + "\n  * unintsall [name] - uninstalls a program, removes its script and JAR file"
       
       + "\n\nAvailable CLI arguments:"
@@ -160,6 +161,20 @@ public class help {
       +"\n\nYou can also manually specify the installation path through build.yuuka or the \"-ip\" and \"--install-path\" arguments."
       + "\nIf you pass the path to a JAR file manually, Yuuka will install that program instead of yours:"
       +"\n\"yuuka install someprogram.jar\""
+    ;
+  }
+  
+  public static String help_install_native() {
+    return
+      title()
+      + "\ninstall-native command"
+      + "\n\nThe install-native command builds your project into a binary executable with GraalVM and then intsalls it in your system, so you can run the command anywhere by writing its name, just like any other CLI application."
+      + "\nThis command does not work on Windows, as it specifically relies on traditional Unix paths and shell."
+      + "\n\nBy default, Yuuka autodetects the installation path based on the typical Unix paths that are part of the system's $PATH:"
+      + "\n * Running Yuuka as root: The default installation path is \"/usr/local/bin\". This path comes with your system, is already assigned to $PATH and will work for all users in your system, and so this is the recommended method."
+      + "\n * Running Yuuka as user (Linux, OpenBSD, NetBSD, etc): if you run Yuuka without root, it assumes \"~/.local/bin\". This path normally doesn't exist and must be created and added to the $PATH by you."
+      + "\n * Running Yuuka as user (FreeBSD): Yuuka will default to \"~/bin\", since this path is in the system's $PATH variable for all users you create."
+      +"\n\nYou can also manually specify the installation path through build.yuuka or the \"-ip\" and \"--install-path\" arguments."
     ;
   }
   

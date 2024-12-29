@@ -69,7 +69,7 @@ public class tasks {
     return result;
   }
 
-  public static void buildNativeBinary() {
+  public static int buildNativeBinary() {
     String[] nativecmd = new String[]
     {
       globalvariables.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
@@ -81,6 +81,7 @@ public class tasks {
     int exitstatus = process.runProcess(nativecmd, "build");
     if (exitstatus == -1) {stdout.print("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
     else if (exitstatus > 0) {stdout.print("The compilation failed!");}
+    return exitstatus;
   }
 
   public static void runProgram(String[] args) {

@@ -22,6 +22,15 @@ public class installer {
 
     install(name, jar, jar_path, script_path, install_location);
   }
+  
+  public static void installProgram_native() {
+    String install_location = globalvariables.INSTALL_PATH;
+    String binary_name = misc.removeExtension(globalvariables.PROGRAM_NAME);
+    String source_path = "build/" + binary_name;
+    String install_path = install_location + "/" + binary_name;
+    
+    install_native(source_path, install_path, install_location);
+  }
 
   public static String getInstallLocation() {
     String home = System.getProperty("user.home");
@@ -55,7 +64,7 @@ public class installer {
           "\nJAR path: " + source_jar
           + "\nName: " + name
           + "\nOutput JAR: " + jar_path
-          + "\nOutput script " + script_path
+          + "\nOutput script: " + script_path
         );
       Path p_script = Path.of(script_path);
       Path p_jar = Path.of(jar_path);
@@ -81,5 +90,42 @@ public class installer {
       return;
     }
     stdout.print(name + " has been installed at " + install_location);
+  }
+  
+  private static void install_native(String source_binary, String binary_path, String install_location) {
+    File install_f = new File(install_location);
+    boolean path_isDir = install_f.isDirectory();
+    boolean path_canWrite = install_f.canWrite();
+    if (!path_isDir) {
+      stdout.print("The installation path " + install_location + " does not exist! Cancelling installation.");
+      return;
+    }
+    if (!path_canWrite) {
+      stdout.print("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
+      return;
+    }
+
+    try {
+      stdout.print("Installing program at " + install_location);
+      stdout.print_verbose
+        (
+          "\nBinary path: " + source_binary
+          + "\nOutput path: " + binary_path
+        );
+      Path p_binary = Path.of(binary_path);
+      Path p_source = Path.of(source_binary);
+
+      if (new File(binary_path).isFile()) {
+        stdout.print_verbose("Old instance of the script found installed, deleting...");
+        Files.delete(p_binary);
+      }
+      Files.move(p_source, p_binary);
+      new File(binary_path).setExecutable(true, false);
+    }
+    catch (IOException e) {
+      stdout.print("The installation of your program failed!");
+      return;
+    }
+    stdout.print(source_binary + " has been installed at " + install_location);
   }
 }
