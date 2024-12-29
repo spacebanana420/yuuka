@@ -125,8 +125,8 @@ public class cli {
           tasks.build();
           return true;
         case "buildnative":
-          tasks.runTask_package();
-          tasks.buildNativeBinary();
+          if (tasks.runTask_package() == 0)
+            {tasks.buildNativeBinary();}
           return true;
         case "package":
           tasks.runTask_package();
