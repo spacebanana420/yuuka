@@ -20,6 +20,8 @@ public class yuukaConfig {
       + "\n#main_class=main"
       + "\n#program_name=MyProgram.jar"
       + "\n#release_target=" + globalvariables.RUNTIME_JAVA_VERSION
+      + "\n#source_target=" + globalvariables.RUNTIME_JAVA_VERSION
+      + "\n#class_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
@@ -115,17 +117,17 @@ public class yuukaConfig {
   private static void setRelease(String[] config) {
     String value;
     
-    value = confreader.getValue(config, "release_version");
+    value = confreader.getValue(config, "release_target");
     if (value != null && misc.isInt(value)) {
       stdout.print_verbose("Setting Java target release to \"" + value + "\".");
       globalvariables.setReleaseTarget(value);
     }
-    value = confreader.getValue(config, "source_version");
+    value = confreader.getValue(config, "source_target");
     if (value != null && misc.isInt(value)) {
       stdout.print_verbose("Setting Java source target version to \"" + value + "\".");
       globalvariables.setSourceTarget(value);
     }
-    value = confreader.getValue(config, "class_version");
+    value = confreader.getValue(config, "class_target");
     if (value != null && misc.isInt(value)) {
       stdout.print_verbose("Setting Java class target version to \"" + value + "\".");
       globalvariables.setClassTarget(value);
