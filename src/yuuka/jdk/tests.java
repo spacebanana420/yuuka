@@ -12,7 +12,7 @@ public class tests {
   public static boolean runTest_java(String source_file, String[] args) {    
     String[] cmd =
       (globalvariables.TESTS_INCLUDE_PROJECT && new File("build/"+globalvariables.PROGRAM_NAME).isFile())
-      ? new String[]{"java", "--class-path", ".:../build/"+globalvariables.PROGRAM_NAME, source_file}
+      ? new String[]{"java", "--class-path", "../build/"+globalvariables.PROGRAM_NAME, source_file}
       : new String[]{"java", source_file};
       
 

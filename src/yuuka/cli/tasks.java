@@ -64,7 +64,7 @@ public class tasks {
     result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, true);
 
     stdout.print("Cleaning up class files");
-    fileops.deleteClassFiles("build");
+    fileops.deleteBuildFiles("build");
     fileops.deleteClassFiles("lib");
     return result;
   }
