@@ -9,7 +9,7 @@ import yuuka.jdk.tests;
 import yuuka.installer;
 
 public class cli {
-  static boolean askedForHelp(String[] args, int parse_break) {
+  public static boolean askedForHelp(String[] args, int parse_break) {
     int help_i = findArgument(args, "-h", parse_break);
     if (help_i == -1) {help_i = findArgument(args, "--help", parse_break);}
     if (help_i == -1) {return false;}
@@ -51,11 +51,7 @@ public class cli {
     return true;
   }
   
-  public static boolean parseOptions(String[] args) {
-    int parse_break = findParseBreak(args);
-    
-    if (askedForHelp(args, parse_break)) {return true;}
-    
+  public static void parseOptions(String[] args, int parse_break) {
     if (hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
     else if (hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
     else if (hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
@@ -112,7 +108,7 @@ public class cli {
         if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
       }
     }
-    return false;
+    return;
   }
 
   public static boolean parseTasks(String[] args) {
@@ -212,7 +208,7 @@ public class cli {
     return null;
   }
   
-  static int findParseBreak(String[] args) {
+  public static int findParseBreak(String[] args) {
     for (int i = 0; i < args.length; i++) {if (args[i].equals("--")) {return i;}}
     return args.length;
   }
