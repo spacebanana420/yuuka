@@ -18,7 +18,7 @@ public class yuukaConfig {
       + "\nEmpty or invalid settings are ignored"
       + "\n"
       + "\n#main_class=main"
-      + "\n#program_name=MyProgram.jar"
+      + "\n#jar_filename=MyProgram.jar"
       + "\n#release_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#source_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#class_target=" + globalvariables.RUNTIME_JAVA_VERSION
@@ -107,7 +107,7 @@ public class yuukaConfig {
   }
 
   private static void setProgramName(String[] config) {
-    String value = confreader.getValue(config, "program_name");
+    String value = confreader.getValue(config, "jar_filename");
     if (value == null) {return;}
 
     stdout.print_verbose("Setting program_name to \"" + value + "\".");
