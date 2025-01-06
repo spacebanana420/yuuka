@@ -44,8 +44,8 @@ public class yuukaConfig {
 
   public static void parseConfig(String[] config) {
     if (config.length == 0) {return;}
-    stdout.print_verbose("Found build file \"build.yuuka\", reading file.");
-
+    
+    setVerboseLevel(config);
     setMainClass(config);
     setProgramName(config);
     setRelease(config);
@@ -53,7 +53,10 @@ public class yuukaConfig {
     setGraalPath(config);
     setInstallPath(config);
     setSrcInclusion(config);
-    setVerboseLevel(config);
+  }
+  
+  private static void warnError(String message) {
+    System.out.println("yuuka.build error: " + message);
   }
 
   private static void setVerboseLevel(String[] config) {
@@ -62,16 +65,14 @@ public class yuukaConfig {
 
     byte level = misc.toByte(value);
     if (level < 0 || level > 3) {
-      stdout.print_verbose("Verbosity level " + value + " is incorrect, ignoring. Accepted values range between 0 and 3.");
+      warnError("Verbosity level " + value + " is incorrect, ignoring. Accepted values range between 0 and 3.");
       return;
     }
-    stdout.print_verbose("Setting verbosity level to " + value);
     globalvariables.PRINT_LEVEL = level;
   }
 
   private static void setSrcInclusion(String[] config) {
     boolean value = confreader.getBool(config, "tests_include_src");
-    if (value) {stdout.print_verbose("Enabling project source inclusion into tests.");}
     globalvariables.TESTS_INCLUDE_PROJECT = value;
   }
 
@@ -80,7 +81,7 @@ public class yuukaConfig {
     if (value == null) {return;}
     var f = new File(value);
     if (!f.isDirectory()) {
-      stdout.print_verbose
+      warnError
       (
         "The installation path " + value + " is not real"
         + "\nDefaulting to " + globalvariables.INSTALL_PATH
@@ -88,31 +89,25 @@ public class yuukaConfig {
       return;
     }
     if (!f.canWrite()) {
-      stdout.print_verbose
+      warnError
       (
         "Yuuka lacks permissions to write at the installation path " + value
         + "\nDefaulting to " + globalvariables.INSTALL_PATH
       );      
       return;
     }
-    stdout.print_verbose("Setting installation path to \"" + value + "\".");
     globalvariables.INSTALL_PATH = value;
   }
 
   private static void setMainClass(String[] config) {
     String value = confreader.getValue(config, "main_class");
     if (value == null) {return;}
-
-    stdout.print_verbose("Setting main class to \"" + value + "\".");
     globalvariables.MAIN_CLASS = value;
-
   }
 
   private static void setProgramName(String[] config) {
     String value = confreader.getValue(config, "jar_filename");
     if (value == null) {return;}
-
-    stdout.print_verbose("Setting program_name to \"" + value + "\".");
     globalvariables.setProgramName(value);
   }
 
@@ -121,24 +116,20 @@ public class yuukaConfig {
     
     value = confreader.getValue(config, "release_target");
     if (value != null && misc.isInt(value)) {
-      stdout.print_verbose("Setting Java target release to \"" + value + "\".");
       globalvariables.setReleaseTarget(value);
     }
     value = confreader.getValue(config, "source_target");
     if (value != null && misc.isInt(value)) {
-      stdout.print_verbose("Setting Java source target version to \"" + value + "\".");
       globalvariables.setSourceTarget(value);
     }
     value = confreader.getValue(config, "class_target");
     if (value != null && misc.isInt(value)) {
-      stdout.print_verbose("Setting Java class target version to \"" + value + "\".");
       globalvariables.setClassTarget(value);
     }
   }
   
   private static void setDisableWarnings(String[] config) {
     boolean value = confreader.getBool(config, "disable_warnings");
-    if (value) {stdout.print_verbose("Disabling Java compiler warnings.");}
     globalvariables.DISABLE_WARNINGS = value;
   }
 
@@ -146,9 +137,10 @@ public class yuukaConfig {
     String value = confreader.getValue(config, "graal_path");
     if (value == null) {return;}
     var f = new File(value);
-    if (!f.isFile() || !f.canExecute()) {return;}
-
-    stdout.print_verbose("Setting GraalVM's \"native-image\" path to \"" + value + "\".");
+    if (!f.isFile() || !f.canExecute()) {
+      warnError("The GraalVM binary path of " + value + " is not real or an executable!");
+      return;
+    }
     globalvariables.GRAAL_PATH = value; 
   }
 }
