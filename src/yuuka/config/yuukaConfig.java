@@ -22,6 +22,7 @@ public class yuukaConfig {
       + "\n#release_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#source_target=" + globalvariables.RUNTIME_JAVA_VERSION
       + "\n#class_target=" + globalvariables.RUNTIME_JAVA_VERSION
+      + "\n#disable_warnings=false"
       + "\n#graal_path=native-image"
       + "\n#install_path="
       + "\n#tests_include_src=true"
@@ -48,6 +49,7 @@ public class yuukaConfig {
     setMainClass(config);
     setProgramName(config);
     setRelease(config);
+    setDisableWarnings(config);
     setGraalPath(config);
     setInstallPath(config);
     setSrcInclusion(config);
@@ -132,6 +134,12 @@ public class yuukaConfig {
       stdout.print_verbose("Setting Java class target version to \"" + value + "\".");
       globalvariables.setClassTarget(value);
     }
+  }
+  
+  private static void setDisableWarnings(String[] config) {
+    boolean value = confreader.getBool(config, "disable_warnings");
+    if (value) {stdout.print_verbose("Disabling Java compiler warnings.");}
+    globalvariables.DISABLE_WARNINGS = value;
   }
 
   private static void setGraalPath(String[] config) {
