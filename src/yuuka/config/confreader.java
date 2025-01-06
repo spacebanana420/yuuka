@@ -49,27 +49,22 @@ public class confreader {
       String line = config[i];
       if (isSetting(line, setting)) {setting_line = line; break;}
     }
-    if (setting_line == null) {return null;}
-    String value = parseLine(setting_line, setting+"=");
+    return getValue(setting_line, setting, false);
+  }
+
+  public static String getValue(String line, String setting, boolean verifySetting) {
+    boolean isSettingValid = !verifySetting || isSetting(line, setting);
+    if (line == null || !isSettingValid) {return null;}
+    
+    String value = "";
+    for (int i = setting.length(); i < line.length(); i++) {value += line.charAt(i);}
+    value = value.trim();
+    
     if (value.length() == 0) {return null;}
     return value;
   }
 
-  public static String getValue(String line, String setting) {
-    if (!isSetting(line, setting)) {return null;}
-    String value = parseLine(line, setting+"=");
-    return value;
-  }
-
-  public static String parseLine(String line, String setting) {
-    String value = "";
-    for (int i = setting.length(); i < line.length(); i++) {
-      value += line.charAt(i);
-    }
-    return value.trim();
-  }
-
-  public static boolean isSetting(String line, String setting) {
+  private static boolean isSetting(String line, String setting) {
     if (line.length() <= setting.length() || line.charAt(setting.length()) != '=')
     {return false;}
 

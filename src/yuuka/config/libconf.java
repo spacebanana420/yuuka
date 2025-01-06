@@ -50,7 +50,7 @@ public class libconf {
   }
 
   private static void addLib(ArrayList<MavenLibrary> libs, String line) {
-    String value = confreader.getValue(line, "library");
+    String value = confreader.getValue(line, "library", true);
     if (value == null || value.equals("")) {return;}
     
     stdout.print_debug("Found dependency: " + value);
@@ -80,7 +80,7 @@ public class libconf {
 
   //lots of duplicate code
   private static void addLib_custom(ArrayList<CustomLibrary> libs, String line) {
-    String value = confreader.getValue(line, "library_custom");
+    String value = confreader.getValue(line, "library_custom", true);
     if (value == null || value.equals("")) {return;}
 
     stdout.print_debug("Found dependency: " + value);  
