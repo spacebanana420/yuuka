@@ -62,11 +62,11 @@ public class confreader {
   }
 
   public static String parseLine(String line, String setting) {
-    String buf = "";
+    String value = "";
     for (int i = setting.length(); i < line.length(); i++) {
-      buf += line.charAt(i);
+      value += line.charAt(i);
     }
-    return buf;
+    return value.trim();
   }
 
   public static boolean isSetting(String line, String setting) {
