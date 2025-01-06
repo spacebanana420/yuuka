@@ -57,6 +57,7 @@ public class confreader {
     if (line == null || !isSettingValid) {return null;}
     
     String value = "";
+    setting += "=";
     for (int i = setting.length(); i < line.length(); i++) {value += line.charAt(i);}
     value = value.trim();
     
