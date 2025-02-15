@@ -53,27 +53,32 @@ public class cli {
   }
   
   public static void parseOptions(String[] args, int parse_break) {
-    if (parser.hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
-    else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
-    else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
+    var t1 = new Thread(() -> {
+      if (parser.hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
+      else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
+      else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
+      
+      if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
+      if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
+      if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
+      
+      String target = getJavaTarget(args, parse_break, 0);
+      if (target != null) {globalvariables.setReleaseTarget(target);}
+      target = getJavaTarget(args, parse_break, 1);
+      if (target != null) {globalvariables.setSourceTarget(target);}
+      target = getJavaTarget(args, parse_break, 2);
+      if (target != null) {globalvariables.setClassTarget(target);}    
+    });
     
-    if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
-    if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
-    if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
-    
-    String target = getJavaTarget(args, parse_break, 0);
-    if (target != null) {globalvariables.setReleaseTarget(target);}
-    
-    target = getJavaTarget(args, parse_break, 1);
-    if (target != null) {globalvariables.setSourceTarget(target);}
-    
-    target = getJavaTarget(args, parse_break, 2);
-    if (target != null) {globalvariables.setClassTarget(target);}
-    
-    assignValue_main(args, parse_break);
-    assignValue_output(args, parse_break);
-    assignValue_graalvm(args, parse_break);
-    assignValue_install(args, parse_break);
+    var t2 = new Thread(() -> {
+      assignValue_main(args, parse_break);
+      assignValue_output(args, parse_break);
+      assignValue_graalvm(args, parse_break);
+      assignValue_install(args, parse_break);
+    });
+    t1.start(); t2.start();
+    try{t1.join(); t2.join();}
+    catch(InterruptedException e) {e.printStackTrace();}
   }
   
   static void assignValue_main(String[] args, int parse_break) {
