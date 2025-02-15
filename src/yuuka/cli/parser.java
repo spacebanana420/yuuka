@@ -1,7 +1,7 @@
 package yuuka.cli;
 
 class parser {
-  static int findArguemnt(String[] args, int parse_break, String... arg) {
+  static int findArgument(String[] args, int parse_break, String... arg) {
     for (String a : arg) {
       int i = findArgument(args, parse_break, a);
       if (i != -1) {return i;}

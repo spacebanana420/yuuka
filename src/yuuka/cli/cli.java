@@ -11,8 +11,7 @@ import yuuka.jdk.installer;
 
 public class cli {
   public static boolean askedForHelp(String[] args, int parse_break) {
-    int help_i = parser.findArgument(args, parse_break, "-h");
-    if (help_i == -1) {help_i = parser.findArgument(args, parse_break, "--help");}
+    int help_i = parser.findArgument(args, parse_break, "-h", "--help");
     if (help_i == -1) {return false;}
     
     String help_message;
@@ -52,7 +51,7 @@ public class cli {
     return true;
   }
   
-  public static void parseOptions(String[] args, int parse_break) {
+  public static void assignGlobalValues(String[] args, int parse_break) {
     var t1 = new Thread(() -> {
       if (parser.hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
       else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
@@ -82,44 +81,42 @@ public class cli {
   }
   
   static void assignValue_main(String[] args, int parse_break) {
-    int i = parser.findArguemnt(args, parse_break, "-m", "--main");
+    int i = parser.findArgument(args, parse_break, "-m", "--main");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       globalvariables.MAIN_CLASS = args[i+1];
     }
   }
   static void assignValue_output(String[] args, int parse_break) {
-    int i = parser.findArguemnt(args, parse_break, "-o", "--output");
+    int i = parser.findArgument(args, parse_break, "-o", "--output");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       globalvariables.setProgramName(args[i+1]);
     }
   }
   static void assignValue_graalvm(String[] args, int parse_break) {
-    int i = parser.findArguemnt(args, parse_break, "-gp", "--graal-path");
+    int i = parser.findArgument(args, parse_break, "-gp", "--graal-path");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       var binaryf = new File(args[i+1]);
       if (binaryf.isFile() && binaryf.canExecute()) {globalvariables.GRAAL_PATH = args[i+1];}
     }
   }
   static void assignValue_install(String[] args, int parse_break) {
-    int i = parser.findArguemnt(args, parse_break, "-ip", "--install-path");
+    int i = parser.findArgument(args, parse_break, "-ip", "--install-path");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       var installf = new File(args[i+1]);
       if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
     }
   }
 
-  public static boolean parseTasks(String[] args) {
-    for (int i = 0; i < args.length; i++) {
+  public static boolean runTasks(String[] args, int parse_break) {
+    for (int i = 0; i < parse_break; i++) {
       switch(args[i]) {
-        case "--":
-          return true;
         case "init":
           tasks.initializeProject();
           return true;
         case "build":
           tasks.build();
           return true;
-        case "buildnative":
+        case "build-native":
           if (tasks.runTask_package() == 0)
             {tasks.buildNativeBinary();}
           return true;

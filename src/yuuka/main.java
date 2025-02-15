@@ -10,9 +10,9 @@ public class main {
     if (cli.askedForHelp(args, parse_break)) {return;}
     
     yuukaConfig.parseConfig("build.yuuka");
-    cli.parseOptions(args, parse_break);
+    cli.assignGlobalValues(args, parse_break);
 
-    boolean ranTask = cli.parseTasks(args);
+    boolean ranTask = cli.runTasks(args, parse_break);
     if (!ranTask) {System.out.println(help.getHelpMessage_small());}
   }
 }
