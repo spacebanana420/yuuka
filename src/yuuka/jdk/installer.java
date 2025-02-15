@@ -1,9 +1,13 @@
-package yuuka;
+package yuuka.jdk;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import yuuka.globalvariables;
+import yuuka.stdout;
+import yuuka.misc;
 
 public class installer {
   public static void installProgram() {

@@ -1,4 +1,5 @@
 package yuuka;
+import yuuka.jdk.installer;
 
 public class globalvariables {
   //0 - silent    1 - normal    2 - verbose   3 - debug
