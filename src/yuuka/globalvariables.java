@@ -1,5 +1,7 @@
 package yuuka;
+
 import yuuka.jdk.installer;
+import java.io.File;
 
 public class globalvariables {
   //0 - silent    1 - normal    2 - verbose   3 - debug
@@ -18,10 +20,12 @@ public class globalvariables {
   public static String CLASS_TARGET = null;
   
   public static String INSTALL_PATH = installer.getInstallLocation();
-
   public static boolean TESTS_INCLUDE_PROJECT = false;
-  
   public static final int RUNTIME_JAVA_VERSION = getRuntimeVersion();
+  
+  public static boolean mainIsDefined() {
+    return MAIN_CLASS != null && new File("src/"+MAIN_CLASS+".java").isFile();
+  }
   
   public static void setProgramName(String name) {
     if (name.contains(".jar")) {PROGRAM_NAME = name;}

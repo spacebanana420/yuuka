@@ -48,6 +48,15 @@ public class tasks {
     int result = build(true);
     if (result != 0) {return result;}
     stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
+    if (!globalvariables.mainIsDefined()) {
+      stdout.print
+      (
+        "Main class is not defined or incorrectly defined! Cancelling JAR packaging."
+        +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
+        +"\n\nExample: for the main file \"src/yuuka/main.java\", the main class should be \"yuuka/main\"."
+      );
+      return -1;
+    }
     result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
     
     stdout.print("Cleaning up class files");
