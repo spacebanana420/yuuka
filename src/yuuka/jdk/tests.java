@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import yuuka.globalvariables;
 import yuuka.stdout;
+import yuuka.cli.cli;
 import yuuka.misc;
 import yuuka.fileops;
 
@@ -17,7 +18,7 @@ public class tests {
       
 
     cmd = process.addLibArgs(cmd, true);
-    String[] exec_args = misc.getExecArgs(args);
+    String[] exec_args = cli.getExecArgs(args);
     stdout.print_debug("Passing the following arguments to test execution:", exec_args);
 
     cmd = process.concatArgs(cmd, exec_args);
@@ -27,7 +28,7 @@ public class tests {
   
   public static boolean runTest_native(String path, String[] args) {
     String[] cmd = new String[]{path};
-    String[] exec_args = misc.getExecArgs(args);
+    String[] exec_args = cli.getExecArgs(args);
     stdout.print_debug("Passing the following arguments to test execution:", exec_args);
     
     cmd = process.concatArgs(cmd, exec_args);

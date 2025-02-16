@@ -3,6 +3,7 @@ package yuuka.jdk;
 import java.io.File;
 import yuuka.stdout;
 import yuuka.misc;
+import yuuka.cli.cli;
 import yuuka.globalvariables;
 import yuuka.fileops;
 
@@ -43,7 +44,7 @@ public class compiler {
     String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
     cmd = process.addLibArgs(cmd, true);
     
-    String[] exec_args = misc.getExecArgs(args);
+    String[] exec_args = cli.getExecArgs(args);
     stdout.print_verbose("Passing the following arguments to program execution:", exec_args);
     
     cmd = process.concatArgs(cmd, exec_args);

@@ -1,7 +1,5 @@
 package yuuka;
 
-import java.util.ArrayList;
-
 public class misc {
   public static boolean isInt(String num) {
     try{
@@ -34,10 +32,9 @@ public class misc {
       char c = main_class.charAt(i);
       if (c == '/' || c == '\\') {first_slash = i; break;}
     }
+    
     if (first_slash == -1) {return "program.jar";}
-    for (int i = 0; i < first_slash; i++) {
-      name += main_class.charAt(i);
-    }
+    for (int i = 0; i < first_slash; i++) {name += main_class.charAt(i);}
     return name + ".jar";
   }
   public static String removeExtension(String filename) {
@@ -69,18 +66,5 @@ public class misc {
       if (extension.charAt(i) != name.charAt(name_position+i)) {return false;} 
     }
     return true;
-  }
-
-  public static String[] getExecArgs(String[] args) {
-    ArrayList<String> exec_args = new ArrayList<>();
-    int args_start = -1;
-    
-    for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("--") && i < args.length-1) {args_start = i+1; break;}
-    }
-    if (args_start == -1) {return new String[0];}
-    
-    for (int i = args_start; i < args.length; i++) {exec_args.add(args[i]);}
-    return exec_args.toArray(new String[0]);
   }
 }

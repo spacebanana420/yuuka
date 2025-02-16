@@ -32,12 +32,10 @@ public class globalvariables {
     int version_num = intJavaVersion(version);
     if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {RELEASE_TARGET = version;}
   }
-  
   public static void setSourceTarget(String version) {
     int version_num = intJavaVersion(version);
     if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {SOURCE_TARGET = version;}
   }
-  
   public static void setClassTarget(String version) {
     int version_num = intJavaVersion(version);
     if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {CLASS_TARGET = version;}

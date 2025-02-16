@@ -44,7 +44,6 @@ public class yuukaConfig {
 
   public static void parseConfig(String[] config) {
     if (config.length == 0) {return;}
-    
     setVerboseLevel(config);
     setMainClass(config);
     setProgramName(config);

@@ -1,6 +1,7 @@
 package yuuka.cli;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import yuuka.globalvariables;
 import yuuka.stdout;
@@ -203,5 +204,18 @@ public class cli {
   public static int findParseBreak(String[] args) {
     for (int i = 0; i < args.length; i++) {if (args[i].equals("--")) {return i;}}
     return args.length;
+  }
+
+  public static String[] getExecArgs(String[] args) {
+    ArrayList<String> exec_args = new ArrayList<>();
+    int args_start = -1;
+    
+    for (int i = 0; i < args.length; i++) {
+      if (args[i].equals("--") && i < args.length-1) {args_start = i+1; break;}
+    }
+    if (args_start == -1) {return new String[0];}
+    
+    for (int i = args_start; i < args.length; i++) {exec_args.add(args[i]);}
+    return exec_args.toArray(new String[0]);
   }
 }
