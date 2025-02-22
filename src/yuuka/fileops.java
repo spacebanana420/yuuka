@@ -10,15 +10,13 @@ public class fileops {
   public static ArrayList<String> getSourceFiles(String root_path) {
     return getFiles_generic(root_path, false, ".java");
   }
-
   public static ArrayList<String> getJarFiles(String root_path) {
     return getFiles_generic(root_path, false, ".jar");
   }
-
   public static ArrayList<String> getClassFiles(String root_path, boolean addlicenses) {
     return getFiles_generic(root_path, addlicenses, ".class");
   }
-
+  
   public static ArrayList<String> removeParent(ArrayList<String> files, String parent) {
     ArrayList<String> new_files = files;
     for (int i = 0; i < files.size(); i++) {
@@ -36,8 +34,9 @@ public class fileops {
   }
 
   public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false);}
+  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
 
-  public static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory) {
+  private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory) {
     if (!new File(path).isDirectory()) {return false;}
     var paths = new File(path).list();
     if (paths == null || paths.length == 0) {return true;}
@@ -62,8 +61,6 @@ public class fileops {
     }
     return true;
   }
-
-  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
 
   private static boolean deletableFile(String name, boolean deleteAll) {
     if (isJarFile(name)) {return false;}
