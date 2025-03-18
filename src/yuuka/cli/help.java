@@ -2,7 +2,7 @@ package yuuka.cli;
 
 public class help {
   
-    private static String title() {return "Yuuka version 1.2.2";}
+    private static String title() {return "Yuuka version 1.2.3";}
   
     public static String getHelpMessage() {
     return

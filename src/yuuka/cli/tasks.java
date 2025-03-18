@@ -31,6 +31,14 @@ public class tasks {
     libconf.createConfig();
     stdout.print("Project structure created");
   }
+  
+  public static void cleanProject() {
+    stdout.print("Cleaning up all class files");
+    fileops.deleteClassFiles("src");
+    fileops.deleteBuildFiles("build");
+    fileops.deleteClassFiles("lib");
+    fileops.deleteClassFiles("test");
+  }
 
   public static int build() {return build(true);}
 
@@ -44,7 +52,7 @@ public class tasks {
     return compiler.compile();
   }
 
-  public static int runTask_package() {
+  public static int packageJAR() {
     int result = build(true);
     if (result != 0) {return result;}
     stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
@@ -79,6 +87,7 @@ public class tasks {
   }
 
   public static int buildNativeBinary() {
+    if (packageJAR() != 0) {return -1;}
     String[] nativecmd = new String[]
     {
       globalvariables.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
@@ -130,18 +139,6 @@ public class tasks {
       
     if (!result) {stdout.print("Error during building/running the test!");}
   }
-
-  public static int fetchLibs() {
-    int result = libconf.createConfig();
-    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
-    else if (result < 0) {return result;}
-
-    String[] conf = confreader.readConfig("libs.yuuka");
-    result = fetchMavenLibs(conf);
-    if (result != 0) {return result;}
-    result = fetchCustomLibs(conf);
-    return result;
-  }
   
   public static void uninstallProgram(String program_name) {
     String install_path = globalvariables.INSTALL_PATH;
@@ -173,6 +170,18 @@ public class tasks {
       stdout.print("Successfully deleted " + program_name + " located in " + install_path);
     }
     catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
+  }
+  
+  private static int fetchLibs() {
+    int result = libconf.createConfig();
+    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
+    else if (result < 0) {return result;}
+
+    String[] conf = confreader.readConfig("libs.yuuka");
+    result = fetchMavenLibs(conf);
+    if (result != 0) {return result;}
+    result = fetchCustomLibs(conf);
+    return result;
   }
   
   private static boolean projectHasNoSource() {
