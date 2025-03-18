@@ -69,15 +69,14 @@ public class cli {
       target = getJavaTarget(args, parse_break, 2);
       if (target != null) {globalvariables.setClassTarget(target);}    
     });
+    t1.start();
     
-    var t2 = new Thread(() -> {
-      assignValue_main(args, parse_break);
-      assignValue_output(args, parse_break);
-      assignValue_graalvm(args, parse_break);
-      assignValue_install(args, parse_break);
-    });
-    t1.start(); t2.start();
-    try{t1.join(); t2.join();}
+    assignValue_main(args, parse_break);
+    assignValue_output(args, parse_break);
+    assignValue_graalvm(args, parse_break);
+    assignValue_install(args, parse_break);
+
+    try{t1.join();}
     catch(InterruptedException e) {e.printStackTrace();}
   }
   
