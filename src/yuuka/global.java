@@ -3,7 +3,7 @@ package yuuka;
 import yuuka.jdk.installer;
 import java.io.File;
 
-public class globalvariables {
+public class global {
   //0 - silent    1 - normal    2 - verbose   3 - debug
   public static byte PRINT_LEVEL = 1;
 

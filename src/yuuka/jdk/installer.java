@@ -5,22 +5,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.stdout;
 import yuuka.misc;
 
 public class installer {
   public static void installProgram() {
-    String install_location = globalvariables.INSTALL_PATH;
-    String jar_path = install_location + "/jars/" + globalvariables.PROGRAM_NAME;
-    String script_path = install_location + "/" + misc.removeExtension(globalvariables.PROGRAM_NAME);
+    String install_location = global.INSTALL_PATH;
+    String jar_path = install_location + "/jars/" + global.PROGRAM_NAME;
+    String script_path = install_location + "/" + misc.removeExtension(global.PROGRAM_NAME);
     
-    install(globalvariables.PROGRAM_NAME, "build/" + globalvariables.PROGRAM_NAME, jar_path, script_path, install_location);
+    install(global.PROGRAM_NAME, "build/" + global.PROGRAM_NAME, jar_path, script_path, install_location);
   }
 
   public static void installProgram(String jar) {
     String name = new File(jar).getName();
-    String install_location = globalvariables.INSTALL_PATH;
+    String install_location = global.INSTALL_PATH;
     String jar_path = install_location + "/jars/" + name;   
     String script_path = install_location + "/" + misc.removeExtension(name);
 
@@ -28,8 +28,8 @@ public class installer {
   }
   
   public static void installProgram_native() {
-    String install_location = globalvariables.INSTALL_PATH;
-    String binary_name = misc.removeExtension(globalvariables.PROGRAM_NAME);
+    String install_location = global.INSTALL_PATH;
+    String binary_name = misc.removeExtension(global.PROGRAM_NAME);
     String source_path = "build/" + binary_name;
     String install_path = install_location + "/" + binary_name;
     

@@ -4,7 +4,7 @@ import java.io.File;
 import yuuka.stdout;
 import yuuka.misc;
 import yuuka.cli.cli;
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.fileops;
 
 public class compiler {
@@ -33,7 +33,7 @@ public class compiler {
   }
 
   private static void extractLibraries() {
-    if (globalvariables.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
+    if (global.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
     var jars = lib.changeBaseDirectory(lib.getLibraryJars());
     for (String jar : jars) {
       process.runProcess(process.buildExtractCommand(jar, "jar"), "build");
@@ -41,7 +41,7 @@ public class compiler {
   }
 
   public static int runProgram(String[] args) {
-    String[] cmd = new String[]{"java", globalvariables.MAIN_CLASS};
+    String[] cmd = new String[]{"java", global.MAIN_CLASS};
     cmd = process.addLibArgs(cmd, true);
     
     String[] exec_args = cli.getExecArgs(args);

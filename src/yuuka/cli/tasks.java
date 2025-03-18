@@ -13,7 +13,7 @@ import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 
 import yuuka.stdout;
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.fileops;
 import yuuka.misc;
 
@@ -47,7 +47,7 @@ public class tasks {
     int result = fetchLibs();
     if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
     stdout.print("Compiling project");
-    if (display_main) {stdout.print_verbose("Main class is " + globalvariables.MAIN_CLASS);}
+    if (display_main) {stdout.print_verbose("Main class is " + global.MAIN_CLASS);}
 
     return compiler.compile();
   }
@@ -55,8 +55,8 @@ public class tasks {
   public static int packageJAR() {
     int result = build(true);
     if (result != 0) {return result;}
-    stdout.print("Creating executable JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-    if (!globalvariables.mainIsDefined()) {
+    stdout.print("Creating executable JAR \"" + global.PROGRAM_NAME + "\"");
+    if (!global.mainIsDefined()) {
       stdout.print
       (
         "Main class is not defined or incorrectly defined! Cancelling JAR packaging."
@@ -65,7 +65,7 @@ public class tasks {
       );
       return -1;
     }
-    result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, false);
+    result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, false);
     
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -77,8 +77,8 @@ public class tasks {
     int result = build(false);
     if (result != 0) {return result;}
 
-    stdout.print("Creating library JAR \"" + globalvariables.PROGRAM_NAME + "\"");
-    result = compiler.createJAR(globalvariables.PROGRAM_NAME, globalvariables.MAIN_CLASS, true);
+    stdout.print("Creating library JAR \"" + global.PROGRAM_NAME + "\"");
+    result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, true);
 
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -90,9 +90,9 @@ public class tasks {
     if (packageJAR() != 0) {return -1;}
     String[] nativecmd = new String[]
     {
-      globalvariables.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
-      globalvariables.PROGRAM_NAME,
-      "-o", misc.removeExtension(globalvariables.PROGRAM_NAME)
+      global.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
+      global.PROGRAM_NAME,
+      "-o", misc.removeExtension(global.PROGRAM_NAME)
     };
     stdout.print("Building native binary with GraalVM");
     stdout.print_verbose("GraalVM command:", nativecmd);
@@ -104,7 +104,7 @@ public class tasks {
 
   public static void runProgram(String[] args) {
     int result =
-      (!new File("build/" + globalvariables.MAIN_CLASS + ".class").isFile())
+      (!new File("build/" + global.MAIN_CLASS + ".class").isFile())
       ? build(true)
       : 0;
     if (result != 0) {return;}
@@ -131,7 +131,7 @@ public class tasks {
     
     boolean result;
     if (isJavaFile) {
-      if (!projectHasNoSource() && globalvariables.TESTS_INCLUDE_PROJECT) {packageLib();}
+      if (!projectHasNoSource() && global.TESTS_INCLUDE_PROJECT) {packageLib();}
       result = tests.runTest_java(file_java, args);
       fileops.deleteBuildFiles("build");
     }
@@ -141,7 +141,7 @@ public class tasks {
   }
   
   public static void uninstallProgram(String program_name) {
-    String install_path = globalvariables.INSTALL_PATH;
+    String install_path = global.INSTALL_PATH;
     var f_script = new File(install_path + "/" + program_name);
     var f_jar = new File(install_path + "/jars/" + program_name + ".jar");
     

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import yuuka.stdout;
-import yuuka.globalvariables;
+import yuuka.global;
 
 public class process {
 
@@ -33,9 +33,9 @@ public class process {
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
     ArrayList<String> cmd = new ArrayList<>();
-    String release_target = globalvariables.RELEASE_TARGET;
-    String source_target = globalvariables.SOURCE_TARGET;
-    String class_target = globalvariables.CLASS_TARGET;
+    String release_target = global.RELEASE_TARGET;
+    String source_target = global.SOURCE_TARGET;
+    String class_target = global.CLASS_TARGET;
     
     cmd.add(binary_path);
     cmd.add("-d"); cmd.add("build");
@@ -44,7 +44,7 @@ public class process {
       if (source_target != null) {cmd.add("--source"); cmd.add(source_target);}
       if (class_target != null) {cmd.add("--target"); cmd.add(class_target);}
     }
-    if (globalvariables.DISABLE_WARNINGS) {cmd.add("-nowarn");}
+    if (global.DISABLE_WARNINGS) {cmd.add("-nowarn");}
     cmd.addAll(source_files);
 
     return cmd.toArray(new String[0]);
@@ -84,7 +84,7 @@ public class process {
   }
 
   public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
-    if (globalvariables.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
+    if (global.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
     
     var jars = lib.getLibraryJars();
     if (change_base_directory) {jars = lib.changeBaseDirectory(jars);}

@@ -3,7 +3,7 @@ package yuuka.jdk;
 import java.io.File;
 import java.util.ArrayList;
 
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.stdout;
 import yuuka.cli.cli;
 import yuuka.misc;
@@ -12,8 +12,8 @@ import yuuka.fileops;
 public class tests {
   public static boolean runTest_java(String source_file, String[] args) {    
     String[] cmd =
-      (globalvariables.TESTS_INCLUDE_PROJECT && new File("build/"+globalvariables.PROGRAM_NAME).isFile())
-      ? new String[]{"java", "--class-path", "../build/"+globalvariables.PROGRAM_NAME, source_file}
+      (global.TESTS_INCLUDE_PROJECT && new File("build/"+global.PROGRAM_NAME).isFile())
+      ? new String[]{"java", "--class-path", "../build/"+global.PROGRAM_NAME, source_file}
       : new String[]{"java", source_file};
       
 
@@ -34,8 +34,21 @@ public class tests {
     cmd = process.concatArgs(cmd, exec_args);
     return process.runProcess(cmd, "test") == 0;
   }
-
-  public static String[] getTestFiles() {
+  
+  public static void printTestFiles() {
+    String[] testfiles = tests.getTestFiles();
+    if (testfiles.length == 0) {
+      stdout.print("No test source files are found in your project!");
+      return;
+    }
+    String txt = "The following source files are in \"test/\":\n";
+    for (String t : testfiles) {
+      txt += "  * " + t + "\n";
+    }
+    stdout.print(txt);
+  }
+  
+  private static String[] getTestFiles() {
     File f = new File("test");
     if (!f.isDirectory() || !f.canRead()) {return new String[0];}
     String[] files = new File("test").list();
@@ -49,18 +62,5 @@ public class tests {
       if (f.isFile() || validTest) {source_files.add(file);}
     }
     return source_files.toArray(new String[0]);
-  }
-
-  public static void printTestFiles() {
-    String[] testfiles = tests.getTestFiles();
-    if (testfiles.length == 0) {
-      stdout.print("No test source files are found in your project!");
-      return;
-    }
-    String txt = "The following source files are in \"test/\":\n";
-    for (String t : testfiles) {
-      txt += "  * " + t + "\n";
-    }
-    stdout.print(txt);
   }
 }

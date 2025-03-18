@@ -3,7 +3,7 @@ package yuuka.cli;
 import java.io.File;
 import java.util.ArrayList;
 
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.stdout;
 import yuuka.fileops;
 import yuuka.misc;
@@ -54,20 +54,20 @@ public class cli {
   
   public static void assignGlobalValues(String[] args, int parse_break) {
     var t1 = new Thread(() -> {
-      if (parser.hasArgument(args, parse_break, "-d", "--debug")) {globalvariables.PRINT_LEVEL = 3;}
-      else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {globalvariables.PRINT_LEVEL = 2;}
-      else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {globalvariables.PRINT_LEVEL = 0;}
+      if (parser.hasArgument(args, parse_break, "-d", "--debug")) {global.PRINT_LEVEL = 3;}
+      else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {global.PRINT_LEVEL = 2;}
+      else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {global.PRINT_LEVEL = 0;}
       
-      if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {globalvariables.INGORE_LIB = true;}
-      if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {globalvariables.TESTS_INCLUDE_PROJECT = true;}
-      if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {globalvariables.DISABLE_WARNINGS = true;}
+      if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {global.INGORE_LIB = true;}
+      if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {global.TESTS_INCLUDE_PROJECT = true;}
+      if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {global.DISABLE_WARNINGS = true;}
       
       String target = getJavaTarget(args, parse_break, 0);
-      if (target != null) {globalvariables.setReleaseTarget(target);}
+      if (target != null) {global.setReleaseTarget(target);}
       target = getJavaTarget(args, parse_break, 1);
-      if (target != null) {globalvariables.setSourceTarget(target);}
+      if (target != null) {global.setSourceTarget(target);}
       target = getJavaTarget(args, parse_break, 2);
-      if (target != null) {globalvariables.setClassTarget(target);}    
+      if (target != null) {global.setClassTarget(target);}    
     });
     t1.start();
     
@@ -83,27 +83,27 @@ public class cli {
   static void assignValue_main(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-m", "--main");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
-      globalvariables.MAIN_CLASS = args[i+1];
+      global.MAIN_CLASS = args[i+1];
     }
   }
   static void assignValue_output(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-o", "--output");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
-      globalvariables.setProgramName(args[i+1]);
+      global.setProgramName(args[i+1]);
     }
   }
   static void assignValue_graalvm(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-gp", "--graal-path");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       var binaryf = new File(args[i+1]);
-      if (binaryf.isFile() && binaryf.canExecute()) {globalvariables.GRAAL_PATH = args[i+1];}
+      if (binaryf.isFile() && binaryf.canExecute()) {global.GRAAL_PATH = args[i+1];}
     }
   }
   static void assignValue_install(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-ip", "--install-path");
     if (i != -1 && parser.hasArgumentValue(args, i)) {
       var installf = new File(args[i+1]);
-      if (installf.isDirectory() && installf.canWrite()) {globalvariables.INSTALL_PATH = args[i+1];}
+      if (installf.isDirectory() && installf.canWrite()) {global.INSTALL_PATH = args[i+1];}
     }
   }
   

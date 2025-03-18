@@ -3,7 +3,7 @@ package yuuka;
 import java.io.File;
 import java.util.ArrayList;
 
-import yuuka.globalvariables;
+import yuuka.global;
 import yuuka.stdout;
 import yuuka.fileops;
 import yuuka.misc;
