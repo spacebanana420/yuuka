@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 

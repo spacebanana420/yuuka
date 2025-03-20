@@ -1,11 +1,11 @@
 package yuuka.jdk;
 
 import java.io.File;
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.misc;
 import yuuka.cli.cli;
 import yuuka.global;
-import yuuka.fileops;
+import yuuka.io.fileops;
 
 public class compiler {
   public static int compile() {

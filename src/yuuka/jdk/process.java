@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.global;
 
 public class process {

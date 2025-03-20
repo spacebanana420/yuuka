@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import yuuka.global;
 import yuuka.misc;
-import yuuka.stdout;
+import yuuka.io.stdout;
 
 public class yuukaConfig {
   public static boolean createConfig() {

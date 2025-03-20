@@ -5,7 +5,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 
 public class download {
   public static int get(String url, String output) {

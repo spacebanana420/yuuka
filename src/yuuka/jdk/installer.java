@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import yuuka.global;
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.misc;
 
 public class installer {

@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import yuuka.global;
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.cli.cli;
 import yuuka.misc;
-import yuuka.fileops;
+import yuuka.io.fileops;
 
 public class tests {
   public static boolean runTest_java(String source_file, String[] args) {    

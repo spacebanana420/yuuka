@@ -12,9 +12,9 @@ import yuuka.config.confreader;
 import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.global;
-import yuuka.fileops;
+import yuuka.io.fileops;
 import yuuka.misc;
 
 import yuuka.jdk.process;

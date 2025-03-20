@@ -1,6 +1,6 @@
 package yuuka.libfetch;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 import yuuka.misc;
 import java.io.File;
 

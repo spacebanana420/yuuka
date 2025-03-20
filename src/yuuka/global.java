@@ -1,6 +1,7 @@
 package yuuka;
 
 import yuuka.jdk.installer;
+import yuuka.io.fileops;
 import java.io.File;
 
 public class global {

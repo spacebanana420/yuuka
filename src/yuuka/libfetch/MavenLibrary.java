@@ -1,6 +1,6 @@
 package yuuka.libfetch;
 
-import yuuka.stdout;
+import yuuka.io.stdout;
 import java.io.File;
 
 public class MavenLibrary {

@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import yuuka.global;
-import yuuka.stdout;
-import yuuka.fileops;
+import yuuka.io.stdout;
+import yuuka.io.fileops;
 import yuuka.misc;
 import yuuka.jdk.tests;
 import yuuka.jdk.installer;
