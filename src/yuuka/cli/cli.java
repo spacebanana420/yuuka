@@ -52,6 +52,14 @@ public class cli {
     return true;
   }
   
+    public static boolean printVersion(String[] args, int parse_break) {
+      if (parser.hasArgument(args, parse_break, "-V", "--version")) {
+        System.out.println(help.title());
+        return true;
+      }
+      return false;
+  }
+  
   public static void assignGlobalValues(String[] args, int parse_break) {
     var t1 = new Thread(() -> {
       if (parser.hasArgument(args, parse_break, "-d", "--debug")) {global.PRINT_LEVEL = 3;}

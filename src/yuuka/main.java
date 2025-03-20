@@ -22,7 +22,8 @@ public class main {
     cli.assignGlobalValues(args, parse_break);
 
     boolean ranTask = runTasks(args, parse_break);
-    if (!ranTask) {System.out.println(help.getHelpMessage_small());}
+    boolean printed_version = cli.printVersion(args, parse_break);
+    if (!ranTask && !printed_version) {System.out.println(help.getHelpMessage_small());}
   }
   
   static boolean runTasks(String[] args, int parse_break) {

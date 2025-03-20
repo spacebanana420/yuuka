@@ -2,7 +2,7 @@ package yuuka.cli;
 
 public class help {
   
-    private static String title() {return "Yuuka version 1.2.3";}
+    static String title() {return "Yuuka version 1.2.3";}
   
     public static String getHelpMessage() {
     return
@@ -27,6 +27,7 @@ public class help {
       + "\n\nAvailable CLI arguments:"
       + "\n  -h (--help) - opens this menu"
       + "\n  -h (--help) [command] - opens the documentation for a specific command"
+      + "\n  -V (--version) - prints Yuuka's version"
       + "\n  -m (--main) [class] - sets the main class"
       + "\n  -r (--release) [number] - sets the target Java release for source reading and compilation"
       + "\n  -src (--source) [number] - sets the target Java version for reading the source code"
