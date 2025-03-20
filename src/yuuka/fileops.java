@@ -38,27 +38,23 @@ public class fileops {
 
   private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory) {
     if (!new File(path).isDirectory()) {return false;}
-    var paths = new File(path).list();
+    String[] paths = new File(path).list();
     if (paths == null || paths.length == 0) {return true;}
 
-    for (String p : paths)
+    try {for (String sub_path : paths)
     {
-      String full_p = path + "/" + p;
-      var f = new File(full_p);
-      var isfile = f.isFile();
-      if (f.isFile() && deletableFile(p, deleteAll)) {
-        try {Files.delete(Path.of(full_p));}
-        catch(IOException e) {return false;}
+      String full_p = path + "/" + sub_path;
+      File f = new File(full_p);
+      if (f.isFile() && deletableFile(sub_path, deleteAll)) {
+        Files.delete(Path.of(full_p));
       }
       else if (f.isDirectory()) {
         boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory);
         if (!result) {return false;}
         if (!deleteDirectory) {continue;}
-        
-        try {Files.delete(Path.of(full_p));}
-        catch(IOException e) {return false;}
+        Files.delete(Path.of(full_p));
       }
-    }
+    }} catch(IOException e) {return false;}
     return true;
   }
 
