@@ -20,8 +20,8 @@ public class main {
     yuukaConfig.parseConfig("build.yuuka");
     cli.assignGlobalValues(args, parse_break);
 
-    boolean ranTask = runTasks(args, parse_break);
     boolean printed_version = cli.printVersion(args, parse_break);
+    boolean ranTask = runTasks(args, parse_break);
     if (!ranTask && !printed_version) {System.out.println(help.getHelpMessage_small());}
   }
   
