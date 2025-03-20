@@ -61,7 +61,7 @@ public class cli {
   }
   
   public static void assignGlobalValues(String[] args, int parse_break) {
-    var t1 = new Thread(() -> {
+    var t = new Thread(() -> {
       if (parser.hasArgument(args, parse_break, "-d", "--debug")) {global.PRINT_LEVEL = 3;}
       else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {global.PRINT_LEVEL = 2;}
       else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {global.PRINT_LEVEL = 0;}
@@ -77,14 +77,14 @@ public class cli {
       target = getJavaTarget(args, parse_break, 2);
       if (target != null) {global.setClassTarget(target);}    
     });
-    t1.start();
+    t.start();
     
     assignValue_main(args, parse_break);
     assignValue_output(args, parse_break);
     assignValue_graalvm(args, parse_break);
     assignValue_install(args, parse_break);
 
-    try{t1.join();}
+    try{t.join();}
     catch(InterruptedException e) {e.printStackTrace();}
   }
   

@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class confreader {
-  public static String[] readConfig(String path) {
+class confreader {
+  static String[] readConfig(String path) {
     var f = new File(path);
     if (!f.isFile() || !f.canRead()) {return new String[0];}
     try {
@@ -34,16 +34,14 @@ public class confreader {
     catch (IOException e) {return new String[0];}
   }
 
-  private static boolean isLineValid(String line) {return line != null && line.length() > 0  && line.charAt(0) != '#';}
-
-  public static boolean getBool(String[] config, String setting) {
+  static boolean getBool(String[] config, String setting) {
     String value = getValue(config, setting);
     if (value == null) {return false;}
     value = value.toLowerCase();
     return value.equals("true") || value.equals("yes");
   }
 
-  public static String getValue(String[] config, String setting) {
+  static String getValue(String[] config, String setting) {
     String setting_line = null;
     for (int i = 0; i < config.length; i++) {
       String line = config[i];
@@ -52,7 +50,7 @@ public class confreader {
     return getValue(setting_line, setting, false);
   }
 
-  public static String getValue(String line, String setting, boolean verifySetting) {
+  static String getValue(String line, String setting, boolean verifySetting) {
     boolean isSettingValid = !verifySetting || isSetting(line, setting);
     if (line == null || !isSettingValid) {return null;}
     
@@ -64,6 +62,8 @@ public class confreader {
     if (value.length() == 0) {return null;}
     return value;
   }
+
+  private static boolean isLineValid(String line) {return line.length() > 0 && line.charAt(0) != '#';}
 
   private static boolean isSetting(String line, String setting) {
     if (line.length() <= setting.length() || line.charAt(setting.length()) != '=')

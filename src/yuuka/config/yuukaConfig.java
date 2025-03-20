@@ -44,14 +44,20 @@ public class yuukaConfig {
 
   public static void parseConfig(String[] config) {
     if (config.length == 0) {return;}
-    setVerboseLevel(config);
-    setMainClass(config);
-    setProgramName(config);
-    setRelease(config);
+    var t = new Thread(() -> {
+      setVerboseLevel(config);
+      setMainClass(config);
+      setProgramName(config);
+      setRelease(config);
+    }); t.start();
+    
     setDisableWarnings(config);
     setGraalPath(config);
     setInstallPath(config);
     setSrcInclusion(config);
+    
+    try{t.join();}
+    catch(InterruptedException e) {e.printStackTrace();}
   }
   
   private static void warnError(String message) {

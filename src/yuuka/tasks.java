@@ -1,21 +1,13 @@
-package yuuka.cli;
+package yuuka;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import yuuka.config.yuukaConfig;
-import yuuka.config.libconf;
-import yuuka.config.confreader;
-
-import yuuka.libfetch.MavenLibrary;
-import yuuka.libfetch.CustomLibrary;
-
-import yuuka.io.stdout;
-import yuuka.global;
-import yuuka.io.fileops;
-import yuuka.misc;
+import yuuka.config.*;
+import yuuka.libfetch.*;
+import yuuka.io.*;
 
 import yuuka.jdk.process;
 import yuuka.jdk.compiler;
@@ -177,7 +169,7 @@ public class tasks {
     if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
     else if (result < 0) {return result;}
 
-    String[] conf = confreader.readConfig("libs.yuuka");
+    String[] conf = libconf.readConfig();
     result = fetchMavenLibs(conf);
     if (result != 0) {return result;}
     result = fetchCustomLibs(conf);
