@@ -20,9 +20,7 @@ class confreader {
       for (int i = 0; i < config.length(); i++) {
         char c = config.charAt(i);
         if (c == '\n') {
-          if (isLineValid(line)) {
-            cfg_lines.add(line);
-          }
+          if (isLineValid(line)) {cfg_lines.add(line);}
           line = "";
           continue;
         }
