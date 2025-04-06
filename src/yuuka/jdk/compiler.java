@@ -8,16 +8,16 @@ import yuuka.global;
 import yuuka.io.fileops;
 
 public class compiler {
-  public static int compile() {
+  public static boolean compile() {
     new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
     
     String[] cmd = process.buildCommand(source_files, "javac");
     cmd = process.addLibArgs(cmd, false);
-    return process.runProcess(cmd, ".");
+    return process.runProcess(cmd, ".") == 0;
   }
 
-  public static int createJAR(String jarName, String main_class, boolean library_jar) {
+  public static boolean createJAR(String jarName, String main_class, boolean library_jar) {
     extractLibraries();
     boolean copyresult = fileops.copyLicensesToBuild();
     if (copyresult) {stdout.print_verbose("Found and copied license files into final JAR");}
@@ -29,7 +29,7 @@ public class compiler {
       (!library_jar)
       ? process.buildJARCommand(jarName, main_class, class_files, "jar")
       : process.buildJARCommand(jarName, class_files, "jar");
-    return process.runProcess(cmd, "build");
+    return process.runProcess(cmd, "build") == 0;
   }
 
   private static void extractLibraries() {

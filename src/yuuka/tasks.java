@@ -32,21 +32,20 @@ public class tasks {
     fileops.deleteClassFiles("test");
   }
 
-  public static int build() {return build(true);}
+  public static boolean build() {return build(true);}
 
-  public static int build(boolean display_main) {
-    if (projectHasNoSource()) {return -3;}
-    int result = fetchLibs();
-    if (result != 0) {stdout.print("Cancelling compilation due to dependency errors"); return -1;}
+  public static boolean build(boolean display_main) {
+    if (projectHasNoSource()) {return false;}
+    if (!fetchLibs()) {stdout.print("Cancelling compilation due to dependency errors"); return false;}
     stdout.print("Compiling project");
     if (display_main) {stdout.print_verbose("Main class is " + global.MAIN_CLASS);}
 
     return compiler.compile();
   }
 
-  public static int packageJAR() {
-    int result = build(true);
-    if (result != 0) {return result;}
+  public static boolean packageJAR() {
+    boolean result = build(true);
+    if (!result) {return false;}
     stdout.print("Creating executable JAR \"" + global.PROGRAM_NAME + "\"");
     if (!global.mainIsDefined()) {
       stdout.print
@@ -55,7 +54,7 @@ public class tasks {
         +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
         +"\n\nExample: for the main file \"src/yuuka/main.java\", the main class should be \"yuuka/main\"."
       );
-      return -1;
+      return false;
     }
     result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, false);
     
@@ -65,9 +64,9 @@ public class tasks {
     return result;
   }
 
-  public static int packageLib() {
-    int result = build(false);
-    if (result != 0) {return result;}
+  public static boolean packageLib() {
+    boolean result = build(false);
+    if (!result) {return false;}
 
     stdout.print("Creating library JAR \"" + global.PROGRAM_NAME + "\"");
     result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, true);
@@ -78,8 +77,8 @@ public class tasks {
     return result;
   }
 
-  public static int buildNativeBinary() {
-    if (packageJAR() != 0) {return -1;}
+  public static boolean buildNativeBinary() {
+    if (!packageJAR()) {return false;}
     String[] nativecmd = new String[]
     {
       global.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
@@ -91,15 +90,15 @@ public class tasks {
     int exitstatus = process.runProcess(nativecmd, "build");
     if (exitstatus == -1) {stdout.print("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
     else if (exitstatus > 0) {stdout.print("The compilation failed!");}
-    return exitstatus;
+    return exitstatus == 0;
   }
 
   public static void runProgram(String[] args) {
-    int result =
+    boolean result =
       (!new File("build/" + global.MAIN_CLASS + ".class").isFile())
       ? build(true)
-      : 0;
-    if (result != 0) {return;}
+      : true;
+    if (!result) {return;}
     stdout.print("Running program");
     compiler.runProgram(args);
   }
@@ -164,16 +163,16 @@ public class tasks {
     catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
   }
   
-  private static int fetchLibs() {
+  private static boolean fetchLibs() {
     int result = libconf.createConfig();
-    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return 0;}
-    else if (result < 0) {return result;}
+    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return false;}
+    else if (result < 0) {return false;}
 
     String[] conf = libconf.readConfig();
     result = fetchMavenLibs(conf);
-    if (result != 0) {return result;}
+    if (result != 0) {return false;}
     result = fetchCustomLibs(conf);
-    return result;
+    return result == 0;
   }
   
   private static boolean projectHasNoSource() {

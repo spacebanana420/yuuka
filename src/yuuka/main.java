@@ -55,14 +55,12 @@ public class main {
             && misc.checkFileExtension(args[i+1], ".jar"))
             {installer.installProgram(args[i+1]);}
           else {
-            int result = tasks.packageJAR();
-            if (result == 0) {installer.installProgram();}
+            if (tasks.packageJAR()) {installer.installProgram();}
           }
           return true;
         case "install-native":
           if (unsupportedTask()) {return true;}
-          int result = tasks.buildNativeBinary();
-          if (result == 0) {installer.installProgram_native();}
+          if (tasks.buildNativeBinary()) {installer.installProgram_native();}
           return true;
         case "uninstall":
           if (parser.hasArgumentValue(args, i)) {tasks.uninstallProgram(args[i+1]);}
