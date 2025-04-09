@@ -20,7 +20,7 @@ public class lib {
   public static ArrayList<String> getLibraryJars() {
     return fileops.getJarFiles("lib");
   }
-  public static String[] getLibArgs(ArrayList<String> jar_files) {
+  public static String[] getLibArgs(ArrayList<String> jar_files) { //should return an arraylist instead
     return mkArgs(jar_files, "--class-path");
   }
   

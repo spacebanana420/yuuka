@@ -1,6 +1,8 @@
 package yuuka.jdk;
 
 import java.io.File;
+import java.util.ArrayList;
+
 import yuuka.io.stdout;
 import yuuka.misc;
 import yuuka.cli.cli;
@@ -25,10 +27,10 @@ public class compiler {
       fileops.removeParent(fileops.getClassFiles("build", true), "build/")
       .toArray(new String[0]);
       
-    String[] cmd =
+    ArrayList<String> cmd =
       (!library_jar)
       ? process.buildJARCommand(jarName, main_class, class_files, "jar")
-      : process.buildJARCommand(jarName, class_files, "jar");
+      : process.buildJARCommand(jarName, null, class_files, "jar");
     return process.runProcess(cmd, "build") == 0;
   }
 

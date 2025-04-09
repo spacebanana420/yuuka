@@ -1,6 +1,7 @@
 package yuuka.io;
 
 import yuuka.global;
+import java.util.ArrayList;
 
 public class stdout {
   public static void print(String message) {
@@ -26,8 +27,19 @@ public class stdout {
   public static void print_debug(String title, String[] contents) {
     if (global.PRINT_LEVEL > 2) {printSeq(title, contents);}
   }
+  
+  public static void print_debug(String title, ArrayList<String> contents) {
+    if (global.PRINT_LEVEL > 2) {printSeq(title, contents);}
+  }
 
   private static void printSeq(String title, String[] contents) {
+    String txt = title;
+    for (String c : contents) {txt += "\n  * " + c;}
+    
+    System.out.println(txt);
+  }
+  
+  private static void printSeq(String title, ArrayList<String> contents) {
     String txt = title;
     for (String c : contents) {txt += "\n  * " + c;}
     

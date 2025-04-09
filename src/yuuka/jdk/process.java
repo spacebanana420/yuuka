@@ -8,25 +8,30 @@ import yuuka.io.stdout;
 import yuuka.global;
 
 public class process {
-
-  //todo: add output directory
   public static int runProcess(String[] cmd, String working_directory) {
+    stdout.print_debug("Working directory: " + working_directory +"\nExecuting the process:\n", cmd);
+    return execute(new ProcessBuilder(cmd), cmd[0], working_directory);
+  }
+  
+  public static int runProcess(ArrayList<String> cmd, String working_directory) {
+    stdout.print_debug("Working directory: " + working_directory +"\nExecuting the process:\n", cmd);
+    return execute(new ProcessBuilder(cmd), cmd.get(0), working_directory);
+  }
+  
+  private static int execute(ProcessBuilder builder, String process_name, String working_dir) {
+    builder.inheritIO();
+    builder.directory(new File(working_dir));
     try {
-      stdout.print_debug("Working directory: " + working_directory +"\nExecuting the process:\n", cmd);
-      var process =
-        new ProcessBuilder(cmd)
-        .inheritIO()
-        .directory(new File(working_directory))
-        .start();
-      process.waitFor();
-      return process.exitValue();
+      Process p = builder.start();
+      p.waitFor();
+      return p.exitValue();
     }
     catch (IOException e) {
-      stdout.print("Error running \"" + cmd[0] + "\": program does not exist!");
+      stdout.print("Error running \"" + process_name + "\": program does not exist!");
       return -1;
     }
     catch (InterruptedException e) {
-      stdout.print("Error running \"" + cmd[0] + "\": process was interrupted!");
+      stdout.print("Error running \"" + process_name + "\": process was interrupted!");
       return -2;
     }
   }
@@ -50,9 +55,7 @@ public class process {
     return cmd.toArray(new String[0]);
   }
   
-  public static String[] buildJARCommand(String output_path, String[] class_files, String binary_path) {return buildJARCommand(output_path, null, class_files, binary_path);}
-  
-  public static String[] buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {
+  public static ArrayList<String> buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {
     var cmd = new ArrayList<String>();
     cmd.add(binary_path);
     
@@ -61,7 +64,7 @@ public class process {
     if (global.DISABLE_JAR_COMPRESSION) {cmd.add("--no-compress");}
     
     for (String file : class_files) {cmd.add(file);}
-    return cmd.toArray(new String[]{});
+    return cmd;
   }
 
   public static String[] buildExtractCommand(String jar_file, String binary_path) {
