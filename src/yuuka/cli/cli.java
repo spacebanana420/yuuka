@@ -69,6 +69,7 @@ public class cli {
       if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {global.INGORE_LIB = true;}
       if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {global.TESTS_INCLUDE_PROJECT = true;}
       if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {global.DISABLE_WARNINGS = true;}
+      if (parser.hasArgument(args, parse_break, "-0", "--no-compress")) {global.DISABLE_JAR_COMPRESSION = true;}
       
       String target = getJavaTarget(args, parse_break, 0);
       if (target != null) {global.setReleaseTarget(target);}

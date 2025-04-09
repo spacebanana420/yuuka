@@ -22,6 +22,7 @@ public class yuukaConfig {
       + "\n#release_target=" + global.RUNTIME_JAVA_VERSION
       + "\n#source_target=" + global.RUNTIME_JAVA_VERSION
       + "\n#class_target=" + global.RUNTIME_JAVA_VERSION
+      + "\n#disable_jar_compression=false"
       + "\n#disable_warnings=false"
       + "\n#graal_path=native-image"
       + "\n#install_path="
@@ -52,6 +53,7 @@ public class yuukaConfig {
     }); t.start();
     
     setDisableWarnings(config);
+    setDisableCompression(config);
     setGraalPath(config);
     setInstallPath(config);
     setSrcInclusion(config);
@@ -136,6 +138,11 @@ public class yuukaConfig {
   private static void setDisableWarnings(String[] config) {
     boolean value = confreader.getBool(config, "disable_warnings");
     global.DISABLE_WARNINGS = value;
+  }
+  
+  private static void setDisableCompression(String[] config) {
+    boolean value = confreader.getBool(config, "disable_jar_compression");
+    global.DISABLE_JAR_COMPRESSION = value;
   }
 
   private static void setGraalPath(String[] config) {

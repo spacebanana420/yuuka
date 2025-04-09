@@ -49,24 +49,19 @@ public class process {
 
     return cmd.toArray(new String[0]);
   }
-
+  
+  public static String[] buildJARCommand(String output_path, String[] class_files, String binary_path) {return buildJARCommand(output_path, null, class_files, binary_path);}
+  
   public static String[] buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {
-    String[] cmd = new String[class_files.length + 4];
-    cmd[0] = binary_path;
-    cmd[1] = "cfe";
-    cmd[2] = output_path;
-    cmd[3] = main_class;
-    for (int i = 4; i < cmd.length; i++) {cmd[i] = class_files[i-4];}
-    return cmd;
-  }
-
-  public static String[] buildJARCommand(String output_path, String[] class_files, String binary_path) {
-    String[] cmd = new String[class_files.length + 3];
-    cmd[0] = binary_path;
-    cmd[1] = "cf";
-    cmd[2] = output_path;
-    for (int i = 3; i < cmd.length; i++) {cmd[i] = class_files[i-3];}
-    return cmd;
+    var cmd = new ArrayList<String>();
+    cmd.add(binary_path);
+    
+    cmd.add("-c"); cmd.add("-f"); cmd.add(output_path); 
+    if (main_class != null) {cmd.add("--main-class="+main_class);}
+    if (global.DISABLE_JAR_COMPRESSION) {cmd.add("--no-compress");}
+    
+    for (String file : class_files) {cmd.add(file);}
+    return cmd.toArray(new String[]{});
   }
 
   public static String[] buildExtractCommand(String jar_file, String binary_path) {

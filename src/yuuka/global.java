@@ -10,6 +10,7 @@ public class global {
 
   public static boolean INGORE_LIB = false;
   public static boolean DISABLE_WARNINGS = false;
+  public static boolean DISABLE_JAR_COMPRESSION = false;
 
   public static String GRAAL_PATH = "native-image";
 

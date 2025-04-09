@@ -37,6 +37,7 @@ public class help {
       + "\n  -v (--verbose) - prints more information"
       + "\n  -d (--debug) - prints even further information"
       + "\n  -o (--output) [JAR filename] - sets the name of the compiled JAR"
+      + "\n  -0 (--no-compress) - disables ZIP compression for JAR files"
       + "\n  -nw (--no-warnings) - disables compiler warnings"
       + "\n  -gp (--graal-path) - sets a custom path for the GraalVM \"native-image\" binary"
       + "\n  -ip (--install-path) - sets a custom installation path for the \"install\" task"
