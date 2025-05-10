@@ -11,6 +11,11 @@ import yuuka.io.fileops;
 
 public class compiler {
   public static boolean compile() {
+    File build_f = new File("build");
+    if (!build_f.canWrite()) {
+      stdout.print("Error running compiler! Build directory lacks permissions to write!");
+      return false;
+    }
     new File("build").mkdir();
     var source_files = fileops.getSourceFiles("src");
     
