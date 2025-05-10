@@ -35,7 +35,7 @@ public class libconf {
     catch (IOException e) {stdout.print("Failed to create dependency config file!"); return -1;}
   }
   
-  public static String[] readConfig() {return confreader.readConfig("libs.yuuka");}
+  public static String[] readConfig() {return confreader.readConfig_str("libs.yuuka").toArray(new String[0]);}
 
   public static MavenLibrary[] getMavenLibraries(String[] conf) {
     var libs = new ArrayList<MavenLibrary>();

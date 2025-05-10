@@ -39,11 +39,15 @@ public class yuukaConfig {
   }
 
   public static void parseConfig(String conf_path) {
-    String[] conf = confreader.readConfig(conf_path);
+    ConfOpt[] conf = confreader.readConfig(conf_path);
+    if (conf == null) {
+      stdout.print("Error loading project's build.yuuka file! Make sure the file has read permission!");
+      return;
+    }
     parseConfig(conf);
   }
 
-  public static void parseConfig(String[] config) {
+  public static void parseConfig(ConfOpt[] config) {
     if (config.length == 0) {return;}
     var t = new Thread(() -> {
       setVerboseLevel(config);
@@ -66,7 +70,7 @@ public class yuukaConfig {
     System.out.println("yuuka.build error: " + message);
   }
 
-  private static void setVerboseLevel(String[] config) {
+  private static void setVerboseLevel(ConfOpt[] config) {
     String value = confreader.getValue(config, "verbose_level");
     if (value == null) {return;}
 
@@ -78,12 +82,12 @@ public class yuukaConfig {
     global.PRINT_LEVEL = level;
   }
 
-  private static void setSrcInclusion(String[] config) {
+  private static void setSrcInclusion(ConfOpt[] config) {
     boolean value = confreader.getBool(config, "tests_include_src");
     global.TESTS_INCLUDE_PROJECT = value;
   }
 
-  private static void setInstallPath(String[] config) {
+  private static void setInstallPath(ConfOpt[] config) {
     String value = confreader.getValue(config, "install_path");
     if (value == null) {return;}
     var f = new File(value);
@@ -106,19 +110,19 @@ public class yuukaConfig {
     global.INSTALL_PATH = value;
   }
 
-  private static void setMainClass(String[] config) {
+  private static void setMainClass(ConfOpt[] config) {
     String value = confreader.getValue(config, "main_class");
     if (value == null) {return;}
     global.MAIN_CLASS = value;
   }
 
-  private static void setProgramName(String[] config) {
+  private static void setProgramName(ConfOpt[] config) {
     String value = confreader.getValue(config, "jar_filename");
     if (value == null) {return;}
     global.setProgramName(value);
   }
 
-  private static void setRelease(String[] config) {
+  private static void setRelease(ConfOpt[] config) {
     String value;
     
     value = confreader.getValue(config, "release_target");
@@ -135,17 +139,17 @@ public class yuukaConfig {
     }
   }
   
-  private static void setDisableWarnings(String[] config) {
+  private static void setDisableWarnings(ConfOpt[] config) {
     boolean value = confreader.getBool(config, "disable_warnings");
     global.DISABLE_WARNINGS = value;
   }
   
-  private static void setDisableCompression(String[] config) {
+  private static void setDisableCompression(ConfOpt[] config) {
     boolean value = confreader.getBool(config, "disable_jar_compression");
     global.DISABLE_JAR_COMPRESSION = value;
   }
 
-  private static void setGraalPath(String[] config) {
+  private static void setGraalPath(ConfOpt[] config) {
     String value = confreader.getValue(config, "graal_path");
     if (value == null) {return;}
     var f = new File(value);

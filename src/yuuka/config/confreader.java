@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class confreader {
-  static String[] readConfig(String path) {
+  static ArrayList<String> readConfig_str(String path) {
     var f = new File(path);
-    if (!f.isFile() || !f.canRead()) {return new String[0];}
+    if (!f.isFile() || !f.canRead()) {return null;}
     try {
       var is = new FileInputStream(path);
       String config = new String(is.readAllBytes());
@@ -27,27 +27,29 @@ class confreader {
         line += c;
       }
       if (isLineValid(line)) {cfg_lines.add(line);}
-      return cfg_lines.toArray(new String[0]);
+      
+      return cfg_lines;
     }
-    catch (IOException e) {return new String[0];}
+    catch (IOException e) {return null;}
   }
+  
+  static ConfOpt[] readConfig(String path) {return ConfOpt.getOptions(readConfig_str(path));}
 
-  static boolean getBool(String[] config, String setting) {
+  static boolean getBool(ConfOpt[] config, String setting) {
     String value = getValue(config, setting);
     if (value == null) {return false;}
     value = value.toLowerCase();
     return value.equals("true") || value.equals("yes");
   }
 
-  static String getValue(String[] config, String setting) {
-    String setting_line = null;
-    for (int i = 0; i < config.length; i++) {
-      String line = config[i];
-      if (isSetting(line, setting)) {setting_line = line; break;}
+  static String getValue(ConfOpt[] config, String setting) {
+    for (ConfOpt option : config) {
+      if (option.keysMatch(setting)) {return option.value;}
     }
-    return getValue(setting_line, setting, false);
+    return null;
   }
 
+  //used in libconf.java
   static String getValue(String line, String setting, boolean verifySetting) {
     boolean isSettingValid = !verifySetting || isSetting(line, setting);
     if (line == null || !isSettingValid) {return null;}
