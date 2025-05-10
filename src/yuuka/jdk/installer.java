@@ -38,9 +38,11 @@ public class installer {
 
   public static String getInstallLocation() {
     String home = System.getProperty("user.home");
-    String os = System.getProperty("os.name");
+    String os = System.getProperty("os.name").toLowerCase();
+    
+    if (os.equals("haiku")) {return "/boot/home/config/bin"}
     if (home.equals("/root")) {return "/usr/local/bin";}
-    if (os.equals("FreeBSD")) {return home + "/bin";}
+    if (os.equals("freebsd")) {return home + "/bin";}
     return home + "/.local/bin";
   }
 

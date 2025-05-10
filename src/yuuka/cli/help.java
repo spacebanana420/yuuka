@@ -160,6 +160,7 @@ public class help {
       + "\n * Running Yuuka as root: The default installation path is \"/usr/local/bin\". This path comes with your system, is already assigned to $PATH and will work for all users in your system, and so this is the recommended method."
       + "\n * Running Yuuka as user (Linux, OpenBSD, NetBSD, etc): if you run Yuuka without root, it assumes \"~/.local/bin\". This path normally doesn't exist and must be created and added to the $PATH by you."
       + "\n * Running Yuuka as user (FreeBSD): Yuuka will default to \"~/bin\", since this path is in the system's $PATH variable for all users you create."
+      + "\n * Running Yuuka on Haiku: Regardless of the user and privilege, Yuuka will install your project at /boot/home/config/bin"
       +"\n\nYou can also manually specify the installation path through build.yuuka or the \"-ip\" and \"--install-path\" arguments."
       + "\nIf you pass the path to a JAR file manually, Yuuka will install that program instead of yours:"
       +"\n\"yuuka install someprogram.jar\""
