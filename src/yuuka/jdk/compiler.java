@@ -17,7 +17,7 @@ public class compiler {
       return false;
     }
     new File("build").mkdir();
-    var source_files = fileops.getSourceFiles("src");
+    ArrayList<String> source_files = fileops.getSourceFiles("src");
     
     String[] cmd = process.buildCommand(source_files, "javac");
     cmd = process.addLibArgs(cmd, false);
