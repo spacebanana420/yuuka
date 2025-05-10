@@ -35,10 +35,11 @@ public class fileops {
     return true;
   }
 
-  public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false);}
-  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true);}
+  public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false, false);}
+  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true, false);}
+  public static boolean deleteBuildFiles_all(String path) {return deleteClassFiles(path, true, true, true);}
 
-  private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory) {
+  private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory, boolean deleteJars) {
     if (!new File(path).isDirectory()) {return false;}
     String[] paths = new File(path).list();
     if (paths == null || paths.length == 0) {return true;}
@@ -47,11 +48,13 @@ public class fileops {
     {
       String full_p = path + "/" + sub_path;
       File f = new File(full_p);
-      if (f.isFile() && deletableFile(sub_path, deleteAll)) {
+      boolean deletable = deletableFile(sub_path, deleteAll, deleteJars);
+      
+      if (f.isFile() && deletable) {
         Files.delete(Path.of(full_p));
       }
       else if (f.isDirectory()) {
-        boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory);
+        boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory, deleteJars);
         if (!result) {return false;}
         if (!deleteDirectory) {continue;}
         Files.delete(Path.of(full_p));
@@ -60,10 +63,9 @@ public class fileops {
     return true;
   }
 
-  private static boolean deletableFile(String name, boolean deleteAll) {
-    if (isJarFile(name)) {return false;}
-    if (deleteAll) {return true;}
-    return isClassFile(name) || name.equals("MANIFEST.MF");
+  private static boolean deletableFile(String name, boolean deleteAll, boolean deleteJars) {
+    if (isJarFile(name) && !deleteJars) {return false;}
+    return deleteAll || isClassFile(name) || name.equals("MANIFEST.MF");
   }
 
   public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}

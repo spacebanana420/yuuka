@@ -27,7 +27,7 @@ public class tasks {
   public static void cleanProject() {
     stdout.print("Cleaning up all class files");
     fileops.deleteClassFiles("src");
-    fileops.deleteBuildFiles("build");
+    fileops.deleteBuildFiles_all("build");
     fileops.deleteClassFiles("lib");
     fileops.deleteClassFiles("test");
   }
