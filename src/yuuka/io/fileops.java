@@ -38,6 +38,7 @@ public class fileops {
   public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false, false);}
   public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true, false);}
   public static boolean deleteBuildFiles_all(String path) {return deleteClassFiles(path, true, true, true);}
+  public static boolean deleteBeforeCompile(String path) {return deleteClassFiles(path, false, true, true);}
 
   private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory, boolean deleteJars) {
     if (!new File(path).isDirectory()) {return false;}
@@ -64,8 +65,9 @@ public class fileops {
   }
 
   private static boolean deletableFile(String name, boolean deleteAll, boolean deleteJars) {
-    if (isJarFile(name) && !deleteJars) {return false;}
-    return deleteAll || isClassFile(name) || name.equals("MANIFEST.MF");
+    boolean is_jar = isJarFile(name);
+    if (is_jar && !deleteJars) {return false;}
+    return deleteAll || (is_jar && deleteJars) || isClassFile(name) || name.equals("MANIFEST.MF");
   }
 
   public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}

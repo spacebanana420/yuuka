@@ -37,6 +37,7 @@ public class tasks {
   public static boolean build(boolean display_main) {
     if (projectHasNoSource()) {return false;}
     if (!fetchLibs()) {stdout.print("Cancelling compilation due to dependency errors"); return false;}
+    fileops.deleteBeforeCompile("build");
     stdout.print("Compiling project");
     if (display_main) {stdout.print_verbose("Main class is " + global.MAIN_CLASS);}
 
