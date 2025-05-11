@@ -49,16 +49,14 @@ public class fileops {
     {
       String full_p = path + "/" + sub_path;
       File f = new File(full_p);
-      boolean deletable = deletableFile(sub_path, deleteAll, deleteJars);
       
-      if (f.isFile() && deletable) {
+      if (f.isFile() && deletableFile(sub_path, deleteAll, deleteJars)) {
         Files.delete(Path.of(full_p));
       }
       else if (f.isDirectory()) {
         boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory, deleteJars);
         if (!result) {return false;}
-        if (!deleteDirectory) {continue;}
-        Files.delete(Path.of(full_p));
+        if (deleteDirectory) {Files.delete(Path.of(full_p));}
       }
     }} catch(IOException e) {return false;}
     return true;
@@ -70,14 +68,9 @@ public class fileops {
     return deleteAll || (is_jar && deleteJars) || isClassFile(name) || name.equals("MANIFEST.MF");
   }
 
-  public static boolean isSourceFile(String name) {return misc.checkFileExtension(name, ".java");}
-  public static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
-  public static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
-
   public static String findMainClass() {
     char file_separator = System.getProperty("file.separator").charAt(0);
-    return
-      findMainClass("src", file_separator);
+    return findMainClass("src", file_separator);
   }
   
   private static String findMainClass(String path, char file_separator) {
@@ -88,7 +81,7 @@ public class fileops {
     {
       String full_path = path + file_separator + subpath;
       File f = new File(full_path);
-      if (!f.canRead()){continue;}
+      if (!f.canRead()) {continue;}
       
       if (f.isFile() && subpath.equals("main.java")) {
         return
@@ -158,4 +151,7 @@ public class fileops {
   private static boolean isLicense(String path) {
     return new File(path).getName().equals("LICENSE");
   }
+  
+  private static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
+  private static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
 }

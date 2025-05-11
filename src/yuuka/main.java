@@ -17,8 +17,8 @@ public class main {
     int parse_break = cli.findParseBreak(args);
     if (cli.askedForHelp(args, parse_break)) {return;}
     
-    yuukaConfig.parseConfig("build.yuuka");
-    cli.assignGlobalValues(args, parse_break);
+    yuukaConfig.setConfigValues("build.yuuka"); //set global.java values from build.yuuka
+    cli.assignGlobalValues(args, parse_break); //set global.java values from CLI arguments
 
     boolean printed_version = cli.printVersion(args, parse_break);
     boolean ranTask = runTasks(args, parse_break);
