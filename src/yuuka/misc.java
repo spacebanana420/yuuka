@@ -37,6 +37,7 @@ public class misc {
     for (int i = 0; i < first_slash; i++) {name += main_class.charAt(i);}
     return name + ".jar";
   }
+  
   public static String removeExtension(String filename) {
     int point_i = -1;
     for (int i = filename.length()-1; i >= 0; i--) {
@@ -48,14 +49,6 @@ public class misc {
       newname += filename.charAt(i);
     }
     return newname;
-  }
-
-  public static boolean checkFileExtension(String filename, String... extensions) {
-    for (String e : extensions) {
-      boolean result = checkFileExtension(filename, e);
-      if (result) {return true;}
-    }
-    return false;
   }
 
   public static boolean checkFileExtension(String name, String extension) {

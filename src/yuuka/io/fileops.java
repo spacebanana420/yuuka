@@ -107,7 +107,8 @@ public class fileops {
     for (String subp : subpaths)
     {
       String path_in = path + "/" + subp;
-      var f = new File(path_in);
+      File f = new File(path_in);
+      
       if (f.isFile() && isLicense(subp)) {
         String path_out = path_in.replaceFirst("src", "build");
         stdout.print_debug
@@ -126,18 +127,19 @@ public class fileops {
 
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
     String[] subpaths = new File(root_path).list();
-
     ArrayList<String> source_files = new ArrayList<>();
+    
     for (String p : subpaths)
     {
       File f = new File(root_path + "/" + p);
-      if (f.isFile() && f.canRead() && (misc.checkFileExtension(p, file_extension) || isLicense(p, checklicenses)))
+      if (!f.canRead()) {continue;}
+      if (f.isFile() && (misc.checkFileExtension(p, file_extension) || isLicense(p, checklicenses)))
       {
         source_files.add(root_path + "/" + p);
       }
-      else if (f.isDirectory() && f.canRead())
+      else if (f.isDirectory())
       {
-        var files = getFiles_generic(root_path + "/" + p, checklicenses, file_extension);
+        ArrayList<String> files = getFiles_generic(root_path + "/" + p, checklicenses, file_extension);
         source_files.addAll(files); 
       }
     }

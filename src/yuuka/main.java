@@ -51,8 +51,11 @@ public class main {
           return true;
         case "install":
           if (unsupportedTask()) {return true;}
-          if (parser.hasArgumentValue(args, i) && new File(args[i+1]).isFile()
-            && misc.checkFileExtension(args[i+1], ".jar"))
+          if (
+            parser.hasArgumentValue(args, i)
+            && new File(args[i+1]).isFile()
+            && misc.checkFileExtension(args[i+1], ".jar")
+            )
             {installer.installProgram(args[i+1]);}
           else {
             if (tasks.packageJAR()) {installer.installProgram();}
