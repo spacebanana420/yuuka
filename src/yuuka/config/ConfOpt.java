@@ -34,6 +34,7 @@ public class ConfOpt {
   }
   
   static ConfOpt[] getOptions(ArrayList<String> lines) {
+    if (lines == null) {return null;}
     var opts = new ArrayList<ConfOpt>();
     for (String line: lines) {
       var o = new ConfOpt(line);

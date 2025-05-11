@@ -39,6 +39,7 @@ public class yuukaConfig {
   }
 
   public static void parseConfig(String conf_path) {
+    if (!new File(conf_path).isFile()) {return;}
     ConfOpt[] conf = confreader.readConfig(conf_path);
     if (conf == null) {
       stdout.print("Error loading project's build.yuuka file! Make sure the file has read permission!");
@@ -48,7 +49,7 @@ public class yuukaConfig {
   }
 
   public static void parseConfig(ConfOpt[] config) {
-    if (config.length == 0) {return;}
+    if (config == null || config.length == 0) {return;}
     var t = new Thread(() -> {
       setVerboseLevel(config);
       setMainClass(config);
