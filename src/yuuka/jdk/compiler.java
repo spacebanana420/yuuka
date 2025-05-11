@@ -28,9 +28,7 @@ public class compiler {
     extractLibraries();
     boolean copyresult = fileops.copyLicensesToBuild();
     if (copyresult) {stdout.print_verbose("Found and copied license files into final JAR");}
-    String[] class_files =
-      fileops.removeParent(fileops.getClassFiles("build", true), "build/")
-      .toArray(new String[0]);
+    ArrayList<String> class_files = fileops.removeParent(fileops.getClassFiles("build", true), "build/");
       
     ArrayList<String> cmd =
       (!library_jar)

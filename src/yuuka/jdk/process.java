@@ -55,7 +55,7 @@ public class process {
     return cmd.toArray(new String[0]);
   }
   
-  public static ArrayList<String> buildJARCommand(String output_path, String main_class, String[] class_files, String binary_path) {
+  public static ArrayList<String> buildJARCommand(String output_path, String main_class, ArrayList<String> class_files, String binary_path) {
     var cmd = new ArrayList<String>();
     cmd.add(binary_path);
     
@@ -63,7 +63,7 @@ public class process {
     if (main_class != null) {cmd.add("--main-class="+main_class);}
     if (global.DISABLE_JAR_COMPRESSION) {cmd.add("--no-compress");}
     
-    for (String file : class_files) {cmd.add(file);}
+    cmd.addAll(class_files);
     return cmd;
   }
 

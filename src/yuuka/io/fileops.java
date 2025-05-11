@@ -110,15 +110,13 @@ public class fileops {
       var f = new File(path_in);
       if (f.isFile() && isLicense(subp)) {
         String path_out = path_in.replaceFirst("src", "build");
-        var pin = Path.of(path_in);
-        var pout = Path.of(path_out);
         stdout.print_debug
         (
           "License file found in source"
           +"\n  Input path: " + path_in
           +"\n  Output path: " + path_out
         );
-        try {Files.copy(pin, pout); copied_licenses++;}
+        try {Files.copy(Path.of(path_in), Path.of(path_out)); copied_licenses++;}
         catch (IOException e) {stdout.print("Error copying license file " + subp + " into build!");}
       }
       else if (f.isDirectory()) {copyLicensesToBuild(path_in);}
@@ -147,10 +145,7 @@ public class fileops {
   }
 
   private static boolean isLicense(String path, boolean checkLicenses) {return checkLicenses && isLicense(path);}
-
-  private static boolean isLicense(String path) {
-    return new File(path).getName().equals("LICENSE");
-  }
+  private static boolean isLicense(String path) {return new File(path).getName().equals("LICENSE");}
   
   private static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
   private static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}

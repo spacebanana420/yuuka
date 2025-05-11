@@ -25,7 +25,7 @@ public class main {
     if (!ranTask && !printed_version) {System.out.println(help.getHelpMessage_small());}
   }
   
-  static boolean runTasks(String[] args, int parse_break) {
+  private static boolean runTasks(String[] args, int parse_break) {
     for (int i = 0; i < parse_break; i++) {
       switch(args[i]) {
         case "init":
@@ -86,7 +86,7 @@ public class main {
     return false;
   }
   
-  static boolean unsupportedTask() {
+  private static boolean unsupportedTask() {
     if (System.getProperty("os.name").contains("Windows")) {
       stdout.print("The install task is not available for Windows!");
       return true;
