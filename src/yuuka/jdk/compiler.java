@@ -12,11 +12,11 @@ import yuuka.io.fileops;
 public class compiler {
   public static boolean compile() {
     File build_f = new File("build");
+    build_f.mkdir();
     if (!build_f.canWrite()) {
       stdout.print("Error running compiler! Build directory lacks permissions to write!");
       return false;
     }
-    new File("build").mkdir();
     ArrayList<String> source_files = fileops.getSourceFiles("src");
     
     String[] cmd = process.buildCommand(source_files, "javac");
