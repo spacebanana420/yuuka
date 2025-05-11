@@ -22,7 +22,7 @@ public class help {
       + "\n  * install                      builds and installs your program (Unix-like only)"
       + "\n  * install [jar path]           installs an existing JAR file"
       + "\n  * install-native               builds your program natively with GraalVM and installs it (experimental)"
-      + "\n  * unintsall [name]             uninstalls a program, removes its script and JAR file"
+      + "\n  * uninstall [name]             uninstalls a program, removes its script and JAR file"
       
       + "\n\nAvailable CLI arguments:"
       + "\n  -h (--help)                    opens this menu"
