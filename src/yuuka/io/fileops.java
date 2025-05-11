@@ -75,33 +75,34 @@ public class fileops {
   public static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
 
   public static String findMainClass() {
-    String file_separator = System.getProperty("file.separator");
-    String root = "src"+file_separator;
-    return findMainClass("src", root, file_separator);
+    char file_separator = System.getProperty("file.separator").charAt(0);
+    return
+      findMainClass("src", file_separator);
   }
   
-  private static String findMainClass(String path, String root, String file_separator) {
+  private static String findMainClass(String path, char file_separator) {
     String[] paths = new File(path).list();
-    if (paths == null) {paths = new String[0];}
-    for (String p : paths)
+    if (paths == null || paths.length == 0) {return null;}
+    
+    for (String subpath : paths)
     {
-      String full_p = path + file_separator + p;
-      var f = new File(full_p);
-      boolean canRead = f.canRead();
-      if (f.isFile() && canRead && p.contains("main.java"))
-      {
+      String full_path = path + file_separator + subpath;
+      File f = new File(full_path);
+      if (!f.canRead()){continue;}
+      
+      if (f.isFile() && subpath.equals("main.java")) {
         return
-          (full_p)
-          .replaceFirst(root, "")
-          .replaceFirst(".java", "");
+          full_path
+          .replaceFirst(".java", "")
+          .replaceFirst("src"+file_separator, "")
+        ;
       }
-      else if (f.isDirectory() && canRead)
-      {
-        String result = findMainClass(full_p, root, file_separator);
-        if (!result.equals("main")) {return result;}
+      else if (f.isDirectory()) {
+        String result = findMainClass(full_path, file_separator);
+        if (result != null) {return result;}
       }
     }
-    return "main";
+    return null;
   }
 
   public static boolean copyLicensesToBuild() {return copyLicensesToBuild("src");}

@@ -4,8 +4,8 @@ CLI arguments override this config
 To enable a setting, uncomment it by removing the "#" at its start
 Empty or invalid settings are ignored
 
-#main_class=yuuka/main
-#jar_filename=yuuka.jar
+main_class=yuuka/main
+jar_filename=yuuka.jar
 #release_target=21
 #source_target=21
 #class_target=21

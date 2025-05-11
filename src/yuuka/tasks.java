@@ -51,7 +51,17 @@ public class tasks {
     if (!global.mainIsDefined()) {
       stdout.print
       (
-        "Main class is not defined or incorrectly defined! Cancelling JAR packaging."
+        "Main class is not defined!"
+        +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
+        +"\n\nExample: for the main file \"src/yuuka/main.java\", the main class should be \"yuuka/main\"."
+      );
+      return false;
+    }
+    
+    if (!global.mainIsCorrect()) {
+      stdout.print
+      (
+        "Main class \"" + global.MAIN_CLASS + "\" is incorrectly defined! Cancelling JAR packaging."
         +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
         +"\n\nExample: for the main file \"src/yuuka/main.java\", the main class should be \"yuuka/main\"."
       );

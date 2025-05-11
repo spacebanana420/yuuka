@@ -26,7 +26,11 @@ public class global {
   public static final int RUNTIME_JAVA_VERSION = getRuntimeVersion();
   
   public static boolean mainIsDefined() {
-    return MAIN_CLASS != null && new File("src/"+MAIN_CLASS+".java").isFile();
+    return MAIN_CLASS != null;
+  }
+  
+  public static boolean mainIsCorrect() {
+    return new File("src/"+MAIN_CLASS+".java").isFile();
   }
   
   public static void setProgramName(String name) {
