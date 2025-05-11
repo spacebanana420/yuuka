@@ -21,24 +21,23 @@ public class lib {
     return fileops.getJarFiles("lib");
   }
   public static String[] getLibArgs(ArrayList<String> jar_files) { //should return an arraylist instead
-    return mkArgs(jar_files, "--class-path");
+    String[] cli_args = new String[jar_files.size() * 2];
+    int files_i = 0;
+    
+    for (int i = 0; i < cli_args.length; i+=2) {
+      cli_args[i] = "--class-path";
+      cli_args[i+1] = jar_files.get(files_i);
+      files_i++;
+    }
+    return cli_args;
   }
   
+  //for executing library-related commands with build/ as the working directory
   public static ArrayList<String> changeBaseDirectory(ArrayList<String> jar_files) {
     ArrayList<String> new_files = jar_files;
     for (int i = 0; i < jar_files.size(); i++) {
       new_files.set(i, "../" + jar_files.get(i));
     }
     return new_files;
-  }
-
-  private static String[] mkArgs(ArrayList<String> jar_files, String arg) {
-    String[] cli_args = new String[jar_files.size() * 2];
-    int files_i = 0;
-    for (int i = 0; i < cli_args.length; i+=2) {
-      cli_args[i] = arg; cli_args[i+1] = jar_files.get(files_i);
-      files_i++;
-    }
-    return cli_args;
   }
 }

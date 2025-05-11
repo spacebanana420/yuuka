@@ -124,7 +124,7 @@ public class fileops {
     return copied_licenses > 0;
   }
 
-  private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String... file_extension) {
+  private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
     String[] subpaths = new File(root_path).list();
 
     ArrayList<String> source_files = new ArrayList<>();

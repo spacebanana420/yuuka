@@ -84,7 +84,7 @@ public class process {
   public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
     if (global.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
     
-    var jars = lib.getLibraryJars();
+    ArrayList<String> jars = lib.getLibraryJars();
     if (change_base_directory) {jars = lib.changeBaseDirectory(jars);}
     String[] libargs = lib.getLibArgs(jars);
     

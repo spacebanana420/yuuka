@@ -39,7 +39,7 @@ public class compiler {
 
   private static void extractLibraries() {
     if (global.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
-    var jars = lib.changeBaseDirectory(lib.getLibraryJars());
+    ArrayList<String> jars = lib.changeBaseDirectory(lib.getLibraryJars());
     for (String jar : jars) {
       stdout.print_verbose("Extracting library JAR " + jar);
       process.runProcess(process.buildExtractCommand(jar, "jar"), "build");
