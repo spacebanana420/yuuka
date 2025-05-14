@@ -27,11 +27,11 @@ public class process {
       return p.exitValue();
     }
     catch (IOException e) {
-      stdout.print("Error running \"" + process_name + "\": program does not exist!");
+      stdout.error("Error running \"" + process_name + "\": program does not exist!");
       return -1;
     }
     catch (InterruptedException e) {
-      stdout.print("Error running \"" + process_name + "\": process was interrupted!");
+      stdout.error("Error running \"" + process_name + "\": process was interrupted!");
       return -2;
     }
   }

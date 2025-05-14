@@ -36,7 +36,7 @@ public class tasks {
 
   public static boolean build(boolean display_main) {
     if (projectHasNoSource()) {return false;}
-    if (!fetchLibs()) {stdout.print("Cancelling compilation due to dependency errors"); return false;}
+    if (!fetchLibs()) {stdout.error("Cancelling compilation due to dependency errors"); return false;}
     fileops.deleteBeforeCompile("build");
     stdout.print("Compiling project");
     if (display_main) {stdout.print_verbose("Main class is " + global.MAIN_CLASS);}
@@ -49,7 +49,7 @@ public class tasks {
     if (!result) {return false;}
     stdout.print("Creating executable JAR \"" + global.PROGRAM_NAME + "\"");
     if (!global.mainIsDefined()) {
-      stdout.print
+      stdout.error
       (
         "Main class is not defined!"
         +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
@@ -59,7 +59,7 @@ public class tasks {
     }
     
     if (!global.mainIsCorrect()) {
-      stdout.print
+      stdout.error
       (
         "Main class \"" + global.MAIN_CLASS + "\" is incorrectly defined! Cancelling JAR packaging."
         +"\nIf not automatically detected, you can set your program's main class through build.yuuka or as a command-line argument."
@@ -99,8 +99,8 @@ public class tasks {
     stdout.print("Building native binary with GraalVM");
     stdout.print_verbose("GraalVM command:", nativecmd);
     int exitstatus = process.runProcess(nativecmd, "build");
-    if (exitstatus == -1) {stdout.print("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
-    else if (exitstatus > 0) {stdout.print("The compilation failed!");}
+    if (exitstatus == -1) {stdout.error("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
+    else if (exitstatus > 0) {stdout.error("The compilation failed!");}
     return exitstatus == 0;
   }
 
@@ -127,7 +127,7 @@ public class tasks {
     boolean isExecutableFile = f_source.isFile() && f_source.canExecute();
   
     if (!isJavaFile && !isExecutableFile) {
-      stdout.print("The file with name \"test/" + source_arg + "\" does not exist!");
+      stdout.error("The file with name \"test/" + source_arg + "\" does not exist!");
       return;
     }
     
@@ -139,7 +139,7 @@ public class tasks {
     }
     else {result = tests.runTest_native(f_source.getAbsolutePath(), args);}
       
-    if (!result) {stdout.print("Error during building/running the test!");}
+    if (!result) {stdout.error("Error during building/running the test!");}
   }
   
   public static void uninstallProgram(String program_name) {
@@ -153,15 +153,15 @@ public class tasks {
     boolean jar_canWrite = f_jar.canWrite();
     
     if (!executable_exists) {
-      stdout.print("Program " + program_name + " not found! Failed to uninstall!");
+      stdout.error("Program " + program_name + " not found! Failed to uninstall!");
       return;
     }
     if (!executable_canWrite) {
-      stdout.print("Could not uninstall program " + program_name + "! Make sure you have write access in " + install_path);
+      stdout.error("Could not uninstall program " + program_name + "! Make sure you have write access in " + install_path);
       return;
     }
     if (jar_exists && !jar_canWrite) {
-      stdout.print("Could not uninstall the JAR file of program " + program_name + "! Make sure you have write access to it");
+      stdout.error("Could not uninstall the JAR file of program " + program_name + "! Make sure you have write access to it");
     }
     var p_script = Path.of(install_path + "/" + program_name);
     var p_jar = Path.of(install_path + "/jars/" + program_name + ".jar");
@@ -176,7 +176,7 @@ public class tasks {
   
   private static boolean fetchLibs() {
     int result = libconf.createConfig();
-    if (result == 0) {stdout.print_debug("File libs.yuuka not found, creating file and skipping dependency fetching"); return false;}
+    if (result == 0) {stdout.print_verbose("File libs.yuuka not found, creating file and skipping dependency fetching"); return false;}
     else if (result < 0) {return false;}
 
     String[] conf = libconf.readConfig();
@@ -189,7 +189,7 @@ public class tasks {
   private static boolean projectHasNoSource() {
     var f = new File("src");
     if (!f.isDirectory() || f.list() == null) {
-      stdout.print("Your project has no \"src\" directory or it is empty!");
+      stdout.error("Your project has no \"src\" directory or it is empty!");
       return true;
     }
     return false;

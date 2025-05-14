@@ -26,7 +26,7 @@ public class CustomLibrary {
 
     int result = download.get(url(), install_path);
     if (result != 0) {
-      stdout.print("Error fetching library " + filename_fixed + "!");
+      stdout.error("Error fetching library " + filename_fixed + "!");
     }
     return result;
   }

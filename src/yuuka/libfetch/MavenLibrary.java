@@ -35,7 +35,7 @@ public class MavenLibrary {
 
     int result = download.get(url, "lib/"+jar_name);
     if (result != 0) {
-      stdout.print("Error fetching library " + name() + "!");
+      stdout.error("Error fetching library " + name() + "!");
     }
     return result;
   }

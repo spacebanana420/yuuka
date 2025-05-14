@@ -42,7 +42,7 @@ public class yuukaConfig {
     if (!new File(conf_path).isFile()) {return;}
     ConfOpt[] config = confreader.readConfig(conf_path);
     if (config == null) {
-      stdout.print("Error loading project's build.yuuka file! Make sure the file has read permission!");
+      stdout.error("Error loading project's build.yuuka file! Make sure the file has read permission!");
       return;
     }
     if (config.length == 0) {return;}
@@ -62,10 +62,6 @@ public class yuukaConfig {
     try{t.join();}
     catch(InterruptedException e) {e.printStackTrace();}
   }
-  
-  private static void warnError(String message) {
-    System.out.println("yuuka.build error: " + message);
-  }
 
   private static void setVerboseLevel(ConfOpt[] config) {
     String value = confreader.getValue(config, "verbose_level");
@@ -73,7 +69,7 @@ public class yuukaConfig {
 
     byte level = misc.toByte(value);
     if (level < 0 || level > 3) {
-      warnError("Verbosity level " + value + " is incorrect, ignoring. Accepted values range between 0 and 3.");
+      stdout.error("Verbosity level " + value + " is incorrect, ignoring. Accepted values range between 0 and 3.");
       return;
     }
     global.PRINT_LEVEL = level;
@@ -89,7 +85,7 @@ public class yuukaConfig {
     if (value == null) {return;}
     var f = new File(value);
     if (!f.isDirectory()) {
-      warnError
+      stdout.error
       (
         "The installation path " + value + " is not real"
         + "\nDefaulting to " + global.INSTALL_PATH
@@ -97,7 +93,7 @@ public class yuukaConfig {
       return;
     }
     if (!f.canWrite()) {
-      warnError
+      stdout.error
       (
         "Yuuka lacks permissions to write at the installation path " + value
         + "\nDefaulting to " + global.INSTALL_PATH
@@ -151,7 +147,7 @@ public class yuukaConfig {
     if (value == null) {return;}
     var f = new File(value);
     if (!f.isFile() || !f.canExecute()) {
-      warnError("The GraalVM binary path of " + value + " is not real or an executable!");
+      stdout.error("The GraalVM binary path of " + value + " is not real or an executable!");
       return;
     }
     global.GRAAL_PATH = value; 

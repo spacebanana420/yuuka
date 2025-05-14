@@ -32,7 +32,7 @@ public class libconf {
       os.close();
       return 0;
     }
-    catch (IOException e) {stdout.print("Failed to create dependency config file!"); return -1;}
+    catch (IOException e) {stdout.error("Failed to create dependency config file!"); return -1;}
   }
   
   public static String[] readConfig() {return confreader.readConfig_str("libs.yuuka").toArray(new String[0]);}

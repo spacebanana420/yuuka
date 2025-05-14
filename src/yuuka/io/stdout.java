@@ -31,6 +31,10 @@ public class stdout {
   public static void print_debug(String title, ArrayList<String> contents) {
     if (global.PRINT_LEVEL > 2) {printSeq(title, contents);}
   }
+  
+  public static void error(String message) {
+    if (global.PRINT_LEVEL > 0) {System.err.println(message);}
+  }
 
   private static void printSeq(String title, String[] contents) {
     String txt = title;

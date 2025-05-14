@@ -14,7 +14,7 @@ public class compiler {
     File build_f = new File("build");
     build_f.mkdir();
     if (!build_f.canWrite()) {
-      stdout.print("Error running compiler! Build directory lacks permissions to write!");
+      stdout.error("Error running compiler! Build directory lacks permissions to write!");
       return false;
     }
     ArrayList<String> source_files = fileops.getSourceFiles("src");

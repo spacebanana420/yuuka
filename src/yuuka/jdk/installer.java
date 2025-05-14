@@ -51,11 +51,11 @@ public class installer {
     boolean path_isDir = install_f.isDirectory();
     boolean path_canWrite = install_f.canWrite();
     if (!path_isDir) {
-      stdout.print("The installation path " + install_location + " does not exist! Cancelling installation.");
+      stdout.error("The installation path " + install_location + " does not exist! Cancelling installation.");
       return;
     }
     if (!path_canWrite) {
-      stdout.print("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
+      stdout.error("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
       return;
     }
     
@@ -92,7 +92,7 @@ public class installer {
       Files.move(Path.of(source_jar), p_jar);
     }
     catch (IOException e) {
-      stdout.print("The installation of your program failed!");
+      stdout.error("The installation of your program failed!");
       return;
     }
     stdout.print(name + " has been installed at " + install_location);
@@ -103,11 +103,11 @@ public class installer {
     boolean path_isDir = install_f.isDirectory();
     boolean path_canWrite = install_f.canWrite();
     if (!path_isDir) {
-      stdout.print("The installation path " + install_location + " does not exist! Cancelling installation.");
+      stdout.error("The installation path " + install_location + " does not exist! Cancelling installation.");
       return;
     }
     if (!path_canWrite) {
-      stdout.print("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
+      stdout.error("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
       return;
     }
 
@@ -129,7 +129,7 @@ public class installer {
       new File(binary_path).setExecutable(true, false);
     }
     catch (IOException e) {
-      stdout.print("The installation of your program failed!");
+      stdout.error("The installation of your program failed!");
       return;
     }
     stdout.print(source_binary + " has been installed at " + install_location);

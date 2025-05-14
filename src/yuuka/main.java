@@ -67,7 +67,7 @@ public class main {
           return true;
         case "uninstall":
           if (parser.hasArgumentValue(args, i)) {tasks.uninstallProgram(args[i+1]);}
-          else {stdout.print("Failed to run uninstall task! You must specify the name of the program to uninstall!");}
+          else {stdout.error("Failed to run uninstall task! You must specify the name of the program to uninstall!");}
           return true;
         case "test":
           if (!parser.hasArgumentValue(args, i)) {
@@ -91,7 +91,7 @@ public class main {
   
   private static boolean unsupportedTask() {
     if (System.getProperty("os.name").contains("Windows")) {
-      stdout.print("The install task is not available for Windows!");
+      stdout.error("The install task is not available for Windows!");
       return true;
     }
     return false;
