@@ -47,22 +47,11 @@ public class installer {
   }
 
   private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
-    File install_f = new File(install_location);
-    boolean path_isDir = install_f.isDirectory();
-    boolean path_canWrite = install_f.canWrite();
-    if (!path_isDir) {
-      stdout.error("The installation path " + install_location + " does not exist! Cancelling installation.");
-      return;
-    }
-    if (!path_canWrite) {
-      stdout.error("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
-      return;
-    }
-    
+    if (!checkInstallPath(new File(install_location), install_location)) {return;}
+   
     byte[] script_contents =
       ("#!/bin/sh\njava -jar " + jar_path + " \"$@\"")
       .getBytes();
-
     try {
       stdout.print("Installing program at " + install_location);
       stdout.print_verbose
@@ -99,18 +88,7 @@ public class installer {
   }
   
   private static void install_native(String source_binary, String binary_path, String install_location) {
-    File install_f = new File(install_location);
-    boolean path_isDir = install_f.isDirectory();
-    boolean path_canWrite = install_f.canWrite();
-    if (!path_isDir) {
-      stdout.error("The installation path " + install_location + " does not exist! Cancelling installation.");
-      return;
-    }
-    if (!path_canWrite) {
-      stdout.error("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
-      return;
-    }
-
+    if (!checkInstallPath(new File(install_location), install_location)) {return;}
     try {
       stdout.print("Installing program at " + install_location);
       stdout.print_verbose
@@ -133,5 +111,17 @@ public class installer {
       return;
     }
     stdout.print(source_binary + " has been installed at " + install_location);
+  }
+  
+  private static boolean checkInstallPath(File path, String install_location) {
+    if (!path.isDirectory()) {
+      stdout.error("The installation path " + install_location + " does not exist! Cancelling installation.");
+      return false;
+    }
+    if (!path.canWrite()) {
+      stdout.error("The installation path " + install_location + " lacks write permissions! Cancelling installation.");
+      return false;
+    }
+    return true;
   }
 }
