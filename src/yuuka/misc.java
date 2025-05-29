@@ -25,6 +25,7 @@ public class misc {
   }
   
   public static String guessJARName(String main_class) {
+    if (main_class == null) {return "program.jar";}
     int first_slash = -1;
     String name = "";
 
