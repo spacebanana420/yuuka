@@ -15,7 +15,7 @@ public class global {
   public static String GRAAL_PATH = "native-image";
 
   public static String MAIN_CLASS = fileops.findMainClass();
-  public static String PROGRAM_NAME = misc.guessJARName(MAIN_CLASS);
+  public static String PROGRAM_NAME = guessJARName(MAIN_CLASS);
   
   public static String RELEASE_TARGET = null;
   public static String SOURCE_TARGET = null;
@@ -49,6 +49,21 @@ public class global {
   public static void setClassTarget(String version) {
     int version_num = intJavaVersion(version);
     if (version_num <= RUNTIME_JAVA_VERSION && version_num > 0) {CLASS_TARGET = version;}
+  }
+  
+  private static String guessJARName(String main_class) {
+    if (main_class == null) {return "release.jar";}
+    int first_slash = -1;
+    String name = "";
+
+    for (int i = 0; i < main_class.length(); i++) {
+      char c = main_class.charAt(i);
+      if (c == '/' || c == '\\') {first_slash = i; break;}
+    }
+    
+    if (first_slash == -1) {return "release.jar";}
+    for (int i = 0; i < first_slash; i++) {name += main_class.charAt(i);}
+    return name + ".jar";
   }
   
   private static int getRuntimeVersion() {
