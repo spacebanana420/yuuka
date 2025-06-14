@@ -81,6 +81,17 @@ public class main {
           }
           tasks.runTest(args, args[i+1]);
           return true;
+        case "create-test":
+          if (!parser.hasArgumentValue(args, i)) {
+            stdout.print
+            (
+              "The task \"create-test\" requires an argument following it representing the class name!"
+              + "\nExample: \"yuuka create-test parse-test\" to create the template file test/parse-test.java"
+            );
+            return true;
+          }
+          tasks.createTest(args[i+1]);
+          return true;
         case "tests":
           tests.printTestFiles();
           return true;

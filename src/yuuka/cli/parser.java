@@ -52,10 +52,11 @@ public class parser {
       || arg.equals("packagelib")
       || arg.equals("run")
       || arg.equals("test")
+      || arg.equals("tests")
+      || arg.equals("create-test")
       || arg.equals("clean")
       || arg.equals("install")
       || arg.equals("install-native")
-      || arg.equals("tests")
       || arg.equals("uninstall")
     ;
   }

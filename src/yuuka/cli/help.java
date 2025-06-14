@@ -2,7 +2,7 @@ package yuuka.cli;
 
 public class help {
   
-    static String title() {return "Yuuka version 1.2.8";}
+    static String title() {return "Yuuka version 1.3";}
   
     public static String getHelpMessage() {
     return
@@ -17,6 +17,7 @@ public class help {
       + "\n  * build-native                 compiles your project into a native binary (requires GraalVM)"
       + "\n  * run                          compiles and runs your project"
       + "\n  * test                         runs a test source file"
+      + "\n  * create-test [class name]     creates a test file automatically"
       + "\n  * tests                        lists available test files"
       + "\n  * clean                        deletes all .class files"
       + "\n  * install                      builds and installs your program (Unix-like only)"
@@ -130,6 +131,16 @@ public class help {
       + "\nFor an executable test script named mytest.sh, you can run it with \"yuuka test mytest\"."
       + "\nTo pass any CLI arguments to your program, you need to use the argument \"--\" to tell Yuuka where to know where they are:"
       + "\n\"yuuka test mytest -- -argument1 -argument2\" - All arguments after \"--\" are passed to your program."
+    ;
+  }
+  
+  public static String help_create_test() {
+    return
+      title()
+      + "\ncreate-test command"
+      + "\n\nCreates a Java source file in the tests/ directory, with a pre-written code template."
+      + "\nThis command is useful for automatically creating a new test file that is executable by Java without requiring the user to manually write everything:"
+      + "\n\"yuuka create-test class-name"
     ;
   }
   

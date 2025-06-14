@@ -174,6 +174,42 @@ public class tasks {
     catch (IOException e) {e.printStackTrace();} //this is not even supposed to happen so ill just print the stack trace
   }
   
+  public static void createTest(String class_name) {
+    if (!new File("test").isDirectory()) {
+      stdout.error("Directory named \"test\" does not exist! You can create it by running \"yuuka init\"");
+      return;
+    }
+    if (class_name.contains("/") || class_name.contains("\\")) {
+      stdout.error("The class name cannot contain slashes!");
+      return;
+    }
+    if (class_name.contains(".")) {
+      stdout.error("The class name cannot contain the period character \".\"!");
+      return;
+    }
+    class_name = class_name.trim();
+    if (class_name.contains(" ") || class_name.contains("\t")) {
+      stdout.error("The class name cannot contain spaces or tabs!");
+      return;
+    }
+    String full_path = "test/" + class_name + ".java";
+    if (new File(full_path).isFile()) {
+      stdout.error("The test file of name " + class_name + " already exists!");
+      return;
+    }
+    try {
+      Path p = Path.of(full_path);
+      String template =
+        "public class " + class_name + " {"
+        + "\n    public static void main(String[] args) {}"
+        + "\n}"
+      ;
+      Files.createFile(p);
+      Files.write(p, template.getBytes());
+    }
+    catch (IOException e) {stdout.error("Failed to create test file!");}
+  }
+  
   private static boolean fetchLibs() {
     int result = libconf.createConfig();
     if (result == 0) {stdout.print_verbose("File libs.yuuka not found, creating file and skipping dependency fetching"); return false;}

@@ -33,6 +33,8 @@ public class cli {
           help_message = help.help_run(); break;
         case "test":
           help_message = help.help_test(); break;
+        case "create-test":
+          help_message = help.help_create_test(); break;
         case "tests":
           help_message = help.help_tests(); break;
         case "clean":
