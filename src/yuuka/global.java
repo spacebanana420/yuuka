@@ -84,10 +84,11 @@ public class global {
     int len = version.length();
     byte[] ver_bytes = version.getBytes();
     int version_number = 0;
+    int zero_value = (int)'0';
     
     for (int i = 0; i < len; i++) {
       double scale = Math.pow(10, len-i-1);
-      int digit = ver_bytes[i]-48; //48 is the uft8 and ascii value of 0
+      int digit = ver_bytes[i]-zero_value;
       version_number += (digit * scale);
     }
     return version_number;
