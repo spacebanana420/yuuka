@@ -131,15 +131,17 @@ public class tasks {
       return;
     }
     
-    boolean result;
+    int exit_value;
     if (isJavaFile) {
       if (!projectHasNoSource() && global.TESTS_INCLUDE_PROJECT) {packageLib();}
-      result = tests.runTest_java(file_java, args);
+      exit_value = tests.runTest_java(file_java, args);
       fileops.deleteBuildFiles("build");
     }
-    else {result = tests.runTest_native(f_source.getAbsolutePath(), args);}
-      
-    if (!result) {stdout.error("Error during building/running the test!");}
+    else {exit_value = tests.runTest_native(f_source.getAbsolutePath(), args);}
+    
+    if (exit_value >= 0) {
+      stdout.print_verbose("Test returned exit value: " + exit_value);
+    }
   }
   
   public static void uninstallProgram(String program_name) {

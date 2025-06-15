@@ -10,7 +10,7 @@ import yuuka.misc;
 import yuuka.io.fileops;
 
 public class tests {
-  public static boolean runTest_java(String source_file, String[] args) {    
+  public static int runTest_java(String source_file, String[] args) {    
     String[] cmd =
       (global.TESTS_INCLUDE_PROJECT && new File("build/"+global.PROGRAM_NAME).isFile())
       ? new String[]{"java", "--class-path", "../build/"+global.PROGRAM_NAME, source_file}
@@ -23,16 +23,16 @@ public class tests {
 
     cmd = process.concatArgs(cmd, exec_args);
 
-    return process.runProcess(cmd, "test") == 0;
+    return process.runProcess(cmd, "test");
   }
   
-  public static boolean runTest_native(String path, String[] args) {
+  public static int runTest_native(String path, String[] args) {
     String[] cmd = new String[]{path};
     String[] exec_args = cli.getExecArgs(args);
     stdout.print_debug("Passing the following arguments to test execution:", exec_args);
     
     cmd = process.concatArgs(cmd, exec_args);
-    return process.runProcess(cmd, "test") == 0;
+    return process.runProcess(cmd, "test");
   }
   
   public static void printTestFiles() {
