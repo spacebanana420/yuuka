@@ -179,18 +179,15 @@ public class tasks {
       stdout.error("Directory named \"test\" does not exist! You can create it by running \"yuuka init\"");
       return;
     }
-    if (class_name.contains("/") || class_name.contains("\\")) {
-      stdout.error("The class name cannot contain slashes!");
-      return;
-    }
-    if (class_name.contains(".")) {
-      stdout.error("The class name cannot contain the period character \".\"!");
-      return;
-    }
-    class_name = class_name.trim();
-    if (class_name.contains(" ") || class_name.contains("\t")) {
-      stdout.error("The class name cannot contain spaces or tabs!");
-      return;
+    String[] invalid_chars = new String[]{"/", "\\", ".", " ", "\t", "(", ")", "{", "}", "[", "]", ";", "#", "%", "\""};
+    for (String c : invalid_chars) {
+      if (class_name.contains(c)) {
+        stdout.error(
+          "Cancelling test file creation!"
+          +"\nThe class name cannot contain special characters such as slashes, periods, spaces, tabs, parentheses, brackets and other symbols!"
+        );
+        return;
+      }
     }
     String full_path = "test/" + class_name + ".java";
     if (new File(full_path).isFile()) {
