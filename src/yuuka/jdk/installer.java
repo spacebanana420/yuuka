@@ -40,9 +40,12 @@ public class installer {
     String home = System.getProperty("user.home");
     String os = System.getProperty("os.name").toLowerCase();
     
-    if (os.equals("haiku")) {return "/boot/home/config/bin";}
-    if (home.equals("/root")) {return "/usr/local/bin";}
-    if (os.equals("freebsd")) {return home + "/bin";}
+    if (os.equals("haiku"))
+      {return "/boot/home/config/bin";}
+    if (home.equals("/root") || os.contains("mac"))
+      {return "/usr/local/bin";}
+    if (os.equals("freebsd"))
+      {return home + "/bin";}
     return home + "/.local/bin";
   }
 
