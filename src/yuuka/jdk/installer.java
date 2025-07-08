@@ -46,7 +46,9 @@ public class installer {
       {return "/usr/local/bin";}
     if (os.equals("freebsd"))
       {return home + "/bin";}
-    return home + "/.local/bin";
+    if (new File(home + "/.local/bin").isDirectory())
+      {return home + "/.local/bin";}
+    return "/usr/local/bin";
   }
 
   private static void install(String name, String source_jar, String jar_path, String script_path, String install_location) {
