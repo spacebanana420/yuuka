@@ -4,6 +4,7 @@ import yuuka.jdk.installer;
 import yuuka.io.fileops;
 import java.io.File;
 
+//Global variables, used in many other source files
 public class global {
   //0 - silent    1 - normal    2 - verbose   3 - debug
   public static byte PRINT_LEVEL = 1;
@@ -56,6 +57,7 @@ public class global {
     int first_slash = -1;
     String name = "";
 
+    //The name is based on the first directory in src, for example yuuka/main results in the JAR yuuka.jar
     for (int i = 0; i < main_class.length(); i++) {
       char c = main_class.charAt(i);
       if (c == '/' || c == '\\') {first_slash = i; break;}
@@ -68,10 +70,9 @@ public class global {
   
   private static int getRuntimeVersion() {
     String version = System.getProperty("java.version");
-    int len = version.length();
     String truncated = "";
     
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < version.length(); i++) {
       char c = version.charAt(i);
       if (c == '.') {break;}
       truncated += c;
