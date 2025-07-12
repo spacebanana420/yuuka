@@ -20,7 +20,7 @@ public class compiler {
     ArrayList<String> source_files = fileops.getSourceFiles("src");
     
     String[] cmd = process.buildCommand(source_files, "javac");
-    cmd = process.addLibArgs(cmd, false);
+    cmd = lib.addLibArgs(cmd, false);
     return process.runProcess(cmd, ".") == 0;
   }
 
@@ -39,7 +39,7 @@ public class compiler {
 
   private static void extractLibraries() {
     if (global.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
-    ArrayList<String> jars = lib.changeBaseDirectory(lib.getLibraryJars());
+    ArrayList<String> jars = lib.getLibraryJars(true);
     for (String jar : jars) {
       stdout.print_verbose("Extracting library JAR " + jar);
       process.runProcess(process.buildExtractCommand(jar, "jar"), "build");
@@ -48,7 +48,7 @@ public class compiler {
 
   public static int runProgram(String[] args) {
     String[] cmd = new String[]{"java", global.MAIN_CLASS};
-    cmd = process.addLibArgs(cmd, true);
+    cmd = lib.addLibArgs(cmd, true);
     
     String[] exec_args = cli.getExecArgs(args);
     stdout.print_verbose("Passing the following arguments to program execution:", exec_args);

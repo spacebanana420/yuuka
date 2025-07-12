@@ -80,18 +80,4 @@ public class process {
     for (int i = 0; i < args2.length; i++) {full[i+args1.length] = args2[i];}
     return full;
   }
-
-  public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
-    if (global.INGORE_LIB || !lib.projectHasLibraries()) {return cmd;}
-    
-    ArrayList<String> jars = lib.getLibraryJars();
-    if (change_base_directory) {jars = lib.changeBaseDirectory(jars);}
-    String[] libargs = lib.getLibArgs(jars);
-    
-    String[] finalcmd = new String[cmd.length + libargs.length];
-    finalcmd[0] = cmd[0];
-    for (int i = 0; i < libargs.length; i++) {finalcmd[i+1] = libargs[i];}
-    for (int i = 1; i < cmd.length; i++) {finalcmd[i+libargs.length] = cmd[i];}
-    return finalcmd;
-  }
 }

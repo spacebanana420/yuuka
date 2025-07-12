@@ -2,6 +2,7 @@ package yuuka.jdk;
 
 import java.io.File;
 import java.util.ArrayList;
+import yuuka.global;
 
 import yuuka.io.fileops;
 
@@ -17,11 +18,27 @@ public class lib {
     return false;
   }
 
-  public static ArrayList<String> getLibraryJars() {
-    return fileops.getJarFiles("lib");
+  public static ArrayList<String> getLibraryJars(boolean change_base_directory) {
+    var jars = fileops.getJarFiles("lib");
+    if (change_base_directory) {changeBaseDirectory(jars);}
+    return jars;
   }
   
-  public static String[] getLibArgs(ArrayList<String> jar_files) { //should return an arraylist instead
+  //Include library JARs in the command for running or compiling code
+  public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
+    if (global.INGORE_LIB || !projectHasLibraries()) {return cmd;}
+    
+    ArrayList<String> jars = getLibraryJars(change_base_directory);
+    String[] libargs = getLibArgs(jars);
+    
+    String[] finalcmd = new String[cmd.length + libargs.length];
+    finalcmd[0] = cmd[0];
+    for (int i = 0; i < libargs.length; i++) {finalcmd[i+1] = libargs[i];}
+    for (int i = 1; i < cmd.length; i++) {finalcmd[i+libargs.length] = cmd[i];}
+    return finalcmd;
+  }
+  
+  private static String[] getLibArgs(ArrayList<String> jar_files) { //should return an arraylist instead
     String[] cli_args = new String[jar_files.size() * 2];
     int files_i = 0;
     
@@ -33,12 +50,11 @@ public class lib {
     return cli_args;
   }
   
-  //for executing library-related commands with build/ as the working directory
-  public static ArrayList<String> changeBaseDirectory(ArrayList<String> jar_files) {
-    ArrayList<String> new_files = jar_files;
+  //For executing library-related commands with build/ as the working directory
+  //Some commands are executed at the root of the project, but others are executed using build/ as the working directory
+  private static void changeBaseDirectory(ArrayList<String> jar_files) {
     for (int i = 0; i < jar_files.size(); i++) {
-      new_files.set(i, "../" + jar_files.get(i));
+      jar_files.set(i, "../" + jar_files.get(i));
     }
-    return new_files;
   }
 }
