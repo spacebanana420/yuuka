@@ -4,14 +4,35 @@ CLI arguments override this config
 To enable a setting, uncomment it by removing the "#" at its start
 Empty or invalid settings are ignored
 
+# The path to the main class, for example yuuka/main for src/yuuka/main.java
 main_class=yuuka/main
+
+# The name of the JAR to create during compilation and packaging
 jar_filename=yuuka.jar
-#release_target=21
-#source_target=21
-#class_target=21
+
+# Alternative to main_class, tries to autodetect the main class of your project
+#autodetect_main=false
+
+# To compile your project to run on a specific Java version and above, you can specify it here
+#release_target=24
+#source_target=24
+#class_target=24
+
+# JAR files are ZIP archives and by default use compression, you can disable it for possibly faster program startup times
 #disable_jar_compression=false
+
+# Disable Java compiler warnings
 #disable_warnings=false
+
+#The path to GraalVM's native-image binary for executing projects into native binary executables
 #graal_path=native-image
+
+# Specify a custom path for installing projects. The default path varies between operating systems
 #install_path=
+
+# Import your project's source when running tests so you can call its functions and classes
 #tests_include_src=true
+
+#The default verbosity level of Yuuka.
+# 0 = quiet; 1 = normal; 2 = verbose; 3 = debug mode
 #verbose_level=1
