@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import yuuka.global;
 import yuuka.misc;
-import yuuka.io.stdout;
+import yuuka.io.*;
 
 public class yuukaConfig {
   public static boolean createConfig() {
@@ -19,6 +19,7 @@ public class yuukaConfig {
       + "\n"
       + "\n#main_class=main"
       + "\n#jar_filename=MyProgram.jar"
+      + "\n#autodetect_main=false"
       + "\n#release_target=" + global.RUNTIME_JAVA_VERSION
       + "\n#source_target=" + global.RUNTIME_JAVA_VERSION
       + "\n#class_target=" + global.RUNTIME_JAVA_VERSION
@@ -104,9 +105,11 @@ public class yuukaConfig {
   }
 
   private static void setMainClass(ConfOpt[] config) {
-    String value = confreader.getValue(config, "main_class");
-    if (value == null) {return;}
-    global.MAIN_CLASS = value;
+    String main_class = confreader.getValue(config, "main_class");
+    if (main_class != null) {global.MAIN_CLASS = main_class; return;} //Manually-specified
+    
+    if (!confreader.getBool(config, "autodetect_main")){return;}
+    global.MAIN_CLASS = fileops.findMainClass(); //Automatically-specified
   }
 
   private static void setProgramName(ConfOpt[] config) {
