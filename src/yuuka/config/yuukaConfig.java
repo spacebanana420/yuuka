@@ -46,7 +46,7 @@ public class yuukaConfig {
       + "\n# Import your project's source when running tests so you can call its functions and classes"
       + "\n#tests_include_src=true"
       + "\n"
-      + "\n#The default verbosity level of Yuuka."
+      + "\n# The default verbosity level of Yuuka."
       + "\n# 0 = quiet; 1 = normal; 2 = verbose; 3 = debug mode"
       + "\n#verbose_level=1"
     ).getBytes();
@@ -127,15 +127,15 @@ public class yuukaConfig {
   private static void setMainClass(ConfOpt[] config) {
     String main_class = confreader.getValue(config, "main_class");
     if (main_class != null) {global.MAIN_CLASS = main_class; return;} //Manually-specified
-    
     if (!confreader.getBool(config, "autodetect_main")){return;}
+    
+    stdout.print_verbose("Attempting to auto-detect main class");
     global.MAIN_CLASS = fileops.findMainClass(); //Automatically-specified
   }
 
   private static void setProgramName(ConfOpt[] config) {
     String value = confreader.getValue(config, "jar_filename");
-    if (value == null) {return;}
-    global.setProgramName(value);
+    if (value == null) {global.setProgramName(value);}
   }
 
   private static void setRelease(ConfOpt[] config) {
@@ -156,13 +156,11 @@ public class yuukaConfig {
   }
   
   private static void setDisableWarnings(ConfOpt[] config) {
-    boolean value = confreader.getBool(config, "disable_warnings");
-    global.DISABLE_WARNINGS = value;
+    global.DISABLE_WARNINGS = confreader.getBool(config, "disable_warnings");
   }
   
   private static void setDisableCompression(ConfOpt[] config) {
-    boolean value = confreader.getBool(config, "disable_jar_compression");
-    global.DISABLE_JAR_COMPRESSION = value;
+    global.DISABLE_JAR_COMPRESSION = confreader.getBool(config, "disable_jar_compression");
   }
 
   private static void setGraalPath(ConfOpt[] config) {
