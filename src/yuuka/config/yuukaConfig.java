@@ -135,7 +135,7 @@ public class yuukaConfig {
 
   private static void setProgramName(ConfOpt[] config) {
     String value = confreader.getValue(config, "jar_filename");
-    if (value == null) {global.setProgramName(value);}
+    if (value != null) {global.setProgramName(value);}
   }
 
   private static void setRelease(ConfOpt[] config) {
