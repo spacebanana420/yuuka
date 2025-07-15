@@ -74,8 +74,8 @@ public class main {
             stdout.print
             (
               "The task \"test\" requires an argument following it!"
-              + "\nExample: \"yuuka runtest filetest\" to launch the file test/filetest.java"
-              + "\nYou can also run other executable files: \"yuuka runtest somescript\" to launch the file test/somescript.sh"
+              + "\nExample: \"yuuka test filetest\" to launch the file test/filetest.java"
+              + "\nYou can also run other executable files: \"yuuka test somescript\" to launch the file test/somescript.sh"
             );
             return true;
           }
