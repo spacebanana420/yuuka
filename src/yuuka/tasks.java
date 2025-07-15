@@ -97,9 +97,10 @@ public class tasks {
       "-o", misc.removeExtension(global.PROGRAM_NAME)
     };
     stdout.print("Building native binary with GraalVM");
-    stdout.print_verbose("GraalVM command:", nativecmd);
     int exitstatus = process.runProcess(nativecmd, "build");
-    if (exitstatus == -1) {stdout.error("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");}
+    if (exitstatus == -1) {
+      stdout.error("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");
+    }
     else if (exitstatus > 0) {stdout.error("The compilation failed!");}
     return exitstatus == 0;
   }
