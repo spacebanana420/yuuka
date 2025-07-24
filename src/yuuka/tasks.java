@@ -134,7 +134,9 @@ public class tasks {
     
     int exit_value;
     if (isJavaFile) {
-      if (!projectHasNoSource() && global.TESTS_INCLUDE_PROJECT) {packageLib();}
+      if (!projectHasNoSource() && global.TESTS_INCLUDE_PROJECT) {
+        packageLib(); //The importation of this JAR is done in tests.runTest_java()
+      }
       exit_value = tests.runTest_java(file_java, args);
       fileops.deleteBuildFiles("build");
     }
