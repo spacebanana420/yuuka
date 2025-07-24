@@ -1,5 +1,5 @@
 # Yuuka
-Yuuka is a lightweight build tool for compiling your Java projects from the CLI in a fast and simple way. Yuuka implements the Java compiler and JAR management tool to build, manage and clean up your projects in a platform-agnostic way. Optionally, you can configure your projects declaratively from a build file too.
+Yuuka is a fast and lightweight build tool for nuilding your Java projects from the CLI in a simple way. Yuuka implements the Java compiler and JAR management tool for building and packaging while it manages and cleans up your projects in a platform-agnostic way.
 
 ## Requirements
 * Java 11 or newer
@@ -24,7 +24,7 @@ To start a new project, you can run `yuuka init` to create a new project structu
 
 To build your project and run it locally, you can run `yuuka build` and `yuuka run`. If you want to make an executable JAR, you can run `yuuka package`.
 
-There are multiple CLI arguments that let you customize the build process, such as specifying the JAR name and main class (instead of guessing), setting verbose or silent terminal output, setting the target Java release for your program, etc.
+There are multiple CLI arguments that let you customize the build process, such as specifying the JAR name and main class, setting verbose or silent terminal output, setting the target Java release for your program, etc. Optionally, you can configure your projects declaratively from a build file too.
 
 For the automatic main class detection to work, it's recommended that your main file is called "main.java", otherwise you can define the main class manually either from the CLI or in `build.yuuka`.
 
