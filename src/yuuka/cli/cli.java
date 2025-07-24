@@ -151,16 +151,10 @@ public class cli {
     return args.length;
   }
 
-  public static String[] getExecArgs(String[] args) {
+  public static String[] getExecArgs(String[] args, int parse_break) {
+    if (parse_break == -1) {return new String[0];}
     ArrayList<String> exec_args = new ArrayList<>();
-    int args_start = -1;
-    
-    for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("--") && i < args.length-1) {args_start = i+1; break;}
-    }
-    if (args_start == -1) {return new String[0];}
-    
-    for (int i = args_start; i < args.length; i++) {exec_args.add(args[i]);}
+    for (int i = parse_break+1; i < args.length; i++) {exec_args.add(args[i]);}
     return exec_args.toArray(new String[0]);
   }
   

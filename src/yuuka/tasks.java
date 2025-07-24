@@ -115,20 +115,20 @@ public class tasks {
     compiler.runProgram(args);
   }
 
-  public static void runTest(String args[], String source_arg) {
+  public static void runTest(String args[], String source_file) {
     new File("test").mkdir();
     
     String file_java =
-      (misc.checkFileExtension(source_arg, ".java"))
-      ? source_arg
-      : source_arg + ".java";
-    File f_source = new File("test/"+source_arg);
+      (misc.checkFileExtension(source_file, ".java"))
+      ? source_file
+      : source_file + ".java";
+    File f_source = new File("test/"+source_file);
     File f_java = new File("test/"+file_java);
     boolean isJavaFile = f_java.isFile();
     boolean isExecutableFile = f_source.isFile() && f_source.canExecute();
   
     if (!isJavaFile && !isExecutableFile) {
-      stdout.error("The file with name \"test/" + source_arg + "\" does not exist!");
+      stdout.error("The file with name \"test/" + source_file + "\" does not exist!");
       return;
     }
     

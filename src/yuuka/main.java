@@ -44,7 +44,7 @@ public class main {
           tasks.packageLib();
           return true;
         case "run":
-          tasks.runProgram(args);
+          tasks.runProgram(cli.getExecArgs(args, parse_break));
           return true;
         case "clean":
           tasks.cleanProject();
@@ -79,7 +79,7 @@ public class main {
             );
             return true;
           }
-          tasks.runTest(args, args[i+1]);
+          tasks.runTest(cli.getExecArgs(args, parse_break), args[i+1]);
           return true;
         case "create-test":
           if (!parser.hasArgumentValue(args, i)) {

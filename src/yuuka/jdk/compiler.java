@@ -46,13 +46,11 @@ public class compiler {
     }
   }
 
-  public static int runProgram(String[] args) {
+  public static int runProgram(String[] exec_args) {
     String[] cmd = new String[]{"java", global.MAIN_CLASS};
     cmd = lib.addLibArgs(cmd, true);
     
-    String[] exec_args = cli.getExecArgs(args);
     stdout.print_verbose("Passing the following arguments to program execution:", exec_args);
-    
     cmd = process.concatArgs(cmd, exec_args);
     return process.runProcess(cmd, "build");
   }
