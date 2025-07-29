@@ -106,10 +106,7 @@ public class tasks {
   }
 
   public static void runProgram(String[] args) {
-    boolean result =
-      (!new File("build/" + global.MAIN_CLASS + ".class").isFile())
-      ? build(true)
-      : true;
+    boolean result = new File("build/" + global.MAIN_CLASS + ".class").isFile() || build(true);
     if (!result) {return;}
     stdout.print("Running program");
     compiler.runProgram(args);

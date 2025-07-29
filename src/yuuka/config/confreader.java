@@ -62,7 +62,7 @@ class confreader {
     return value;
   }
 
-  private static boolean isLineValid(String line) {return line.length() > 0 && line.charAt(0) != '#';}
+  private static boolean isLineValid(String line) {return !line.isEmpty() && line.charAt(0) != '#';}
 
   private static boolean isSetting(String line, String setting) {
     if (line.length() <= setting.length() || line.charAt(setting.length()) != '=')
