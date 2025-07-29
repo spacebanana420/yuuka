@@ -54,14 +54,14 @@ public class global {
   
   private static int getRuntimeVersion() {
     String version = System.getProperty("java.version");
-    String truncated = "";
+    StringBuilder truncated = new StringBuilder();
     
     for (int i = 0; i < version.length(); i++) {
       char c = version.charAt(i);
       if (c == '.') {break;}
-      truncated += c;
+      truncated.append(c);
     }
-    return intJavaVersion(truncated);
+    return intJavaVersion(truncated.toString());
   }
   
   //manual conversion to int prevents having to try catch

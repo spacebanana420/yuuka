@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import yuuka.global;
 import yuuka.io.*;
 import yuuka.misc;
-import yuuka.jdk.tests;
-import yuuka.jdk.installer;
 
 public class cli {
   public static boolean askedForHelp(String[] args, int parse_break) {
@@ -17,35 +15,22 @@ public class cli {
     String help_message;
     if (parser.hasArgumentValue(args, help_i)) {
       String command = args[help_i+1];
-      switch (command) {
-        case "init":
-          help_message = help.help_init(); break;
-        case "build":
-          help_message = help.help_build(); break;
-        case "package":
-          help_message = help.help_package(); break;
-        case "packagelib":
-          help_message = help.help_packagelib(); break;
-        case "build-native":
-          help_message = help.help_buildnative(); break;
-        case "run":
-          help_message = help.help_run(); break;
-        case "test":
-          help_message = help.help_test(); break;
-        case "create-test":
-          help_message = help.help_create_test(); break;
-        case "tests":
-          help_message = help.help_tests(); break;
-        case "clean":
-          help_message = help.help_clean(); break;
-        case "install":
-          help_message = help.help_install(); break;
-        case "install-native":
-          help_message = help.help_install_native(); break;
-        case "uninstall":
-          help_message = help.help_uninstall(); break;
-        default: help_message = help.getHelpMessage();
-      }
+        help_message = switch (command) {
+          case "init" -> help.help_init();
+          case "build" -> help.help_build();
+          case "package" -> help.help_package();
+          case "packagelib" -> help.help_packagelib();
+          case "build-native" -> help.help_buildnative();
+          case "run" -> help.help_run();
+          case "test" -> help.help_test();
+          case "create-test" -> help.help_create_test();
+          case "tests" -> help.help_tests();
+          case "clean" -> help.help_clean();
+          case "install" -> help.help_install();
+          case "install-native" -> help.help_install_native();
+          case "uninstall" -> help.help_uninstall();
+          default -> help.getHelpMessage();
+        };
     }
     else {help_message = help.getHelpMessage();}
     

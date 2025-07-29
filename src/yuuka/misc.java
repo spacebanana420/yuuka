@@ -30,11 +30,11 @@ public class misc {
       if (filename.charAt(i) == '.') {point_i = i; break;}
     }
     if (point_i == -1) {return filename;}
-    String newname = "";
+    StringBuilder newname = new StringBuilder();
     for (int i = 0; i < point_i; i++) {
-      newname += filename.charAt(i);
+      newname.append(filename.charAt(i));
     }
-    return newname;
+    return newname.toString();
   }
 
   public static boolean checkFileExtension(String name, String extension) {
