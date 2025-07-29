@@ -38,7 +38,7 @@ public class compiler {
   }
 
   private static void extractLibraries() {
-    if (global.INGORE_LIB || !lib.projectHasLibraries()) {return;}    
+    if (global.INGORE_LIB || lib.projectHasNoLibraries()) {return;}
     ArrayList<String> jars = lib.getLibraryJars(true);
     for (String jar : jars) {
       stdout.print_verbose("Extracting library JAR " + jar);

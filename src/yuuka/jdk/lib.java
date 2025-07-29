@@ -7,15 +7,15 @@ import yuuka.global;
 import yuuka.io.fileops;
 
 public class lib {
-  public static boolean projectHasLibraries() {
+  public static boolean projectHasNoLibraries() {
     var f = new File("lib");
-    if (!f.isDirectory()) {return false;}
+    if (!f.isDirectory()) {return true;}
 
     var file_list = f.list();
-    if (file_list == null) {return false;}
+    if (file_list == null) {return true;}
 
-    for (String file : file_list) {if (file.contains(".jar")) {return true;}}
-    return false;
+    for (String file : file_list) {if (file.contains(".jar")) {return false;}}
+    return true;
   }
 
   public static ArrayList<String> getLibraryJars(boolean change_base_directory) {
@@ -26,7 +26,7 @@ public class lib {
   
   //Include library JARs in the command for running or compiling code
   public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
-    if (global.INGORE_LIB || !projectHasLibraries()) {return cmd;}
+    if (global.INGORE_LIB || projectHasNoLibraries()) {return cmd;}
     
     ArrayList<String> jars = getLibraryJars(change_base_directory);
     String[] libargs = getLibArgs(jars);
