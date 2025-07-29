@@ -50,16 +50,15 @@ class confreader {
   }
 
   //used in libconf.java
-  static String getValue(String line, String setting, boolean verifySetting) {
-    boolean isSettingValid = !verifySetting || isSetting(line, setting);
-    if (line == null || !isSettingValid) {return null;}
+  static String getValue(String line, String setting) {
+    if (line == null || !isSetting(line, setting)) {return null;}
     
     String value = "";
     setting += "=";
     for (int i = setting.length(); i < line.length(); i++) {value += line.charAt(i);}
     value = value.trim();
     
-    if (value.length() == 0) {return null;}
+    if (value.isEmpty()) {return null;}
     return value;
   }
 
