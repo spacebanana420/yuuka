@@ -12,7 +12,7 @@ public class lib {
     if (!f.isDirectory()) {return false;}
 
     var file_list = f.list();
-    if (file_list == null || file_list.length == 0) {return false;}
+    if (file_list == null) {return false;}
 
     for (String file : file_list) {if (file.contains(".jar")) {return true;}}
     return false;

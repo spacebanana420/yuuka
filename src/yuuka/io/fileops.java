@@ -47,16 +47,17 @@ public class fileops {
 
     try {for (String sub_path : paths)
     {
-      String full_p = path + "/" + sub_path;
-      File f = new File(full_p);
+      String full_path = path + "/" + sub_path;
+      Path full_p = Path.of(full_path);
+      File f = new File(full_path);
       
       if (f.isFile() && deletableFile(sub_path, deleteAll, deleteJars)) {
-        Files.delete(Path.of(full_p));
+        Files.delete(full_p);
       }
       else if (f.isDirectory()) {
-        boolean result = deleteClassFiles(full_p, deleteAll, deleteDirectory, deleteJars);
+        boolean result = deleteClassFiles(full_path, deleteAll, deleteDirectory, deleteJars);
         if (!result) {return false;}
-        if (deleteDirectory) {Files.delete(Path.of(full_p));}
+        if (deleteDirectory) {Files.delete(full_p);}
       }
     }} catch(IOException e) {return false;}
     return true;
@@ -75,7 +76,7 @@ public class fileops {
   
   private static String findMainClass(String path, char file_separator) {
     String[] paths = new File(path).list();
-    if (paths == null || paths.length == 0) {return null;}
+    if (paths == null) {return null;}
     
     for (String subpath : paths)
     {
@@ -128,7 +129,8 @@ public class fileops {
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
     String[] subpaths = new File(root_path).list();
     ArrayList<String> source_files = new ArrayList<>();
-    
+    if (subpaths == null) {return source_files;}
+
     for (String p : subpaths)
     {
       File f = new File(root_path + "/" + p);

@@ -38,7 +38,7 @@ public class parser {
   public static boolean hasArgumentValue(String[] args, int i) {
     return
       i < args.length-1
-      && args[i+1].length() > 0
+      && !args[i+1].isEmpty()
       && args[i+1].charAt(0) != '-'
       && !isArgumentTask(args[i+1]);
   }

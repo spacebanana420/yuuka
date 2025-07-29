@@ -68,8 +68,7 @@ public class process {
   }
 
   public static String[] buildExtractCommand(String jar_file, String binary_path) {
-    String[] cmd = new String[]{binary_path, "-x", "-f", jar_file};
-    return cmd;
+    return new String[]{binary_path, "-x", "-f", jar_file};
   }  
   
   public static String[] concatArgs(String[] args1, String[] args2) {

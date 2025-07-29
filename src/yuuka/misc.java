@@ -8,14 +8,6 @@ public class misc {
     }
     catch(NumberFormatException e) {return false;}
   }
-
-  public static int toInt(String num) {
-    try{
-      return Integer.parseInt(num);
-    }
-    catch(NumberFormatException e) {return -1;}
-  }
-
   
   public static byte toByte(String num) {
     try{

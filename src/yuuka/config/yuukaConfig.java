@@ -97,8 +97,7 @@ public class yuukaConfig {
   }
 
   private static void setSrcInclusion(ConfOpt[] config) {
-    boolean value = confreader.getBool(config, "tests_include_src");
-    global.TESTS_INCLUDE_PROJECT = value;
+    global.TESTS_INCLUDE_PROJECT = confreader.getBool(config, "tests_include_src");
   }
 
   private static void setInstallPath(ConfOpt[] config) {
