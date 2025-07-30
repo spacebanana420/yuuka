@@ -23,11 +23,11 @@ public class ConfOpt {
       if (c == '=') {value_start = i+1; break;}
       else {key+=c;}
     }
-    if (key.length() == 0 || value_start == -1) {return;}
+    if (key.isEmpty() || value_start == -1) {return;}
     
     //get value
     for (int i = value_start; i < line_end; i++) {value+=line.charAt(i);}
-    if (value.length() == 0) {return;}
+    if (value.isEmpty()) {return;}
     
     this.key = key.trim();
     this.value = value.trim();

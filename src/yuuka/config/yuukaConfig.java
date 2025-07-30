@@ -9,8 +9,8 @@ import yuuka.misc;
 import yuuka.io.*;
 
 public class yuukaConfig {
-  public static boolean createConfig() {
-    if (new File("build.yuuka").isFile()) {return true;}
+  public static void createConfig() {
+    if (new File("build.yuuka").isFile()) {return;}
     byte[] cfg =
     (
       "Yuuka build config\nThe settings below override Yuuka's defaults\nCLI arguments override this config"
@@ -54,9 +54,8 @@ public class yuukaConfig {
       var stream = new FileOutputStream("build.yuuka");
       stream.write(cfg);
       stream.close();
-      return true;
     }
-    catch (IOException e) {return false;}
+    catch (IOException e) {stdout.error("Failed to create build.yuuka file!");}
   }
 
   public static void setConfigValues(String conf_path) {

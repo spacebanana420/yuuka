@@ -112,7 +112,7 @@ public class tasks {
     compiler.runProgram(args);
   }
 
-  public static void runTest(String args[], String source_file) {
+  public static void runTest(String[] args, String source_file) {
     new File("test").mkdir();
     
     String file_java =
