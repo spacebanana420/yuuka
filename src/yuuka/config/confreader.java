@@ -55,13 +55,12 @@ class confreader {
   static String getValue(String line, String setting) {
     if (line == null || !isSetting(line, setting)) {return null;}
     
-    String value = "";
+    var value = new StringBuilder();
     setting += "=";
-    for (int i = setting.length(); i < line.length(); i++) {value += line.charAt(i);}
-    value = value.trim();
-    
-    if (value.isEmpty()) {return null;}
-    return value;
+    for (int i = setting.length(); i < line.length(); i++) {value.append(line.charAt(i));}
+
+    String value_str = value.toString().trim(); 
+    return value_str.isEmpty() ? null : value_str;
   }
 
   private static boolean isLineValid(String line) {return !line.isEmpty() && line.charAt(0) != '#';}
