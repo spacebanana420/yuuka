@@ -4,7 +4,7 @@ public class help {
   
     static String title() {return "Yuuka version 1.3.5";}
 
-  public static void printSmallHelp() {System.out.println(getHelpMessage_small());}
+    public static void printSmallHelp() {System.out.println(getHelpMessage_small());}
   
     public static String getHelpMessage() {
     return
