@@ -16,17 +16,19 @@ class confreader {
 
       var cfg_lines = new ArrayList<String>(); 
       
-      String line = "";
+      var line = new StringBuilder();
       for (int i = 0; i < config.length(); i++) {
         char c = config.charAt(i);
         if (c == '\n') {
-          if (isLineValid(line)) {cfg_lines.add(line);}
-          line = "";
+          String line_str = line.toString();
+          if (isLineValid(line_str)) {cfg_lines.add(line_str);}
+          line = new StringBuilder();
           continue;
         }
-        line += c;
+        line.append(c);
       }
-      if (isLineValid(line)) {cfg_lines.add(line);}
+      String line_str = line.toString();
+      if (isLineValid(line_str)) {cfg_lines.add(line_str);}
       
       return cfg_lines;
     }

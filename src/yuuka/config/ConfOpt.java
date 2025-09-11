@@ -7,8 +7,8 @@ public class ConfOpt {
   public String value = null;
   
   public ConfOpt(String line) {
-    String key = "";
-    String value = "";
+    var key = new StringBuilder();
+    var value = new StringBuilder();
     int line_end = line.length();
     int value_start = -1;
     
@@ -21,16 +21,16 @@ public class ConfOpt {
     for (int i = 0; i < line_end; i++) {
       char c = line.charAt(i);
       if (c == '=') {value_start = i+1; break;}
-      else {key+=c;}
+      else {key.append(c);}
     }
     if (key.isEmpty() || value_start == -1) {return;}
     
     //get value
-    for (int i = value_start; i < line_end; i++) {value+=line.charAt(i);}
+    for (int i = value_start; i < line_end; i++) {value.append(line.charAt(i));}
     if (value.isEmpty()) {return;}
     
-    this.key = key.trim();
-    this.value = value.trim();
+    this.key = key.toString().trim();
+    this.value = value.toString().trim();
   }
   
   static ConfOpt[] getOptions(ArrayList<String> lines) {
