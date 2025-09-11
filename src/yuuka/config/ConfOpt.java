@@ -9,7 +9,7 @@ public class ConfOpt {
   public ConfOpt(String line) {
     var key = new StringBuilder();
     var value = new StringBuilder();
-    int line_end = line.length();
+    int line_end = line.length(); //used to filter out comments in a line
     int value_start = -1;
     
     //find comment start
