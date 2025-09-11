@@ -14,6 +14,7 @@ import java.io.File;
 
 public class main {
   public static void main(String[] args) {
+    if (args.length == 0) {help.printSmallHelp(); return;}
     int parse_break = cli.findParseBreak(args); //The CLI argument "--" defines the end of Yuuka arguments
     if (cli.askedForHelp(args, parse_break)) {return;}
     
@@ -22,7 +23,7 @@ public class main {
 
     boolean printed_version = cli.printVersion(args, parse_break);
     boolean ranTask = runTasks(args, parse_break);
-    if (!ranTask && !printed_version) {System.out.println(help.getHelpMessage_small());}
+    if (!ranTask && !printed_version) {help.printSmallHelp();}
   }
   
   private static boolean runTasks(String[] args, int parse_break) {
