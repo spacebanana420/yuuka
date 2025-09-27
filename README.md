@@ -1,5 +1,5 @@
 # Yuuka
-Yuuka is a fast and lightweight build tool for nuilding your Java projects from the CLI in a simple way. Yuuka implements the Java compiler and JAR management tool for building and packaging while it manages and cleans up your projects in a platform-agnostic way.
+Yuuka is a fast and lightweight build tool for building your Java projects from the CLI in a simple way. Yuuka implements the Java compiler and JAR management tool for building and packaging while it manages and cleans up your projects in a platform-agnostic way.
 
 ## Requirements
 * Java 11 or newer
