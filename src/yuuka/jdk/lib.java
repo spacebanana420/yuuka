@@ -6,6 +6,7 @@ import yuuka.global;
 
 import yuuka.io.fileops;
 
+//General library JAR functions
 public class lib {
   public static boolean projectHasNoLibraries() {
     var f = new File("lib");

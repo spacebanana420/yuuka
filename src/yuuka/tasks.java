@@ -13,6 +13,7 @@ import yuuka.jdk.process;
 import yuuka.jdk.compiler;
 import yuuka.jdk.tests;
 
+//High-level implementation of the different yuuka tasks (build, package, install, test, etc)
 public class tasks {
   public static void initializeProject() {
     new File("src").mkdir();

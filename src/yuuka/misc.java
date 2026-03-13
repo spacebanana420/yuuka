@@ -1,5 +1,6 @@
 package yuuka;
 
+//Generic functions used somewhere else
 public class misc {
   public static boolean isInt(String num) {
     try{

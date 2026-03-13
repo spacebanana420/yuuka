@@ -4,7 +4,7 @@ import yuuka.jdk.installer;
 import yuuka.io.fileops;
 import java.io.File;
 
-//Global variables, used in many other source files
+//Global variables, used in many other places in yuuka
 public class global {
   //0 - silent    1 - normal    2 - verbose   3 - debug
   public static byte PRINT_LEVEL = 1;

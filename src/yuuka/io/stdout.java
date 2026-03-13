@@ -3,6 +3,7 @@ package yuuka.io;
 import yuuka.global;
 import java.util.ArrayList;
 
+//Logging, printing, error messages, etc
 public class stdout {
   public static void print(String message) {
     if (global.PRINT_LEVEL > 0) {System.out.println(message);}

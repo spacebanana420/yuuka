@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import yuuka.io.stdout;
 import yuuka.global;
 
+//Handles the execution of subprocesses, usually JDK stuff
 public class process {
   public static int runProcess(String[] cmd, String working_directory) {
     stdout.print_debug("Working directory: " + working_directory +"\nExecuting the process:\n", cmd);

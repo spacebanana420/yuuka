@@ -9,6 +9,8 @@ import yuuka.cli.cli;
 import yuuka.misc;
 import yuuka.io.fileops;
 
+//Implements test execution on Yuuka
+//Tests can be Java source files as well as scripts or anything else that is executable
 public class tests {
   public static int runTest_java(String source_file, String[] exec_args) {    
     String[] cmd =

@@ -8,6 +8,9 @@ import yuuka.global;
 import yuuka.misc;
 import yuuka.io.*;
 
+//The high-level implementation of yuuka's configuration
+//Uses confreader to read a configuration file and ConfOpt to store settings
+//Also sets the values in global.java
 public class yuukaConfig {
   public static void createConfig() {
     if (new File("build.yuuka").isFile()) {return;}

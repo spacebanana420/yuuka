@@ -7,6 +7,9 @@ import yuuka.global;
 import yuuka.io.*;
 import yuuka.misc;
 
+
+//General CLI parsing functions for checking for specific arguments and their values
+//Also has a function for assigning the values in global.java
 public class cli {
   public static boolean askedForHelp(String[] args, int parse_break) {
     int help_i = parser.findArgument(args, parse_break, "-h", "--help");

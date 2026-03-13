@@ -2,6 +2,9 @@ package yuuka.config;
 
 import java.util.ArrayList;
 
+//Object for stogin a key and its value of a configuration file (e.g. build.yuuka)
+//Each setting follows the style of key=value
+//Comments are represented with character "#"
 public class ConfOpt {
   public String key = null;
   public String value = null;

@@ -1,5 +1,7 @@
 package yuuka.cli;
 
+//The core CLI parser, used by cli.java
+//Can check for whether a CLI argument was used as well as what value follows it
 public class parser {
   public static int findArgument(String[] args, int parse_break, String... arg) {
     for (String a : arg) {

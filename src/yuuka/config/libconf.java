@@ -9,6 +9,7 @@ import yuuka.io.stdout;
 import yuuka.libfetch.MavenLibrary;
 import yuuka.libfetch.CustomLibrary;
 
+//Config functions specifically for libs.yuuka
 public class libconf {
   public static int createConfig() {
     if (new File("libs.yuuka").isFile()) {return 1;}

@@ -9,6 +9,7 @@ import yuuka.cli.cli;
 import yuuka.global;
 import yuuka.io.fileops;
 
+//Runs the Java runtime, compiler as well as the JAR packager
 public class compiler {
   public static boolean compile() {
     File build_f = new File("build");

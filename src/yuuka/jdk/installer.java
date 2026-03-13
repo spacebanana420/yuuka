@@ -9,6 +9,8 @@ import yuuka.global;
 import yuuka.io.stdout;
 import yuuka.misc;
 
+//Handles the implementation of system-wide program installation
+//By default, a program is installed in /usr/local/bin
 public class installer {
   public static void installProgram() {
     String install_location = global.INSTALL_PATH;

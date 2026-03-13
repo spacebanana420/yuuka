@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//Used by yuukaConfig.java and libconf.java to read a configuration file
+//Read a file into a list of string lines, and read ConfOpt objects
 class confreader {
   static ArrayList<String> readConfig_str(String path) {
     var f = new File(path);
