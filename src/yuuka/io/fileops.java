@@ -4,12 +4,44 @@ import yuuka.misc;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
 //General file I/O tasks
 public class fileops {
+  //Read a text file into a list of lines
+  public static ArrayList<String> readFile(String filePath) {
+    var fileObject = new File(filePath);
+    String fileText;
+    if (!fileObject.isFile() || !fileObject.canRead()) return null;
+    try {
+      var is = new FileInputStream(filePath);
+      fileText = new String(is.readAllBytes());
+      is.close();
+    }
+    catch (IOException e) {
+      stdout.error("Failed to read file at path " + filePath + "\nYou might lack the required permissions to read it");
+      return null;
+    }
+
+    var fileLines = new ArrayList<String>();
+    var line = new StringBuilder();
+    for (int i = 0; i < fileText.length(); i++) {
+      char c = fileText.charAt(i);
+      if (c == '\n') {
+        if (line.length() == 0) continue;
+        fileLines.add(line.toString());
+        line = new StringBuilder();
+        continue;
+      }
+      line.append(c);
+    }
+    if (line.length() > 0) fileLines.add(line.toString());
+    return fileLines;
+  }
+  
   public static ArrayList<String> getSourceFiles(String root_path) {
     return getFiles_generic(root_path, false, ".java");
   }

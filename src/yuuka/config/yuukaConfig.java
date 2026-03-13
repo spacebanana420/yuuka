@@ -61,14 +61,12 @@ public class yuukaConfig {
     catch (IOException e) {stdout.error("Failed to create build.yuuka file!");}
   }
 
-  public static void setConfigValues(String conf_path) {
-    if (!new File(conf_path).isFile()) {return;}
-    ConfOpt[] config = confreader.readConfig(conf_path);
-    if (config == null) {
-      stdout.error("Error loading project's build.yuuka file! Make sure the file has read permission!");
+  public static void setConfigValues() {
+    Config config = new Config("build.yuuka");
+    if (config.isEmpty) {
+      stdout.print_verbose("Project's build.yuuka file is empty or has no valid settings, ignoring it");
       return;
     }
-    if (config.length == 0) {return;}
     var t = new Thread(() -> {
       setVerboseLevel(config);
       setMainClass(config);
@@ -86,9 +84,9 @@ public class yuukaConfig {
     catch(InterruptedException e) {e.printStackTrace();}
   }
 
-  private static void setVerboseLevel(ConfOpt[] config) {
-    String value = confreader.getValue(config, "verbose_level");
-    if (value == null) {return;}
+  private static void setVerboseLevel(Config config) {
+    String value = config.getValue("verbose_level");
+    if (value == null) return;
 
     byte level = misc.toByte(value);
     if (level < 0 || level > 3) {
@@ -98,13 +96,11 @@ public class yuukaConfig {
     global.PRINT_LEVEL = level;
   }
 
-  private static void setSrcInclusion(ConfOpt[] config) {
-    global.TESTS_INCLUDE_PROJECT = confreader.getBool(config, "tests_include_src");
-  }
+  private static void setSrcInclusion(Config config) {global.TESTS_INCLUDE_PROJECT = config.getBool("tests_include_src");}
 
-  private static void setInstallPath(ConfOpt[] config) {
-    String value = confreader.getValue(config, "install_path");
-    if (value == null) {return;}
+  private static void setInstallPath(Config config) {
+    String value = config.getValue("install_path");
+    if (value == null) return;
     var f = new File(value);
     if (!f.isDirectory()) {
       stdout.error
@@ -125,48 +121,51 @@ public class yuukaConfig {
     global.INSTALL_PATH = value;
   }
 
-  private static void setMainClass(ConfOpt[] config) {
-    String main_class = confreader.getValue(config, "main_class");
-    if (main_class != null) {global.MAIN_CLASS = main_class; return;} //Manually-specified
-    if (!confreader.getBool(config, "autodetect_main")){return;}
+  private static void setMainClass(Config config) {
+    String main_class = config.getValue("main_class");
+    if (main_class != null) {
+      global.MAIN_CLASS = main_class; //Manually-specified main class
+      return;
+    }
+    if (!config.getBool("autodetect_main")) return;
     
     stdout.print_verbose("Attempting to auto-detect main class");
     global.MAIN_CLASS = fileops.findMainClass(); //Automatically-specified
   }
 
-  private static void setProgramName(ConfOpt[] config) {
-    String value = confreader.getValue(config, "jar_filename");
-    if (value != null) {global.setProgramName(value);}
+  private static void setProgramName(Config config) {
+    String value = config.getValue("jar_filename");
+    if (value != null) global.setProgramName(value);
   }
 
-  private static void setRelease(ConfOpt[] config) {
+  private static void setRelease(Config config) {
     String value;
     
-    value = confreader.getValue(config, "release_target");
+    value = config.getValue("release_target");
     if (value != null && misc.isInt(value)) {
       global.setReleaseTarget(value);
     }
-    value = confreader.getValue(config, "source_target");
+    value = config.getValue("source_target");
     if (value != null && misc.isInt(value)) {
       global.setSourceTarget(value);
     }
-    value = confreader.getValue(config, "class_target");
+    value = config.getValue("class_target");
     if (value != null && misc.isInt(value)) {
       global.setClassTarget(value);
     }
   }
   
-  private static void setDisableWarnings(ConfOpt[] config) {
-    global.DISABLE_WARNINGS = confreader.getBool(config, "disable_warnings");
+  private static void setDisableWarnings(Config config) {
+    global.DISABLE_WARNINGS = config.getBool("disable_warnings");
   }
   
-  private static void setDisableCompression(ConfOpt[] config) {
-    global.DISABLE_JAR_COMPRESSION = confreader.getBool(config, "disable_jar_compression");
+  private static void setDisableCompression(Config config) {
+    global.DISABLE_JAR_COMPRESSION = config.getBool("disable_jar_compression");
   }
 
-  private static void setGraalPath(ConfOpt[] config) {
-    String value = confreader.getValue(config, "graal_path");
-    if (value == null) {return;}
+  private static void setGraalPath(Config config) {
+    String value = config.getValue("graal_path");
+    if (value == null) return;
     var f = new File(value);
     if (!f.isFile() || !f.canExecute()) {
       stdout.error("The GraalVM binary path of " + value + " is not real or an executable!");

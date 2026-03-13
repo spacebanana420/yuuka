@@ -39,6 +39,11 @@ public class global {
   //Converts main class path from slashes to dots
   //Dots are the standard Java way and the only way that works with GraalVM's native-image
   public static String mainClassDot() {return MAIN_CLASS.replaceAll("/", ".");}
+
+
+  //TODO: Read from CLI and build.yuuka
+  //public static void assignOptions(String[] args, ConfOpt[] config) {
+  //}
   
   public static void setProgramName(String name) {
     if (name.contains(".jar")) {PROGRAM_NAME = name;}

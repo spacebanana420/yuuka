@@ -48,7 +48,7 @@ public class cli {
         default: help_message = help.getHelpMessage();
       }
     }
-    else {help_message = help.getHelpMessage();}
+    else help_message = help.getHelpMessage();
     
     System.out.println(help_message);
     return true;

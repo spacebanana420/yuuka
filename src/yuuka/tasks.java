@@ -230,13 +230,16 @@ public class tasks {
   
   private static boolean fetchLibs() {
     int result = libconf.createConfig();
-    if (result == 0) {stdout.print_verbose("File libs.yuuka not found, creating file and skipping dependency fetching"); return false;}
-    else if (result < 0) {return false;}
+    if (result == 0) {
+      stdout.print_verbose("File libs.yuuka not found, creating file and skipping dependency fetching");
+      return false;
+    }
+    else if (result < 0) return false;
 
-    String[] conf = libconf.readConfig();
-    result = fetchMavenLibs(conf);
-    if (result != 0) {return false;}
-    result = fetchCustomLibs(conf);
+    Config config = libconf.readConfig();
+    result = fetchMavenLibs(config);
+    if (result != 0) return false;
+    result = fetchCustomLibs(config);
     return result == 0;
   }
   
@@ -249,7 +252,7 @@ public class tasks {
     return false;
   }
 
-  private static int fetchMavenLibs(String[] config) {
+  private static int fetchMavenLibs(Config config) {
     MavenLibrary[] libs = libconf.getMavenLibraries(config);
     if (libs.length == 0) {return 0;}
 
@@ -262,7 +265,7 @@ public class tasks {
     return 0;
   }
 
-  private static int fetchCustomLibs(String[] config) {
+  private static int fetchCustomLibs(Config config) {
     CustomLibrary[] libs = libconf.getCustomLibraries(config);
     if (libs.length == 0) {return 0;}
 

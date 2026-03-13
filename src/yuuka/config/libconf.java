@@ -36,25 +36,24 @@ public class libconf {
     catch (IOException e) {stdout.error("Failed to create dependency config file!"); return -1;}
   }
   
-  public static String[] readConfig() {return confreader.readConfig_str("libs.yuuka").toArray(new String[0]);}
+  public static Config readConfig() {return new Config("libs.yuuka");}
 
-  public static MavenLibrary[] getMavenLibraries(String[] conf) {
+  public static MavenLibrary[] getMavenLibraries(Config config) {
     var libs = new ArrayList<MavenLibrary>();
-    for (String line : conf) {addLib(libs, line);}
-
+    String[] libraries = config.getAllValues("library");
+    for (String library : libraries) {addLib(libs, library);}
     return libs.toArray(new MavenLibrary[0]);
   }
 
-  public static CustomLibrary[] getCustomLibraries(String[] conf) {
+  public static CustomLibrary[] getCustomLibraries(Config config) {
     var libs = new ArrayList<CustomLibrary>();
-    for (String line : conf) {addLib_custom(libs, line);}
-    
+    String[] libraries = config.getAllValues("library_custom");
+    for (String library : libraries) {addLib_custom(libs, library);}    
     return libs.toArray(new CustomLibrary[0]);
   }
 
-  private static void addLib(ArrayList<MavenLibrary> libs, String line) {
-    String value = confreader.getValue(line, "library");
-    if (value == null || value.equals("")) {return;}
+  private static void addLib(ArrayList<MavenLibrary> libs, String value) {
+    if (value == null || value.equals("")) return;
     
     stdout.print_debug("Found dependency: " + value);
     var lib = new MavenLibrary();
@@ -82,9 +81,8 @@ public class libconf {
   }
 
   //lots of duplicate code
-  private static void addLib_custom(ArrayList<CustomLibrary> libs, String line) {
-    String value = confreader.getValue(line, "library_custom");
-    if (value == null || value.equals("")) {return;}
+  private static void addLib_custom(ArrayList<CustomLibrary> libs, String value) {
+    if (value == null || value.equals("")) return;
 
     stdout.print_debug("Found dependency: " + value);  
     var lib = new CustomLibrary();

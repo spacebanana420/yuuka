@@ -18,7 +18,7 @@ public class main {
     int parse_break = cli.findParseBreak(args); //The CLI argument "--" defines the end of Yuuka arguments
     if (cli.askedForHelp(args, parse_break)) return;
     
-    yuukaConfig.setConfigValues("build.yuuka"); //set global.java values from build.yuuka
+    yuukaConfig.setConfigValues(); //set global.java values from build.yuuka
     cli.assignGlobalValues(args, parse_break); //set global.java values from CLI arguments
 
     boolean printed_version = cli.printVersion(args, parse_break);

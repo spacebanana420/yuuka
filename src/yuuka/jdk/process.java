@@ -59,8 +59,9 @@ public class process {
   public static ArrayList<String> buildJARCommand(String output_path, String main_class, ArrayList<String> class_files, String binary_path) {
     var cmd = new ArrayList<String>();
     cmd.add(binary_path);
-    
-    cmd.add("-c"); cmd.add("-f"); cmd.add(output_path); 
+    cmd.add("-c");
+    cmd.add("-f");
+    cmd.add(output_path); 
     if (main_class != null) {cmd.add("--main-class="+main_class);}
     if (global.DISABLE_JAR_COMPRESSION) {cmd.add("--no-compress");}
     
