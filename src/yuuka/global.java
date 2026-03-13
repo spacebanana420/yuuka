@@ -33,6 +33,10 @@ public class global {
   public static boolean mainIsCorrect() {
     return new File("src/"+MAIN_CLASS+".java").isFile();
   }
+
+  //Converts main class path from slashes to dots
+  //Dots are the standard Java way and the only way that works with GraalVM's native-image
+  public static String mainClassDot() {return MAIN_CLASS.replaceAll("/", ".");}
   
   public static void setProgramName(String name) {
     if (name.contains(".jar")) {PROGRAM_NAME = name;}

@@ -35,18 +35,18 @@ public class tasks {
   public static boolean build() {return build(true);}
 
   public static boolean build(boolean display_main) {
-    if (projectHasNoSource()) {return false;}
+    if (projectHasNoSource()) return false;
     if (!fetchLibs()) {stdout.error("Cancelling compilation due to dependency errors"); return false;}
     fileops.deleteBeforeCompile("build");
     stdout.print("Compiling project");
-    if (display_main) {stdout.print_verbose("Main class is " + global.MAIN_CLASS);}
+    if (display_main) stdout.print_verbose("Main class is " + global.MAIN_CLASS);
 
     return compiler.compile();
   }
 
   public static boolean packageJAR() {
     boolean result = build(true);
-    if (!result) {return false;}
+    if (!result) return false;
     stdout.print("Creating executable JAR \"" + global.PROGRAM_NAME + "\"");
     if (!global.mainIsDefined()) {
       stdout.error
@@ -67,7 +67,7 @@ public class tasks {
       );
       return false;
     }
-    result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, false);
+    result = compiler.createJAR(global.PROGRAM_NAME, global.mainClassDot(), false);
     
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -77,7 +77,7 @@ public class tasks {
 
   public static boolean packageLib() {
     boolean result = build(false);
-    if (!result) {return false;}
+    if (!result) return false;
 
     stdout.print("Creating library JAR \"" + global.PROGRAM_NAME + "\"");
     result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, true);
@@ -89,10 +89,10 @@ public class tasks {
   }
 
   public static boolean buildNativeBinary() {
-    if (!packageJAR()) {return false;}
+    if (!packageJAR()) return false;
     String[] nativecmd = new String[]
     {
-      global.GRAAL_PATH, "--no-fallback", "--static", "-O3", "-jar",
+      global.GRAAL_PATH, "--no-fallback", "--static", "--libc=musl", "-O3", "-jar",
       global.PROGRAM_NAME,
       "-o", misc.removeExtension(global.PROGRAM_NAME)
     };
