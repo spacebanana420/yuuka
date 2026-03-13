@@ -13,6 +13,8 @@ import yuuka.jdk.process;
 import yuuka.jdk.compiler;
 import yuuka.jdk.tests;
 
+import java.util.ArrayList;
+
 //High-level implementation of the different yuuka tasks (build, package, install, test, etc)
 public class tasks {
   public static void initializeProject() {
@@ -91,14 +93,29 @@ public class tasks {
 
   public static boolean buildNativeBinary() {
     if (!packageJAR()) return false;
-    String[] nativecmd = new String[]
-    {
-      global.GRAAL_PATH, "--no-fallback", "--static", "--libc=musl", "-O3", "-jar",
-      global.PROGRAM_NAME,
-      "-o", misc.removeExtension(global.PROGRAM_NAME)
-    };
-    stdout.print("Building native binary with GraalVM");
-    int exitstatus = process.runProcess(nativecmd, "build");
+
+    String log = "Building native binary with GraalVM (dynamic-linked)";
+    var nativecmd = new ArrayList<String>();
+    nativecmd.add(global.GRAAL_PATH);
+    nativecmd.add("--no-fallback");
+    nativecmd.add("-O3");
+    
+    if (global.STATIC_BINARY) {
+      log = "Building native binary with GraalVM (fully static-linked, musl)";
+      nativecmd.add("--static");
+      nativecmd.add("--libc=musl");
+    }
+    else if (global.STATIC_NOLIBC) {
+      log = "Building native binary with GraalVM (partially static-linked, depends externally on system's libc)";
+      nativecmd.add("--static-nolibc");
+    }
+    nativecmd.add("-jar");
+    nativecmd.add(global.PROGRAM_NAME);
+    nativecmd.add("-o");
+    nativecmd.add(misc.removeExtension(global.PROGRAM_NAME));
+    
+    stdout.print(log);
+    int exitstatus = process.runProcess(nativecmd.toArray(new String[0]), "build");
     if (exitstatus == -1) {
       stdout.error("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");
     }

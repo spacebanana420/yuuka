@@ -43,6 +43,8 @@ public class help {
       + "\n  -0 (--no-compress)             disables ZIP compression for JAR files"
       + "\n  -nw (--no-warnings)            disables compiler warnings"
       + "\n  -gp (--graal-path)             sets a custom path for the GraalVM \"native-image\" binary"
+      + "\n  --static                       for native compilation, build a fully static binary (requires musl)"
+      + "\n  --static-nolibc                for native compilation, build a mostly-static binary, still dynamically linked to libc"
       + "\n  -ip (--install-path)           sets a custom installation path for the \"install\" task"
       + "\n  -is (--include-src)            imports the project's source code when running tests"
       ;

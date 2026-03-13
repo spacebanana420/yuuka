@@ -13,14 +13,16 @@ public class global {
   public static boolean DISABLE_WARNINGS = false;
   public static boolean DISABLE_JAR_COMPRESSION = false;
 
-  public static String GRAAL_PATH = "native-image";
-
   public static String MAIN_CLASS = null;
   public static String PROGRAM_NAME = "release.jar";
   
   public static String RELEASE_TARGET = null;
   public static String SOURCE_TARGET = null;
   public static String CLASS_TARGET = null;
+
+  public static String GRAAL_PATH = "native-image";
+  public static boolean STATIC_BINARY = false;
+  public static boolean STATIC_NOLIBC = false;
   
   public static String INSTALL_PATH = installer.getInstallLocation();
   public static boolean TESTS_INCLUDE_PROJECT = false;
