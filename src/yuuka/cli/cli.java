@@ -10,7 +10,7 @@ import yuuka.misc;
 public class cli {
   public static boolean askedForHelp(String[] args, int parse_break) {
     int help_i = parser.findArgument(args, parse_break, "-h", "--help");
-    if (help_i == -1) {return false;}
+    if (help_i == -1) return false;
     
     String help_message;
     if (parser.hasArgumentValue(args, help_i)) {
@@ -61,21 +61,21 @@ public class cli {
   
   public static void assignGlobalValues(String[] args, int parse_break) {
     var t = new Thread(() -> {
-      if (parser.hasArgument(args, parse_break, "-d", "--debug")) {global.PRINT_LEVEL = 3;}
-      else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) {global.PRINT_LEVEL = 2;}
-      else if (parser.hasArgument(args, parse_break, "-s", "--silent")) {global.PRINT_LEVEL = 0;}
+      if (parser.hasArgument(args, parse_break, "-d", "--debug")) global.PRINT_LEVEL = 3;
+      else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) global.PRINT_LEVEL = 2;
+      else if (parser.hasArgument(args, parse_break, "-s", "--silent")) global.PRINT_LEVEL = 0;
       
-      if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) {global.INGORE_LIB = true;}
-      if (parser.hasArgument(args, parse_break, "-is", "--include-src")) {global.TESTS_INCLUDE_PROJECT = true;}
-      if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) {global.DISABLE_WARNINGS = true;}
-      if (parser.hasArgument(args, parse_break, "-0", "--no-compress")) {global.DISABLE_JAR_COMPRESSION = true;}
+      if (parser.hasArgument(args, parse_break, "-i", "--ignore-lib")) global.INGORE_LIB = true;
+      if (parser.hasArgument(args, parse_break, "-is", "--include-src")) global.TESTS_INCLUDE_PROJECT = true;
+      if (parser.hasArgument(args, parse_break, "-nw", "--no-warnings")) global.DISABLE_WARNINGS = true;
+      if (parser.hasArgument(args, parse_break, "-0", "--no-compress")) global.DISABLE_JAR_COMPRESSION = true;
       
       String target = getJavaTarget(args, parse_break, 0);
-      if (target != null) {global.setReleaseTarget(target);}
+      if (target != null) global.setReleaseTarget(target);
       target = getJavaTarget(args, parse_break, 1);
-      if (target != null) {global.setSourceTarget(target);}
+      if (target != null) global.setSourceTarget(target);
       target = getJavaTarget(args, parse_break, 2);
-      if (target != null) {global.setClassTarget(target);}    
+      if (target != null) global.setClassTarget(target);    
     });
     t.start();
     
@@ -90,14 +90,14 @@ public class cli {
   
   static void assignValue_main(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-m", "--main");
-    if (i == -1) {return;}
+    if (i == -1) return;
     
     String err = args[i] + " must be followed by the path to the project's main class!\nFor example yuuka/main";
     if (checkForValue(i, args, err)) {global.MAIN_CLASS = args[i+1];}
   }
   static void assignValue_output(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-o", "--output");
-    if (i == -1) {return;}
+    if (i == -1) return;
     
     String err = args[i] + " must be followed by the name of the JAR file!\nFor example yuuka.jar";
     if (checkForValue(i, args, err)) {global.setProgramName(args[i+1]);}
@@ -105,7 +105,7 @@ public class cli {
   
   static void assignValue_graalvm(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-gp", "--graal-path");
-    if (i == -1) {return;}
+    if (i == -1) return;
     
     String err = args[i] + " must be followed by the path to the GraalVM's native-image binary!\nFor example /usr/local/bin/native-image";
     if (checkForValue(i, args, err)) {
@@ -116,7 +116,7 @@ public class cli {
   }
   static void assignValue_install(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-ip", "--install-path");
-    if (i == -1) {return;}
+    if (i == -1) return;
     
     String err = args[i] + " must be followed by the installation path!\nFor example /usr/local/bin";
     if (checkForValue(i, args, err)) {
@@ -128,7 +128,7 @@ public class cli {
   
   //mode must be 0, 1 or 2 for release, source and target
   static String getJavaTarget(String[] args, int parse_break, int mode) {
-    if (mode < 0 || mode > 2) {return null;}
+    if (mode < 0 || mode > 2) return null;
     String[] target_args = new String[]{"-r", "-src", "-t"};
     String[] target_args_long = new String[]{"--release", "--source", "--target"};
     
