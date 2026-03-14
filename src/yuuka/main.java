@@ -24,9 +24,9 @@ public class main {
     yuukaConfig.setConfigValues(); //set global.java values from build.yuuka
     cli.assignGlobalValues(args, parse_break); //set global.java values from CLI arguments
 
-    boolean printed_version = cli.printVersion(args, parse_break);
+    boolean printedVersion = cli.printVersion(args, parse_break);
     boolean ranTask = runTasks(args, parse_break);
-    if (!ranTask && !printed_version) {help.printSmallHelp();}
+    if (!ranTask && !printedVersion) help.printSmallHelp();
   }
   
   private static boolean runTasks(String[] args, int parse_break) {

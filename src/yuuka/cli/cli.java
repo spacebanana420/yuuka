@@ -70,7 +70,7 @@ public class cli {
   
   public static boolean printVersion(String[] args, int parse_break) {
     if (parser.hasArgument(args, parse_break, "-V", "--version")) {
-      System.out.println(help.title());
+      stdout.print(help.title());
       return true;
     }
     return false;
