@@ -105,7 +105,7 @@ public class main {
   }
   
   private static boolean unsupportedTask() {
-    if (System.getProperty("os.name").contains("Windows")) {
+    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
       stdout.error("The install task is not available for Windows!");
       return true;
     }
