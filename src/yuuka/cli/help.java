@@ -2,7 +2,7 @@ package yuuka.cli;
 
 //Help screens
 public class help {
-    static String title() {return "Yuuka version 1.4.1";}
+    static String title() {return "Yuuka version 1.4.2";}
     public static void printSmallHelp() {System.out.println(getHelpMessage_small());}
   
     public static String getHelpMessage() {

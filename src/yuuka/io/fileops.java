@@ -123,16 +123,21 @@ public class fileops {
     char file_separator = System.getProperty("file.separator").charAt(0);
     return findMainClass("src", file_separator);
   }
-  
+
+  //Autodetect project's main class by trying to find main.java, then return path
+  //Path follows the sytle of e.g yuuka/main
   private static String findMainClass(String path, char file_separator) {
     String[] paths = new File(path).list();
-    if (paths == null) {return null;}
+    if (paths == null) return null;
     
     for (String subpath : paths)
     {
       String full_path = path + file_separator + subpath;
       File f = new File(full_path);
-      if (!f.canRead()) {continue;}
+      if (!f.canRead()){
+        stdout.print_debug("Found unreadable path while trying to autodetect project's main class: " + full_path);
+        continue;
+      }
       
       if (f.isFile() && subpath.equals("main.java")) {
         return
@@ -143,12 +148,13 @@ public class fileops {
       }
       else if (f.isDirectory()) {
         String result = findMainClass(full_path, file_separator);
-        if (result != null) {return result;}
+        if (result != null) return result;
       }
     }
     return null;
   }
 
+  //If license files are found inside the source code, they should also be in the build and library JAR
   public static boolean copyLicensesToBuild() {return copyLicensesToBuild("src");}
   private static boolean copyLicensesToBuild(String path) {
     String[] subpaths = new File(path).list();
