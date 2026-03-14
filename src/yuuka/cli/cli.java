@@ -9,7 +9,7 @@ import yuuka.misc;
 
 
 //General CLI parsing functions for checking for specific arguments and their values
-//Also has a function for assigning the values in global.java
+//Using the CLI parser, it sets Yuuka's configuration
 public class cli {
   public static boolean askedForHelp(String[] args, int parse_break) {
     int help_i = parser.findArgument(args, parse_break, "-h", "--help");
@@ -53,6 +53,20 @@ public class cli {
     System.out.println(help_message);
     return true;
   }
+
+  //The argument -- defines the end of Yuuka CLI arguments and the start of CLI arguments to pass to the programs or tests you run
+  public static int findParseBreak(String[] args) {
+    for (int i = 0; i < args.length; i++) {if (args[i].equals("--")) {return i;}}
+    return args.length;
+  }
+
+  //The arguments to pass to a program/test/script Yuuka executes with "yuuka run" or "yuuka test"
+  public static String[] getExecArgs(String[] args, int parse_break) {
+    if (parse_break == -1) {return new String[0];}
+    ArrayList<String> exec_args = new ArrayList<>();
+    for (int i = parse_break+1; i < args.length; i++) {exec_args.add(args[i]);}
+    return exec_args.toArray(new String[0]);
+  }
   
   public static boolean printVersion(String[] args, int parse_break) {
     if (parser.hasArgument(args, parse_break, "-V", "--version")) {
@@ -61,7 +75,9 @@ public class cli {
     }
     return false;
   }
-  
+
+  //Set the options in global.java
+  //This is called after setting the values from the build.yuuka configuration file
   public static void assignGlobalValues(String[] args, int parse_break) {
     var t = new Thread(() -> {
       if (parser.hasArgument(args, parse_break, "-d", "--debug")) global.PRINT_LEVEL = 3;
@@ -147,20 +163,7 @@ public class cli {
     }
     return null;
   }
-  
-  //The argument -- defines the end of Yuuka CLI arguments and the start of CLI arguments to pass to the programs or tests you run
-  public static int findParseBreak(String[] args) {
-    for (int i = 0; i < args.length; i++) {if (args[i].equals("--")) {return i;}}
-    return args.length;
-  }
 
-  public static String[] getExecArgs(String[] args, int parse_break) {
-    if (parse_break == -1) {return new String[0];}
-    ArrayList<String> exec_args = new ArrayList<>();
-    for (int i = parse_break+1; i < args.length; i++) {exec_args.add(args[i]);}
-    return exec_args.toArray(new String[0]);
-  }
-  
   private static boolean checkForValue(int i, String[] args, String error_message) {
     if (!parser.hasArgumentValue(args, i)) {stdout.error(error_message); return false;}
     return true;

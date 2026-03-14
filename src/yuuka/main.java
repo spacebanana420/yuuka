@@ -14,7 +14,10 @@ import java.io.File;
 
 public class main {
   public static void main(String[] args) {
-    if (args.length == 0) {help.printSmallHelp(); return;}
+    if (args.length == 0) {
+      help.printSmallHelp();
+      return;
+    }
     int parse_break = cli.findParseBreak(args); //The CLI argument "--" defines the end of Yuuka arguments
     if (cli.askedForHelp(args, parse_break)) return;
     
@@ -51,7 +54,7 @@ public class main {
           tasks.cleanProject();
           return true;
         case "install":
-          if (unsupportedTask()) {return true;}
+          if (unsupportedTask()) return true;
           if (
             parser.hasArgumentValue(args, i)
             && new File(args[i+1]).isFile()
@@ -63,7 +66,7 @@ public class main {
           }
           return true;
         case "install-native":
-          if (unsupportedTask()) {return true;}
+          if (unsupportedTask()) return true;
           if (tasks.buildNativeBinary()) {installer.installProgram_native();}
           return true;
         case "uninstall":
