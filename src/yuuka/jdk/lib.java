@@ -10,12 +10,12 @@ import yuuka.io.fileops;
 public class lib {
   public static boolean projectHasNoLibraries() {
     var f = new File("lib");
-    if (!f.isDirectory()) {return true;}
+    if (!f.isDirectory()) return true;
 
     var file_list = f.list();
-    if (file_list == null) {return true;}
+    if (file_list == null) return true;
 
-    for (String file : file_list) {if (file.contains(".jar")) {return false;}}
+    for (String file : file_list) {if (file.contains(".jar")) return false;}
     return true;
   }
 

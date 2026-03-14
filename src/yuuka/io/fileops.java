@@ -68,37 +68,54 @@ public class fileops {
     return true;
   }
 
-  public static boolean deleteClassFiles(String path) {return deleteClassFiles(path, false, false, false);}
-  public static boolean deleteBuildFiles(String path) {return deleteClassFiles(path, true, true, false);}
-  public static boolean deleteBuildFiles_all(String path) {return deleteClassFiles(path, true, true, true);}
-  public static boolean deleteBeforeCompile(String path) {return deleteClassFiles(path, false, true, true);}
+  public static boolean deleteClassFiles(String path) {return cleanupProject(path, false, false, false);}
+  public static boolean deleteBuildFiles(String path) {return cleanupProject(path, true, true, false);}
+  public static boolean deleteBuildFiles_all(String path) {return cleanupProject(path, true, true, true);}
+  public static boolean deleteBeforeCompile(String path) {return cleanupProject(path, false, true, true);}
 
-  private static boolean deleteClassFiles(String path, boolean deleteAll, boolean deleteDirectory, boolean deleteJars) {
-    if (!new File(path).isDirectory()) {return false;}
+  //Recursive directory/file deletion with project file cleanup in mind
+  //Can delete class files, MANIFEST.MF, JAR files, all files or anything in-between
+  private static boolean cleanupProject(String path, boolean deleteAll, boolean deleteDirectory, boolean deleteJars) {
+    if (!new File(path).isDirectory()) return false;
     String[] paths = new File(path).list();
-    if (paths == null || paths.length == 0) {return true;}
+    if (paths == null || paths.length == 0) return true;
 
-    try {for (String sub_path : paths)
+    for (String sub_path : paths)
     {
       String full_path = path + "/" + sub_path;
-      Path full_p = Path.of(full_path);
       File f = new File(full_path);
       
       if (f.isFile() && deletableFile(sub_path, deleteAll, deleteJars)) {
-        Files.delete(full_p);
+        boolean deleted = deleteFile(full_path);
+        if (!deleted) return false;
       }
       else if (f.isDirectory()) {
-        boolean result = deleteClassFiles(full_path, deleteAll, deleteDirectory, deleteJars);
-        if (!result) {return false;}
-        if (deleteDirectory) {Files.delete(full_p);}
+        boolean result = cleanupProject(full_path, deleteAll, deleteDirectory, deleteJars);
+        if (!result) return false;
+        if (deleteDirectory) {
+          boolean deleted = deleteFile(full_path);
+          if (!deleted) return false;
+        }
       }
-    }} catch(IOException e) {return false;}
+    }
     return true;
+  }
+
+  private static boolean deleteFile(String filePath) {
+    try {
+      Path p = Path.of(filePath);
+      Files.delete(p);
+      return true;
+    }
+    catch (IOException e) {
+      stdout.error("Failed to delete the file at path " + filePath);
+      return false;
+    }
   }
 
   private static boolean deletableFile(String name, boolean deleteAll, boolean deleteJars) {
     boolean is_jar = isJarFile(name);
-    if (is_jar && !deleteJars) {return false;}
+    if (is_jar && !deleteJars) return false;
     return deleteAll || (is_jar && deleteJars) || isClassFile(name) || name.equals("MANIFEST.MF");
   }
 
@@ -135,7 +152,7 @@ public class fileops {
   public static boolean copyLicensesToBuild() {return copyLicensesToBuild("src");}
   private static boolean copyLicensesToBuild(String path) {
     String[] subpaths = new File(path).list();
-    if (subpaths == null || subpaths.length == 0) {return false;}
+    if (subpaths == null || subpaths.length == 0) return false;
 
     int copied_licenses = 0;
     for (String subp : subpaths)
@@ -159,15 +176,16 @@ public class fileops {
     return copied_licenses > 0;
   }
 
+  //Generic function for getting files that match an extension, optionally also get license files
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
     String[] subpaths = new File(root_path).list();
     ArrayList<String> source_files = new ArrayList<>();
-    if (subpaths == null) {return source_files;}
+    if (subpaths == null) return source_files;
 
     for (String p : subpaths)
     {
       File f = new File(root_path + "/" + p);
-      if (!f.canRead()) {continue;}
+      if (!f.canRead()) continue;
       if (f.isFile() && (misc.checkFileExtension(p, file_extension) || isLicense(p, checklicenses)))
       {
         source_files.add(root_path + "/" + p);
@@ -183,7 +201,6 @@ public class fileops {
 
   private static boolean isLicense(String path, boolean checkLicenses) {return checkLicenses && isLicense(path);}
   private static boolean isLicense(String path) {return new File(path).getName().equals("LICENSE");}
-  
   private static boolean isClassFile(String name) {return misc.checkFileExtension(name, ".class");}
   private static boolean isJarFile(String name) {return misc.checkFileExtension(name, ".jar");}
 }
