@@ -50,7 +50,7 @@ public class cli {
     }
     else help_message = help.getHelpMessage();
     
-    System.out.println(help_message);
+    stdout.print(help_message);
     return true;
   }
 
@@ -109,14 +109,14 @@ public class cli {
     catch(InterruptedException e) {e.printStackTrace();}
   }
   
-  static void assignValue_main(String[] args, int parse_break) {
+  private static void assignValue_main(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-m", "--main");
     if (i == -1) return;
     
     String err = args[i] + " must be followed by the path to the project's main class!\nFor example yuuka/main";
     if (checkForValue(i, args, err)) {global.MAIN_CLASS = args[i+1];}
   }
-  static void assignValue_output(String[] args, int parse_break) {
+  private static void assignValue_output(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-o", "--output");
     if (i == -1) return;
     
@@ -124,7 +124,7 @@ public class cli {
     if (checkForValue(i, args, err)) {global.setProgramName(args[i+1]);}
   }
   
-  static void assignValue_graalvm(String[] args, int parse_break) {
+  private static void assignValue_graalvm(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-gp", "--graal-path");
     if (i == -1) return;
     
@@ -135,7 +135,7 @@ public class cli {
       else {stdout.error("The GraalVM native-image binary at path " + args[i+1] + " does not exist or is not executable!");}
     }
   }
-  static void assignValue_install(String[] args, int parse_break) {
+  private static void assignValue_install(String[] args, int parse_break) {
     int i = parser.findArgument(args, parse_break, "-ip", "--install-path");
     if (i == -1) return;
     
@@ -148,7 +148,7 @@ public class cli {
   }
   
   //mode must be 0, 1 or 2 for release, source and target
-  static String getJavaTarget(String[] args, int parse_break, int mode) {
+  private static String getJavaTarget(String[] args, int parse_break, int mode) {
     if (mode < 0 || mode > 2) return null;
     String[] target_args = new String[]{"-r", "-src", "-t"};
     String[] target_args_long = new String[]{"--release", "--source", "--target"};
