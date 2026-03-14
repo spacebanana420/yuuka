@@ -27,7 +27,7 @@ public class lib {
   
   //Include library JARs in the command for running or compiling code
   public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
-    if (global.INGORE_LIB || projectHasNoLibraries()) {return cmd;}
+    if (global.IGNORE_LIB || projectHasNoLibraries()) {return cmd;}
     
     ArrayList<String> jars = getLibraryJars(change_base_directory);
     String[] libargs = getLibArgs(jars);

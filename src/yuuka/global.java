@@ -9,7 +9,7 @@ public class global {
   //0 - silent    1 - normal    2 - verbose   3 - debug
   public static byte PRINT_LEVEL = 1;
 
-  public static boolean INGORE_LIB = false;
+  public static boolean IGNORE_LIB = false;
   public static boolean DISABLE_WARNINGS = false;
   public static boolean DISABLE_JAR_COMPRESSION = false;
 

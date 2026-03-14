@@ -68,12 +68,12 @@ public class cli {
       else if (parser.hasArgument(args, parse_break, "-v", "--verbose")) global.PRINT_LEVEL = 2;
       else if (parser.hasArgument(args, parse_break, "-s", "--silent")) global.PRINT_LEVEL = 0;
       
-      global.INGORE_LIB = parser.hasArgument(args, parse_break, "-i", "--ignore-lib");
-      global.TESTS_INCLUDE_PROJECT = parser.hasArgument(args, parse_break, "-is", "--include-src");
-      global.DISABLE_WARNINGS = parser.hasArgument(args, parse_break, "-nw", "--no-warnings");
-      global.DISABLE_JAR_COMPRESSION = parser.hasArgument(args, parse_break, "-0", "--no-compress");
-      global.STATIC_BINARY = parser.hasArgument(args, parse_break, "--static");
-      global.STATIC_NOLIBC = parser.hasArgument(args, parse_break, "--static-nolibc");
+      global.IGNORE_LIB = global.IGNORE_LIB || parser.hasArgument(args, parse_break, "-i", "--ignore-lib");
+      global.TESTS_INCLUDE_PROJECT = global.TESTS_INCLUDE_PROJECT || parser.hasArgument(args, parse_break, "-is", "--include-src");
+      global.DISABLE_WARNINGS = global.DISABLE_WARNINGS || parser.hasArgument(args, parse_break, "-nw", "--no-warnings");
+      global.DISABLE_JAR_COMPRESSION = global.DISABLE_JAR_COMPRESSION || parser.hasArgument(args, parse_break, "-0", "--no-compress");
+      global.STATIC_BINARY = global.STATIC_BINARY || parser.hasArgument(args, parse_break, "--static");
+      global.STATIC_NOLIBC = global.STATIC_NOLIBC || parser.hasArgument(args, parse_break, "--static-nolibc");
       
       String target = getJavaTarget(args, parse_break, 0);
       if (target != null) global.setReleaseTarget(target);
