@@ -28,7 +28,8 @@ public class tasks {
   }
   
   public static void cleanProject() {
-    stdout.print("Cleaning up all class files");
+    stdout.print("Cleaning up project, class files and JAR files");
+    stdout.print_verbose("Deleting all .class files in src, lib and test\nDeleting all files in build");
     fileops.deleteClassFiles("src");
     fileops.deleteBuildFiles_all("build");
     fileops.deleteClassFiles("lib");
@@ -36,7 +37,6 @@ public class tasks {
   }
 
   public static boolean build() {return build(true);}
-
   public static boolean build(boolean display_main) {
     if (projectHasNoSource()) return false;
     if (!fetchLibs()) {stdout.error("Cancelling compilation due to dependency errors"); return false;}
