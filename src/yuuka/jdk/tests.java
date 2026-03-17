@@ -14,8 +14,8 @@ import yuuka.io.fileops;
 public class tests {
   public static int runTest_java(String source_file, String[] exec_args) {    
     String[] cmd =
-      (global.TESTS_INCLUDE_PROJECT && new File("build/"+global.PROGRAM_NAME).isFile())
-      ? new String[]{"java", "--class-path", "../build/"+global.PROGRAM_NAME, source_file}
+      (global.TESTS_INCLUDE_PROJECT && new File("build/"+global.JAR_FILENAME).isFile())
+      ? new String[]{"java", "--class-path", "../build/"+global.JAR_FILENAME, source_file}
       : new String[]{"java", source_file};
       
 

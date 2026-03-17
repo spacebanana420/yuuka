@@ -50,7 +50,7 @@ public class tasks {
   public static boolean packageJAR() {
     boolean result = build(true);
     if (!result) return false;
-    stdout.print("Creating executable JAR \"" + global.PROGRAM_NAME + "\"");
+    stdout.print("Creating executable JAR \"" + global.JAR_FILENAME + "\"");
     if (!global.mainIsDefined()) {
       stdout.error
       (
@@ -70,7 +70,7 @@ public class tasks {
       );
       return false;
     }
-    result = compiler.createJAR(global.PROGRAM_NAME, global.mainClassDot(), false);
+    result = compiler.createJAR(global.JAR_FILENAME, global.mainClassDot(), false);
     
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -82,8 +82,8 @@ public class tasks {
     boolean result = build(false);
     if (!result) return false;
 
-    stdout.print("Creating library JAR \"" + global.PROGRAM_NAME + "\"");
-    result = compiler.createJAR(global.PROGRAM_NAME, global.MAIN_CLASS, true);
+    stdout.print("Creating library JAR \"" + global.JAR_FILENAME + "\"");
+    result = compiler.createJAR(global.JAR_FILENAME, global.MAIN_CLASS, true);
 
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -110,9 +110,9 @@ public class tasks {
       nativecmd.add("--static-nolibc");
     }
     nativecmd.add("-jar");
-    nativecmd.add(global.PROGRAM_NAME);
+    nativecmd.add(global.JAR_FILENAME);
     nativecmd.add("-o");
-    nativecmd.add(misc.removeExtension(global.PROGRAM_NAME));
+    nativecmd.add(misc.removeExtension(global.JAR_FILENAME));
     
     stdout.print(log);
     int exitstatus = process.runProcess(nativecmd.toArray(new String[0]), "build");

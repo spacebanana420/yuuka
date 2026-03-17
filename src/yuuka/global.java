@@ -14,7 +14,7 @@ public class global {
   public static boolean DISABLE_JAR_COMPRESSION = false;
 
   public static String MAIN_CLASS = null;
-  public static String PROGRAM_NAME = "release.jar";
+  public static String JAR_FILENAME = "release.jar";
   
   public static String RELEASE_TARGET = null;
   public static String SOURCE_TARGET = null;
@@ -46,8 +46,8 @@ public class global {
   //}
   
   public static void setProgramName(String name) {
-    if (name.contains(".jar")) {PROGRAM_NAME = name;}
-    else {PROGRAM_NAME = name + ".jar";}
+    if (name.contains(".jar")) {JAR_FILENAME = name;}
+    else {JAR_FILENAME = name + ".jar";}
   }
   
   public static void setReleaseTarget(String version) {

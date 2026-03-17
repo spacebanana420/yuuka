@@ -14,10 +14,10 @@ import yuuka.misc;
 public class installer {
   public static void installProgram() {
     String install_location = global.INSTALL_PATH;
-    String jar_path = install_location + "/jars/" + global.PROGRAM_NAME;
-    String script_path = install_location + "/" + misc.removeExtension(global.PROGRAM_NAME);
+    String jar_path = install_location + "/jars/" + global.JAR_FILENAME;
+    String script_path = install_location + "/" + misc.removeExtension(global.JAR_FILENAME);
     
-    install(global.PROGRAM_NAME, "build/" + global.PROGRAM_NAME, jar_path, script_path, install_location);
+    install(global.JAR_FILENAME, "build/" + global.JAR_FILENAME, jar_path, script_path, install_location);
   }
 
   public static void installProgram(String jar) {
@@ -31,7 +31,7 @@ public class installer {
   
   public static void installProgram_native() {
     String install_location = global.INSTALL_PATH;
-    String binary_name = misc.removeExtension(global.PROGRAM_NAME);
+    String binary_name = misc.removeExtension(global.JAR_FILENAME);
     String source_path = "build/" + binary_name;
     String install_path = install_location + "/" + binary_name;
     
