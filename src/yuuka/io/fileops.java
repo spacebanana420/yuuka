@@ -51,7 +51,8 @@ public class fileops {
   public static ArrayList<String> getClassFiles(String root_path, boolean addlicenses) {
     return getFiles_generic(root_path, addlicenses, ".class");
   }
-  
+
+  //Used to remove the root of a relative directory, e.g. removing build from build/yuuka/main.class
   public static ArrayList<String> removeParent(ArrayList<String> files, String parent) {
     ArrayList<String> new_files = files;
     for (int i = 0; i < files.size(); i++) {
@@ -62,15 +63,19 @@ public class fileops {
 
   public static boolean deleteClassFiles(String[] class_files) {
     for (String file : class_files) {
-      try {Files.delete(Path.of(file));}
-      catch(IOException e) {return false;}
+      boolean result = deleteFile(file);
+      if (!result) return false;
     }
     return true;
   }
 
+  //Only delete class files, nothing else, used for cleanup in all kinds of places
   public static boolean deleteClassFiles(String path) {return cleanupProject(path, false, false, false);}
+  //Delete the class and license files in "build" after creating JAR to clean up clutter
   public static boolean deleteBuildFiles(String path) {return cleanupProject(path, true, true, false);}
+  //Delete everything inside "build", only used with "yuuka clean" command
   public static boolean deleteBuildFiles_all(String path) {return cleanupProject(path, true, true, true);}
+  //Delete old class and JAR files before compiling the project in its latest state
   public static boolean deleteBeforeCompile(String path) {return cleanupProject(path, false, true, true);}
 
   //Recursive directory/file deletion with project file cleanup in mind
@@ -168,12 +173,8 @@ public class fileops {
       
       if (f.isFile() && isLicense(subp)) {
         String path_out = path_in.replaceFirst("src", "build");
-        stdout.print_debug
-        (
-          "License file found in source"
-          +"\n  Input path: " + path_in
-          +"\n  Output path: " + path_out
-        );
+        String debugMessage = "License file found in source\n  Current path: " + path_in + "\n  Destination path: " + path_out;
+        stdout.print_debug(debugMessage);
         try {Files.copy(Path.of(path_in), Path.of(path_out)); copied_licenses++;}
         catch (IOException e) {stdout.print("Error copying license file " + subp + " into build!");}
       }
@@ -183,6 +184,7 @@ public class fileops {
   }
 
   //Generic function for getting files that match an extension, optionally also get license files
+  //Returns the files in relative paths
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
     String[] subpaths = new File(root_path).list();
     ArrayList<String> source_files = new ArrayList<>();
