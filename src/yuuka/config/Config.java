@@ -56,9 +56,10 @@ public class Config {
     return i == -1 ? null : this.values[i];
   }
 
-  public boolean getBool(String key) {
+  public boolean getBool(String key) {return getBool(key, false);}
+  public boolean getBool(String key, boolean defaultNull) {
     String value = getValue(key);
-    if (value == null) return false;
+    if (value == null) return defaultNull;
     value = value.toLowerCase();
     return value.equals("true") || value.equals("yes");
   }

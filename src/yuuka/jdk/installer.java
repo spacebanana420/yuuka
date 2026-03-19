@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import yuuka.global;
+import yuuka.options;
 import yuuka.io.stdout;
 import yuuka.misc;
 
@@ -13,16 +13,16 @@ import yuuka.misc;
 //By default, a program is installed in /usr/local/bin
 public class installer {
   public static void installProgram() {
-    String install_location = global.INSTALL_PATH;
-    String jar_path = install_location + "/jars/" + global.JAR_FILENAME;
-    String script_path = install_location + "/" + misc.removeExtension(global.JAR_FILENAME);
+    String install_location = options.getInstallPath();
+    String jar_path = install_location + "/jars/" + options.JAR_FILENAME;
+    String script_path = install_location + "/" + misc.removeExtension(options.JAR_FILENAME);
     
-    install(global.JAR_FILENAME, "build/" + global.JAR_FILENAME, jar_path, script_path, install_location);
+    install(options.JAR_FILENAME, "build/" + options.JAR_FILENAME, jar_path, script_path, install_location);
   }
 
   public static void installProgram(String jar) {
     String name = new File(jar).getName();
-    String install_location = global.INSTALL_PATH;
+    String install_location = options.getInstallPath();
     String jar_path = install_location + "/jars/" + name;   
     String script_path = install_location + "/" + misc.removeExtension(name);
 
@@ -30,8 +30,8 @@ public class installer {
   }
   
   public static void installProgram_native() {
-    String install_location = global.INSTALL_PATH;
-    String binary_name = misc.removeExtension(global.JAR_FILENAME);
+    String install_location = options.getInstallPath();
+    String binary_name = misc.removeExtension(options.JAR_FILENAME);
     String source_path = "build/" + binary_name;
     String install_path = install_location + "/" + binary_name;
     

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import yuuka.io.stdout;
-import yuuka.global;
+import yuuka.options;
 
 //Handles the execution of subprocesses, usually JDK stuff
 public class process {
@@ -39,9 +39,9 @@ public class process {
 
   public static String[] buildCommand(ArrayList<String> source_files, String binary_path) {
     ArrayList<String> cmd = new ArrayList<>();
-    String release_target = global.RELEASE_TARGET;
-    String source_target = global.SOURCE_TARGET;
-    String class_target = global.CLASS_TARGET;
+    String release_target = options.getJavaVersion();
+    String source_target = options.getSourceVersion();
+    String class_target = options.getClassVersion();
     
     cmd.add(binary_path);
     cmd.add("-d"); cmd.add("build");
@@ -50,7 +50,7 @@ public class process {
       if (source_target != null) {cmd.add("--source"); cmd.add(source_target);}
       if (class_target != null) {cmd.add("--target"); cmd.add(class_target);}
     }
-    if (global.DISABLE_WARNINGS) {cmd.add("-nowarn");}
+    if (options.disableWarnings()) {cmd.add("-nowarn");}
     cmd.addAll(source_files);
 
     return cmd.toArray(new String[0]);
@@ -63,7 +63,7 @@ public class process {
     cmd.add("-f");
     cmd.add(output_path); 
     if (main_class != null) {cmd.add("--main-class="+main_class);}
-    if (global.DISABLE_JAR_COMPRESSION) {cmd.add("--no-compress");}
+    if (options.disableJARCompression()) {cmd.add("--no-compress");}
     
     cmd.addAll(class_files);
     return cmd;

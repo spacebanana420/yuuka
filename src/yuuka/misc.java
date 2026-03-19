@@ -3,12 +3,17 @@ package yuuka;
 //Generic functions used somewhere else
 public class misc {
   public static boolean isInt(String num) {
-    try{
+    try {
       Integer.parseInt(num);
       return true;
     }
     catch(NumberFormatException e) {return false;}
   }
+
+  // public static int toInt(String number, int defaultNumber) {
+  //   try {return Integer.parseInt(number);}
+  //   catch(NumberFormatException e) {return defaultNumber;}
+  // }
   
   public static byte toByte(String num) {
     try{

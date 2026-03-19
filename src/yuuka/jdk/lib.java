@@ -2,7 +2,7 @@ package yuuka.jdk;
 
 import java.io.File;
 import java.util.ArrayList;
-import yuuka.global;
+import yuuka.options;
 
 import yuuka.io.fileops;
 
@@ -27,7 +27,7 @@ public class lib {
   
   //Include library JARs in the command for running or compiling code
   public static String[] addLibArgs(String[] cmd, boolean change_base_directory) {
-    if (global.IGNORE_LIB || projectHasNoLibraries()) return cmd;
+    if (options.IGNORE_LIB || projectHasNoLibraries()) return cmd;
     
     ArrayList<String> jars = getLibraryJars(change_base_directory);
     String[] libargs = getLibArgs(jars);

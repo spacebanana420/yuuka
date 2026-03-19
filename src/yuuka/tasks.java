@@ -42,7 +42,7 @@ public class tasks {
     if (!fetchLibs()) {stdout.error("Cancelling compilation due to dependency errors"); return false;}
     fileops.deleteBeforeCompile("build");
     stdout.print("Compiling project");
-    if (display_main) stdout.print_verbose("Main class is " + global.MAIN_CLASS);
+    if (display_main) stdout.print_verbose("Main class is " + options.MAIN_CLASS);
 
     return compiler.compile();
   }
@@ -50,8 +50,9 @@ public class tasks {
   public static boolean packageJAR() {
     boolean result = build(true);
     if (!result) return false;
-    stdout.print("Creating executable JAR \"" + global.JAR_FILENAME + "\"");
-    if (!global.mainIsDefined()) {
+
+    stdout.print("Creating executable JAR \"" + options.JAR_FILENAME + "\"");
+    if (!options.mainIsDefined()) {
       stdout.error
       (
         "Main class is not defined!"
@@ -61,16 +62,16 @@ public class tasks {
       return false;
     }
     
-    if (!global.mainIsCorrect()) {
+    if (!options.mainIsCorrect()) {
       stdout.error
       (
-        "Main class \"" + global.MAIN_CLASS + "\" is incorrectly defined! Cancelling JAR packaging."
+        "Main class \"" + options.MAIN_CLASS + "\" is incorrectly defined! Cancelling JAR packaging."
         +"\nYou can set your program's main class through build.yuuka or as a command-line argument. From build.yuuka you can also enable main class autodetection."
         +"\n\nExample: for the main file \"src/yuuka/main.java\", the main class should be \"yuuka/main\"."
       );
       return false;
     }
-    result = compiler.createJAR(global.JAR_FILENAME, global.mainClassDot(), false);
+    result = compiler.createJAR(options.JAR_FILENAME, options.mainClassDot(), false);
     
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -82,8 +83,8 @@ public class tasks {
     boolean result = build(false);
     if (!result) return false;
 
-    stdout.print("Creating library JAR \"" + global.JAR_FILENAME + "\"");
-    result = compiler.createJAR(global.JAR_FILENAME, global.MAIN_CLASS, true);
+    stdout.print("Creating library JAR \"" + options.JAR_FILENAME + "\"");
+    result = compiler.createJAR(options.JAR_FILENAME, options.MAIN_CLASS, true);
 
     stdout.print("Cleaning up class files");
     fileops.deleteBuildFiles("build");
@@ -94,25 +95,26 @@ public class tasks {
   public static boolean buildNativeBinary() {
     if (!packageJAR()) return false;
 
+    String nativeImagePath = options.getGraalPath();
     String log = "Building native binary with GraalVM (dynamic-linked)";
     var nativecmd = new ArrayList<String>();
-    nativecmd.add(global.GRAAL_PATH);
+    nativecmd.add(nativeImagePath);
     nativecmd.add("--no-fallback");
     nativecmd.add("-O3");
     
-    if (global.STATIC_BINARY) {
+    if (options.staticBinary()) {
       log = "Building native binary with GraalVM (fully static-linked, musl)";
       nativecmd.add("--static");
       nativecmd.add("--libc=musl");
     }
-    else if (global.STATIC_NOLIBC) {
+    else if (options.staticBinary_nolibc()) {
       log = "Building native binary with GraalVM (partially static-linked, depends externally on system's libc)";
       nativecmd.add("--static-nolibc");
     }
     nativecmd.add("-jar");
-    nativecmd.add(global.JAR_FILENAME);
+    nativecmd.add(options.JAR_FILENAME);
     nativecmd.add("-o");
-    nativecmd.add(misc.removeExtension(global.JAR_FILENAME));
+    nativecmd.add(misc.removeExtension(options.JAR_FILENAME));
     
     stdout.print(log);
     int exitstatus = process.runProcess(nativecmd.toArray(new String[0]), "build");
@@ -124,8 +126,8 @@ public class tasks {
   }
 
   public static void runProgram(String[] args) {
-    boolean result = new File("build/" + global.MAIN_CLASS + ".class").isFile() || build(true);
-    if (!result) {return;}
+    boolean result = new File("build/" + options.MAIN_CLASS + ".class").isFile() || build(true);
+    if (!result) return;
     stdout.print("Running program");
     compiler.runProgram(args);
   }
@@ -149,7 +151,7 @@ public class tasks {
     
     int exit_value;
     if (isJavaFile) {
-      if (!projectHasNoSource() && global.TESTS_INCLUDE_PROJECT) {
+      if (!projectHasNoSource() && options.includeSource()) {
         packageLib(); //The importation of this JAR is done in tests.runTest_java()
       }
       exit_value = tests.runTest_java(file_java, args);
@@ -163,7 +165,7 @@ public class tasks {
   }
   
   public static void uninstallProgram(String program_name) {
-    String install_path = global.INSTALL_PATH;
+    String install_path = options.getInstallPath();
     var f_script = new File(install_path + "/" + program_name);
     var f_jar = new File(install_path + "/jars/" + program_name + ".jar");
     
@@ -254,26 +256,26 @@ public class tasks {
 
   private static int fetchMavenLibs(Config config) {
     MavenLibrary[] libs = libconf.getMavenLibraries(config);
-    if (libs.length == 0) {return 0;}
+    if (libs.length == 0) return 0;
 
     stdout.print("Fetching Maven Dependencies");
     int result = 0;
     for (MavenLibrary lib : libs) {
       result = lib.fetchLibrary();
-      if (result != 0) {return result;}
+      if (result != 0) return result;
     }
     return 0;
   }
 
   private static int fetchCustomLibs(Config config) {
     CustomLibrary[] libs = libconf.getCustomLibraries(config);
-    if (libs.length == 0) {return 0;}
+    if (libs.length == 0) return 0;
 
     stdout.print("Fetching Custom Dependencies");
     int result = 0;
     for (CustomLibrary lib : libs) {
       result = lib.fetchLibrary();
-      if (result != 0) {return result;}
+      if (result != 0) return result;
     }
     return 0;
   }

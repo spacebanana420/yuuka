@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import yuuka.io.stdout;
 import yuuka.misc;
 import yuuka.cli.cli;
-import yuuka.global;
+import yuuka.options;
 import yuuka.io.fileops;
 
 //Wrapper for the Java runtime, compiler and JAR packager
@@ -39,7 +39,7 @@ public class compiler {
   }
 
   private static void extractLibraries() {
-    if (global.IGNORE_LIB || lib.projectHasNoLibraries()) {return;}
+    if (options.IGNORE_LIB || lib.projectHasNoLibraries()) return;
     ArrayList<String> jars = lib.getLibraryJars(true);
     for (String jar : jars) {
       stdout.print_verbose("Extracting library JAR " + jar);
@@ -48,7 +48,7 @@ public class compiler {
   }
 
   public static int runProgram(String[] exec_args) {
-    String[] cmd = new String[]{"java", global.MAIN_CLASS};
+    String[] cmd = new String[]{"java", options.MAIN_CLASS};
     cmd = lib.addLibArgs(cmd, true);
     
     stdout.print_verbose("Passing the following arguments to program execution:", exec_args);

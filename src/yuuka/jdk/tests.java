@@ -3,7 +3,7 @@ package yuuka.jdk;
 import java.io.File;
 import java.util.ArrayList;
 
-import yuuka.global;
+import yuuka.options;
 import yuuka.io.stdout;
 import yuuka.cli.cli;
 import yuuka.misc;
@@ -14,8 +14,8 @@ import yuuka.io.fileops;
 public class tests {
   public static int runTest_java(String source_file, String[] exec_args) {    
     String[] cmd =
-      (global.TESTS_INCLUDE_PROJECT && new File("build/"+global.JAR_FILENAME).isFile())
-      ? new String[]{"java", "--class-path", "../build/"+global.JAR_FILENAME, source_file}
+      (options.includeSource() && new File("build/"+options.JAR_FILENAME).isFile())
+      ? new String[]{"java", "--class-path", "../build/"+options.JAR_FILENAME, source_file}
       : new String[]{"java", source_file};
       
 

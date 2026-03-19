@@ -6,23 +6,31 @@ public class parser {
   public static int findArgument(String[] args, int parse_break, String... arg) {
     for (String a : arg) {
       int i = findArgument(args, parse_break, a);
-      if (i != -1) {return i;}
+      if (i != -1) return i;
     }
     return -1;
   }
   
   public static int findArgument(String[] args, int parse_break, String arg) {
     for (int i = 0; i < parse_break; i++) {
-      if (args[i].equals(arg)) {return i;}
+      if (args[i].equals(arg)) return i;
     }
     return -1;
   }
   
+  public static String getArgumentValue(String[] args, int parse_break, String... checkArgs) {
+    for (String arg : checkArgs) {
+      String result = getArgumentValue(args, arg, parse_break);
+      if (result != null) return result;
+    }
+    return null;
+  }
+  
   public static String getArgumentValue(String[] args, String arg, int parse_break) {
     int i = findArgument(args, parse_break, arg);
-    if (i == -1 || i == args.length-1) {return null;}
+    if (i == -1 || i == args.length-1) return null;
     String value = args[i+1];
-    if (value == null || value.charAt(0) == '-') {return null;}
+    if (value == null || value.charAt(0) == '-') return null;
     return value; 
   }
 
@@ -32,7 +40,7 @@ public class parser {
   
   public static boolean hasArgument(String[] args, int parse_break, String... arg) {
     for (String a : arg) {
-      if (findArgument(args, parse_break, a) != -1) {return true;}
+      if (findArgument(args, parse_break, a) != -1) return true;
     }
     return false;
   }

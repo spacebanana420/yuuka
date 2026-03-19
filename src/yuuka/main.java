@@ -9,6 +9,7 @@ import yuuka.jdk.tests;
 import yuuka.jdk.installer;
 import yuuka.cli.*;
 import yuuka.config.yuukaConfig;
+import yuuka.config.Config;
 
 import java.io.File;
 
@@ -20,9 +21,9 @@ public class main {
     }
     int parse_break = cli.findParseBreak(args); //The CLI argument "--" defines the end of Yuuka arguments
     if (cli.askedForHelp(args, parse_break)) return;
-    
-    yuukaConfig.setConfigValues(); //set global.java values from build.yuuka
-    cli.assignGlobalValues(args, parse_break); //set global.java values from CLI arguments
+
+    Config config = yuukaConfig.readConfig();
+    options.setGlobalValues(args, parse_break, config);
 
     boolean printedVersion = cli.printVersion(args, parse_break);
     boolean ranTask = runTasks(args, parse_break);
