@@ -20,6 +20,7 @@ public class yuukaConfig {
   }
   public static void createConfig() {
     if (new File("build.yuuka").isFile()) return;
+    String runtimeVersion = options.getRuntimeVersion();
     byte[] cfg =
     (
       "Yuuka build config\nThe settings below override Yuuka's defaults\nCLI arguments override this config"
@@ -36,9 +37,9 @@ public class yuukaConfig {
       + "\n#autodetect_main=false"
       + "\n"
       + "\n# To compile your project to run on a specific Java version and above, you can specify it here"
-      + "\n#release_target=" + options.RUNTIME_JAVA_VERSION
-      + "\n#source_target=" + options.RUNTIME_JAVA_VERSION
-      + "\n#class_target=" + options.RUNTIME_JAVA_VERSION
+      + "\n#release_target=" + runtimeVersion
+      + "\n#source_target=" + runtimeVersion
+      + "\n#class_target=" + runtimeVersion
       + "\n"
       + "\n# JAR files are ZIP archives and by default use compression, you can disable it for possibly faster program startup times"
       + "\n#disable_jar_compression=false"

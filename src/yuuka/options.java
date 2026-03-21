@@ -17,7 +17,6 @@ public class options {
   public static String MAIN_CLASS = null;
   public static String JAR_FILENAME = "release.jar";
   public static boolean IGNORE_LIB;
-  public static final String RUNTIME_JAVA_VERSION = getRuntimeVersion();
 
   private static String[] args;
   private static int parse_break;
@@ -128,7 +127,7 @@ public class options {
     return installer.getInstallLocation();
   }
 
-  private static String getRuntimeVersion() {
+  public static String getRuntimeVersion() {
     String version = System.getProperty("java.version");
     StringBuilder truncated = new StringBuilder();
     
