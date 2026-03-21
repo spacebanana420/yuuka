@@ -23,10 +23,10 @@ public class options {
   private static int parse_break;
   private static Config config;
   
-  public static void setGlobalValues(String[] args, int parse_break, Config config) {
-    args = args;
-    parse_break = parse_break;
-    config = config;
+  public static void setGlobalValues(String[] input_args, int input_parse_break, Config input_config) {
+    args = input_args;
+    parse_break = input_parse_break;
+    config = input_config;
     
     MAIN_CLASS = getMainClass();
     PRINT_LEVEL = getVerboseLevel();
@@ -94,21 +94,21 @@ public class options {
 
   //todo: clampversion should check for failed toInt conversion
   public static String getJavaVersion() {
-    String version = parser.getArgumentValue(args, parse_break, "--src", "--source");
+    String version = parser.getArgumentValue(args, parse_break, "-r", "--releaase");
     if (version != null && misc.isInt(version)) return version;
     
     version = config.getValue("release_target");
     if (version != null && misc.isInt(version)) return version;
-    return RUNTIME_JAVA_VERSION;
+    return null;
   }
 
   public static String getSourceVersion() {
-    String version = parser.getArgumentValue(args, parse_break, "--src", "--source");
+    String version = parser.getArgumentValue(args, parse_break, "-src", "--source");
     if (version != null && misc.isInt(version)) return version;
     
     version = config.getValue("source_target");
     if (version != null && misc.isInt(version)) return version;
-    return RUNTIME_JAVA_VERSION;
+    return null;
   }
 
   public static String getClassVersion() {
@@ -117,7 +117,7 @@ public class options {
     
     version = config.getValue("class_target");
     if (version != null && misc.isInt(version)) return version;
-    return RUNTIME_JAVA_VERSION;
+    return null;
   }
   
   public static String getInstallPath() {
