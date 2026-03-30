@@ -15,7 +15,7 @@ No one actually asked anything but let's pretend they did.
 * These are barebones tools as they should be and so they lack some features and automation
 
 ### Should I use Yuuka?
-If your project doesn't fetch many libraries from a repository and you don't require special setups and functionality, you can use Yuuka. To simply build a project and get it done, Yuuka is good for it.
+* If your project doesn't fetch many libraries from a repository and you don't require special setups and functionality, you can use Yuuka. To simply build a project and get it done, Yuuka is good for it.
 
 ### What systems can Yuuka run on?
 * Yuuka is for the most part platform-agnostic, except for the default project installation paths (`yuuka install`). Installation functionality is also unavailable on Windows.
