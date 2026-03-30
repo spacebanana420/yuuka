@@ -30,7 +30,7 @@ After configuring your project, you can build it with `yuuka build`. This compil
 
 ## Building an executable JAR
 
-Class files are nice for direct control, but you will often want to build a JAR file which you can execute as a Java program. You can compile your project into a JAR file using `yuuka package`. The compilation step is included in this command, you don't have to run `yuuka build` prior. Creating an executable JAR requires that your main class is assigned or automatically found, from the steps explaiend above.
+Class files are nice for direct control, but you will often want to build a JAR file which you can execute as a Java program. You can compile your project into a JAR file using `yuuka package`. The compilation step is included in this command, you don't have to run `yuuka build` prior. Creating an executable JAR requires that your main class is assigned or found.
 
 ## Building a library JAR
 
@@ -43,3 +43,7 @@ It's convenient to run your project directly without thinking about compilation,
 ## The help screen
 
 Open Yuuka's help screen by running `yuuka -h` or `yuuka --help`. From here, you can see everything you can do with Yuuka.
+
+## Beware the build
+
+Depending on what you do, Yuuka can clean up clutter files in your project, such as outdated class and JAR files. In some cases, all files inside "build" might be deleted, so be careful with what you put there.
