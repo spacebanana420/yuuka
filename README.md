@@ -16,9 +16,10 @@ Download the [latest release of Yuuka here](https://github.com/spacebanana420/yu
 
 ## Documentation
 
-For people new to Yuuka, it's recommended you read the "Getting Started" guide. It covers the most essential parts of the build tool, such as project structure, compilation, JAR files, etc.
+For people new to Yuuka, it's recommended you read the "Getting Started" guide. It covers the most essential parts of the build tool, such as project structure, compilation, JAR files, etc. The cheat sheet is also helpful.
 
 * [Getting Started](doc/main.md)
+* [Yuuka Cheat Sheet](doc/sheet.md)
 * [Creating and running tests](doc/tests.md)
 * [Adding libraries to your project](doc/lib.md)
 * [Building a native executable](doc/native.md)
