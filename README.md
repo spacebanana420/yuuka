@@ -21,5 +21,6 @@ For people new to Yuuka, it's recommended you read the "Getting Started" guide. 
 * [Getting Started](doc/main.md)
 * [Creating and running tests](doc/tests.md)
 * [Adding libraries to your project](doc/lib.md)
+* [Building a native executable](doc/native.md)
 * [Building Yuuka from source](doc/build.md)
 * [Frequently Asked Questions](doc/faq.md)
