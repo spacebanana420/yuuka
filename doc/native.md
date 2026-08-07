@@ -51,3 +51,13 @@ If you build a native binary as root (common for running `install-native`), make
 
 `su` provides this variable and `sudo` might or might not provide it. `doas` does not provide this variable at least out-of-the-box.
 With the encoding environment variable, everything works fine, but without it, any file path with foreign characters obtained from `java.io.File.list()` will not exist.
+
+If you want to fix this problem in doas, you need to add this line to your `/etc/doas.conf`:
+
+```
+permit setenv { LANG LC_ALL LC_CTYPE } :wheel
+```
+or
+```
+permit persist setenv { LANG LC_ALL LC_CTYPE } :wheel
+```
