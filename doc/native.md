@@ -47,6 +47,7 @@ Just like you can run `yuuka install` to install your program on your system, Yu
 
 ### Files or directories with foreign characters don't show up
 The environment variable that defines the system's text encoding must be set.
-If you build a native binary as root (common for running `build-native`), make sure that root session has that variable defined.
+If you build a native binary as root (common for running `install-native`), make sure your root session has that variable defined.
+
 `su` provides this variable and `sudo` might or might not provide it. `doas` does not provide this variable at least out-of-the-box.
 With the encoding environment variable, everything works fine, but without it, any file path with foreign characters obtained from `java.io.File.list()` will not exist.
