@@ -40,6 +40,13 @@ Just like you can run `yuuka install` to install your program on your system, Yu
 ## Known limitations
 
 * GraalVM is currently not available for any BSD family operating system or less popular systems such as Haiku or Plan9
-* GraalVM is not available for many CPU architectures, mostly being focused on x86_64 and ARM 64
-* Linux systems that use musl C library instead of glibc (such as Alpine Linux) cannot make use of GraalVM
-* Native binaries might introduce certain bugs and quirks, such as `java.io.file.File.list()` not including paths with filenames that are not encoded in UTF-8
+* GraalVM is not available for many CPU architectures, being mostly focused on x86_64 and ARM
+* Linux systems that use musl C library instead of glibc (such as Alpine Linux) cannot run GraalVM
+
+## Known issues and workarounds
+
+### Files or directories with foreign characters don't show up
+The environment variable that defines the system's text encoding must be set.
+If you build a native binary as root (common for running `build-native`), make sure that root session has that variable defined.
+`su` provides this variable and `sudo` might or might not provide it. `doas` does not provide this variable at least out-of-the-box.
+With the encoding environment variable, everything works fine, but without it, any file path with foreign characters obtained from `java.io.File.list()` will not exist.
