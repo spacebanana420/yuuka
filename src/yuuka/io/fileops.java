@@ -42,18 +42,22 @@ public class fileops {
     return fileLines;
   }
 
-  //Need to be refactored to not use getFiles_generic()
   public static ArrayList<String> getSourceFiles(String root_path) {
-    return getFiles_generic(root_path, false, ".java");
+    var files = getFiles(root_path);
+    filterFiles(files, ".java");
+    return files;
   }
   public static ArrayList<String> getJarFiles(String root_path) {
-    return getFiles_generic(root_path, false, ".jar");
+    var files = getFiles(root_path);
+    filterFiles(files, ".jar");
+    return files;
   }
+  //Needs to be refactored to not use getFiles_generic(), needs to get both class files and license files
   public static ArrayList<String> getClassFiles(String root_path, boolean addlicenses) {
     return getFiles_generic(root_path, addlicenses, ".class");
   }
 
-  //Used to remove the root of a relative directory, e.g. removing build from build/yuuka/main.class
+  //Used to remove the root of a relative directory, e.g. removing "build" from "build/yuuka/main.class"
   public static ArrayList<String> removeParent(ArrayList<String> files, String parent) {
     ArrayList<String> new_files = files;
     for (int i = 0; i < files.size(); i++) {
@@ -132,10 +136,18 @@ public class fileops {
   }
 
   //Filter the files present in a list to only have files with a certain extension
-  private static void filterFiles(ArrayList<String> files,  String extension) {
+  private static void filterFiles(ArrayList<String> files, String extension) {
     for (int i = 0; i < files.size(); i++) {
       String file = files.get(i);
       if (!misc.checkFileExtension(file, extension)) files.remove(i);
+    }
+  }
+
+  //Filter the files to only include license files
+  private static void filterLicenses(ArrayList<String> files) {
+    for (int i = 0; i < files.size(); i++) {
+      String file = files.get(i);
+      if (!isLicense(file)) files.remove(i);
     }
   }
 
