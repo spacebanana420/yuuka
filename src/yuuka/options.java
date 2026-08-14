@@ -50,7 +50,8 @@ public class options {
   public static boolean staticBinary() {return parser.hasArgument(args, parse_break, "--static");}
   public static boolean staticBinary_nolibc() {return parser.hasArgument(args, parse_break, "--static-nolibc");}
   public static boolean useG1() {return parser.hasArgument(args, parse_break, "--useg1");}
-  public static boolean useNativeCPU() {return parser.hasArgument(args, parse_break, "--nativecpu");}
+  public static boolean useNativeCPU() {return parser.hasArgument(args, parse_break, "--arch-native");}
+  public static boolean useCompatibilityCPU() {return parser.hasArgument(args, parse_break, "--arch-compat");}
 
   public static boolean includeSource() {
     return parser.hasArgument(args, parse_break, "-is", "--include-src") || config.getBool("tests_include_src");

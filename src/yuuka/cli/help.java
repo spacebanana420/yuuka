@@ -50,8 +50,8 @@ public class help {
       + "\n  --static                       for native compilation, build a fully static binary (requires musl)"
       + "\n  --static-nolibc                for native compilation, build a mostly-static binary, still dynamically linked to libc"
       + "\n  --useg1                        uses the G1 garbage collector for your native binary, resulting in better performance and latency"
-      + "\n  --nativecpu                    enables the whole set of your CPU's capabilities for more performance (binary won't work with older architecture versions)"
-      
+      + "\n  --arch-native                  enables the whole set of your CPU's capabilities for more performance (for example: x86_64-v4 instead of x86_64)"
+      + "\n  --arch-compat                  builds for the widest compatibility of CPUs within your architecture (for example: x86_64 instead of x86_64-v4)"
       ;
   }
 

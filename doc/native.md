@@ -39,8 +39,14 @@ Just like you can run `yuuka install` to install your program on your system, Yu
 
 ## Other options
 
-* `--useg1`: Tells GraalVM use the G1 garbage collector for your binary, resulting in better performance and latency. This is equivalent to `--gc=G1` in GraalVM.
-* `--nativecpu`: Tells GraalVM to use your CPU's architecture specification for compilation, resulting in better performance but making your binary less compatible with older CPUs. This is equivalent to `-march=native` in GraalVM.
+* `--useg1`: Tells GraalVM use the G1 garbage collector for your binary, resulting in better performance and latency.
+  * This is equivalent to `--gc=G1` in GraalVM.
+* `--arch-native`: Tells GraalVM to use your CPU's architecture specification for compilation, resulting in better performance but making your binary less compatible with older CPUs.
+  * For example: Uses x86_64-v4 specification instead of the base x86_64
+  * This is equivalent to `-march=native` in GraalVM.
+* `--arch-compat`: Tells GraalVM to use only the base features of your CPU, resulting in the widest support of CPUs.
+  * For example: Uses the base x86_64 specification instead of x86_64-4
+  * This is equivalent to `-march=compatibility` in GraalVM.
 
 ## Known limitations
 

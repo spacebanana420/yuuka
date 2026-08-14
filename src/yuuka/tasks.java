@@ -102,6 +102,7 @@ public class tasks {
     nativecmd.add(nativeImagePath);
     nativecmd.add("--no-fallback");
     nativecmd.add("-O3");
+
     if (options.staticBinary()) {
       log = "Building native binary with GraalVM (fully static-linked, musl)";
       nativecmd.add("--static");
@@ -113,6 +114,8 @@ public class tasks {
     }
     if (options.useG1()) nativecmd.add("--gc=G1");
     if (options.useNativeCPU()) nativecmd.add("-march=native");
+    else if (options.useCompatibilityCPU()) nativecmd.add("-march=compatibility");
+    
     nativecmd.add("-jar");
     nativecmd.add(options.JAR_FILENAME);
     nativecmd.add("-o");
