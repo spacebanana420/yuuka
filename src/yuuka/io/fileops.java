@@ -81,22 +81,25 @@ public class fileops {
   }
 
 
-  //Delete old class, license and JAR files before compiling the project in its latest state
+  //Delete old class, license and JAR files as well as executables before compiling the project in its latest state
   public static void cleanBeforeBuild() {
     ArrayList<String> files = getFiles("build");
 
     for (String file : files) {
-      if (isClassFile(file) || isJarFile(file) || isLicense(file)) deleteFile(file);
+      if (isClassFile(file) || isJarFile(file) || isLicense(file) || new File(file).canExecute()) deleteFile(file);
     }
   }
 
-  //Delete the class and license files in "build" after creating JAR to clean up clutter
+  //Delete the directories, class files and license files in "build" after creating a JAR to clean up clutter
   public static void cleanAfterBuild() {
     ArrayList<String> files = getFiles("build");
+    ArrayList<String> directories = getDirectories("build");
 
-    for (String file : files) {
-      boolean isClassFile = misc.checkFileExtension(file, ".class");
+    for (String file : files) { //Delete clutter files
       if (isClassFile(file) || isLicense(file)) deleteFile(file);
+    }
+    for (String dir : directories) { //Also (try to) delete directories after having emptied them
+      deleteFile(dir);
     }
   }
 
@@ -105,15 +108,25 @@ public class fileops {
     return findMainClass("src", file_separator);
   }
 
-  //Retrieve all files recursively from a path, each string represents the relative path to the file
-  private static ArrayList<String> getFiles(String currentPath) {
+  //Retrieve all files recursively from a path
+  private static ArrayList<String> getDirectories(String currentPath) {return getPaths(currentPath, false);}
+  //Retrieve all directories recursively from a path
+  private static ArrayList<String> getFiles(String currentPath) {return getPaths(currentPath, true);}
+
+  //Can retrieve either files or directories from a path
+  private static ArrayList<String> getPaths(String currentPath, boolean getFiles) {
     var files = new ArrayList<String>();
     String[] subpaths = new File(currentPath).list();
     
     for (String subpath : subpaths) {
       String fullPath = currentPath + "/" + subpath;
-      if (new File(fullPath).isDirectory()) files.addAll(getFiles(fullPath));
-      else files.add(fullPath);
+      File f = new File(fullPath);
+      boolean isFile = f.isFile();
+      boolean isDir = !isFile && f.isDirectory();
+      boolean validPath = (getFiles && isFile) || (!getFiles && isDir);
+
+      if (isDir) files.addAll(getPaths(fullPath, getFiles));
+      if (validPath) files.add(fullPath);
     }
     return files;
   }
