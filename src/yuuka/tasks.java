@@ -98,10 +98,10 @@ public class tasks {
     String nativeImagePath = options.getGraalPath();
     String log = "Building native binary with GraalVM (dynamic-linked)";
     var nativecmd = new ArrayList<String>();
+    
     nativecmd.add(nativeImagePath);
     nativecmd.add("--no-fallback");
     nativecmd.add("-O3");
-    
     if (options.staticBinary()) {
       log = "Building native binary with GraalVM (fully static-linked, musl)";
       nativecmd.add("--static");
@@ -111,6 +111,8 @@ public class tasks {
       log = "Building native binary with GraalVM (partially static-linked, depends externally on system's libc)";
       nativecmd.add("--static-nolibc");
     }
+    if (options.useG1()) nativecmd.add("--gc=G1");
+    if (options.useNativeCPU()) nativecmd.add("-march=native");
     nativecmd.add("-jar");
     nativecmd.add(options.JAR_FILENAME);
     nativecmd.add("-o");
@@ -121,7 +123,7 @@ public class tasks {
     if (exitstatus == -1) {
       stdout.error("Failed to run the GraalVM binary, GraalVM needs to be installed in order to build native binaries.");
     }
-    else if (exitstatus > 0) {stdout.error("The compilation failed!");}
+    else if (exitstatus > 0) stdout.error("Native binary compilation failed! See the GraalVM output above for more details.");
     return exitstatus == 0;
   }
 

@@ -27,7 +27,7 @@ public class help {
       + "\n  * install-native               builds your program natively with GraalVM and installs it (experimental)"
       + "\n  * uninstall <name>             uninstalls a program, removes its script and JAR file"
       
-      + "\n\nAvailable CLI arguments:"
+      + "\n\nGeneral CLI arguments:"
       + "\n  -h (--help)                    opens this menu"
       + "\n  -h (--help) <command>          opens the documentation for a specific command (e.g yuuka --help build)"
       + "\n  -V (--version)                 prints Yuuka's version"
@@ -42,11 +42,16 @@ public class help {
       + "\n  -o (--output) <JAR filename>   sets the name of the compiled JAR"
       + "\n  -0 (--no-compress)             disables ZIP compression for JAR files"
       + "\n  -nw (--no-warnings)            disables compiler warnings"
+      + "\n  -ip (--install-path)           sets a custom installation path for the \"install\" task"
+      + "\n  -is (--include-src)            imports the project's source code when running tests"
+      
+      + "\n\nNative compilation CLI arguments"
       + "\n  -gp (--graal-path)             sets a custom path for the GraalVM \"native-image\" binary"
       + "\n  --static                       for native compilation, build a fully static binary (requires musl)"
       + "\n  --static-nolibc                for native compilation, build a mostly-static binary, still dynamically linked to libc"
-      + "\n  -ip (--install-path)           sets a custom installation path for the \"install\" task"
-      + "\n  -is (--include-src)            imports the project's source code when running tests"
+      + "\n  --useg1                        uses the G1 garbage collector for your native binary, resulting in better performance and latency"
+      + "\n  --nativecpu                    enables the whole set of your CPU's capabilities for more performance (binary won't work with older architecture versions)"
+      
       ;
   }
 
