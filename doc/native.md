@@ -37,6 +37,11 @@ Yuuka currently always passes the `-O3` compilation argument to native-image, wh
 
 Just like you can run `yuuka install` to install your program on your system, Yuuka has the native counterpart `yuuka install-native`, which instead builds and installs a native binary.
 
+## Other options
+
+* `--useg1`: Tells GraalVM use the G1 garbage collector for your binary, resulting in better performance and latency. This is equivalent to `--gc=G1` in GraalVM.
+* `--nativecpu`: Tells GraalVM to use your CPU's architecture specification for compilation, resulting in better performance but making your binary less compatible with older CPUs. This is equivalent to `-march=native` in GraalVM.
+
 ## Known limitations
 
 * GraalVM is currently not available for any BSD family operating system or less popular systems such as Haiku or Plan9
