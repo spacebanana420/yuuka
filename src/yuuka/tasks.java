@@ -30,17 +30,15 @@ public class tasks {
   public static void cleanProject() {
     stdout.print("Cleaning up project, class files and JAR files");
     stdout.print_verbose("Deleting all .class files in src, lib and test\nDeleting all files in build");
-    fileops.deleteClassFiles("src");
-    fileops.deleteBuildFiles_all("build");
-    fileops.deleteClassFiles("lib");
-    fileops.deleteClassFiles("test");
+    fileops.deleteClassFiles();
+    fileops.deleteBuild();
   }
 
   public static boolean build() {return build(true);}
   public static boolean build(boolean display_main) {
     if (projectHasNoSource()) return false;
     if (!fetchLibs()) {stdout.error("Cancelling compilation due to dependency errors"); return false;}
-    fileops.deleteBeforeCompile("build");
+    fileops.cleanBeforeBuild();
     stdout.print("Compiling project");
     if (display_main) stdout.print_verbose("Main class is " + options.MAIN_CLASS);
 
@@ -73,9 +71,8 @@ public class tasks {
     }
     result = compiler.createJAR(options.JAR_FILENAME, options.mainClassDot(), false);
     
-    stdout.print("Cleaning up class files");
-    fileops.deleteBuildFiles("build");
-    fileops.deleteClassFiles("lib");
+    stdout.print("Cleaning up class and license files");
+    fileops.cleanAfterBuild();
     return result;
   }
 
@@ -87,8 +84,7 @@ public class tasks {
     result = compiler.createJAR(options.JAR_FILENAME, options.MAIN_CLASS, true);
 
     stdout.print("Cleaning up class files");
-    fileops.deleteBuildFiles("build");
-    fileops.deleteClassFiles("lib");
+    fileops.cleanAfterBuild();
     return result;
   }
 
@@ -160,7 +156,7 @@ public class tasks {
         packageLib(); //The importation of this JAR is done in tests.runTest_java()
       }
       exit_value = tests.runTest_java(file_java, args);
-      fileops.deleteBuildFiles("build");
+      fileops.cleanAfterBuild();
     }
     else {exit_value = tests.runTest_native(f_source.getAbsolutePath(), args);}
     

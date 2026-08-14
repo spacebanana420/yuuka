@@ -74,7 +74,8 @@ public class process {
   }  
   
   public static String[] concatArgs(String[] args1, String[] args2) {
-    if (args1.length == 0) {return args2;} if (args2.length == 0) {return args1;}
+    if (args1.length == 0) return args2;
+    if (args2.length == 0) return args1;
   
     String[] full = new String[args1.length + args2.length];
     for (int i = 0; i < args1.length; i++) {full[i] = args1[i];}

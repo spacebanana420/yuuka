@@ -41,7 +41,8 @@ public class fileops {
     if (line.length() > 0) fileLines.add(line.toString());
     return fileLines;
   }
-  
+
+  //Need to be refactored to not use getFiles_generic()
   public static ArrayList<String> getSourceFiles(String root_path) {
     return getFiles_generic(root_path, false, ".java");
   }
@@ -61,49 +62,68 @@ public class fileops {
     return new_files;
   }
 
-  public static boolean deleteClassFiles(String[] class_files) {
-    for (String file : class_files) {
-      boolean result = deleteFile(file);
-      if (!result) return false;
+  //Delete clutter class files throughout the project, used when running "yuuka clean"
+  public static void deleteClassFiles() {
+    ArrayList<String> files = getFiles("src");
+    files.addAll(getFiles("test"));
+    files.addAll(getFiles("lib"));
+    
+    for (String file : files) {
+      if (!misc.checkFileExtension(file, ".class")) continue;
+      deleteFile(file);
     }
-    return true;
   }
 
-  //Only delete class files, nothing else, used for cleanup in all kinds of places
-  public static boolean deleteClassFiles(String path) {return cleanupProject(path, false, false, false);}
-  //Delete the class and license files in "build" after creating JAR to clean up clutter
-  public static boolean deleteBuildFiles(String path) {return cleanupProject(path, true, true, false);}
-  //Delete everything inside "build", only used with "yuuka clean" command
-  public static boolean deleteBuildFiles_all(String path) {return cleanupProject(path, true, true, true);}
-  //Delete old class and JAR files before compiling the project in its latest state
-  public static boolean deleteBeforeCompile(String path) {return cleanupProject(path, false, true, true);}
+  //Delete everything inside build directory, used when running "yuuka clean"
+  public static void deleteBuild() {
+    deleteDirectory("build");
+    new File("build").mkdir();
+  }
 
-  //Recursive directory/file deletion with project file cleanup in mind
-  //Can delete class files, MANIFEST.MF, JAR files, all files or anything in-between
-  private static boolean cleanupProject(String path, boolean deleteAll, boolean deleteDirectory, boolean deleteJars) {
-    if (!new File(path).isDirectory()) return false;
-    String[] paths = new File(path).list();
-    if (paths == null || paths.length == 0) return true;
 
-    for (String sub_path : paths)
-    {
-      String full_path = path + "/" + sub_path;
-      File f = new File(full_path);
-      
-      if (f.isFile() && deletableFile(sub_path, deleteAll, deleteJars)) {
-        boolean deleted = deleteFile(full_path);
-        if (!deleted) return false;
-      }
-      else if (f.isDirectory()) {
-        boolean result = cleanupProject(full_path, deleteAll, deleteDirectory, deleteJars);
-        if (!result) return false;
-        if (deleteDirectory) {
-          boolean deleted = deleteFile(full_path);
-          if (!deleted) return false;
-        }
-      }
+  //Delete old class, license and JAR files before compiling the project in its latest state
+  public static void cleanBeforeBuild() {
+    ArrayList<String> files = getFiles("build");
+
+    for (String file : files) {
+      if (isClassFile(file) || isJarFile(file) || isLicense(file)) deleteFile(file);
     }
-    return true;
+  }
+
+  //Delete the class and license files in "build" after creating JAR to clean up clutter
+  public static void cleanAfterBuild() {
+    ArrayList<String> files = getFiles("build");
+
+    for (String file : files) {
+      boolean isClassFile = misc.checkFileExtension(file, ".class");
+      if (isClassFile(file) || isLicense(file)) deleteFile(file);
+    }
+  }
+
+  public static String findMainClass() {
+    char file_separator = System.getProperty("file.separator").charAt(0);
+    return findMainClass("src", file_separator);
+  }
+
+  //Retrieve all files recursively from a path, each string represents the relative path to the file
+  private static ArrayList<String> getFiles(String currentPath) {
+    var files = new ArrayList<String>();
+    String[] subpaths = new File(currentPath).list();
+    
+    for (String subpath : subpaths) {
+      String fullPath = currentPath + "/" + subpath;
+      if (new File(fullPath).isDirectory()) files.addAll(getFiles(fullPath));
+      else files.add(fullPath);
+    }
+    return files;
+  }
+
+  //Filter the files present in a list to only have files with a certain extension
+  private static void filterFiles(ArrayList<String> files,  String extension) {
+    for (int i = 0; i < files.size(); i++) {
+      String file = files.get(i);
+      if (!misc.checkFileExtension(file, extension)) files.remove(i);
+    }
   }
 
   private static boolean deleteFile(String filePath) {
@@ -118,19 +138,35 @@ public class fileops {
     }
   }
 
+  private static boolean deleteDirectory(String dirPath) {
+    String[] subpaths = new File(dirPath).list();
+    boolean succeeded;
+
+    for (String subpath : subpaths) {
+      String fullPath = dirPath+"/"+subpath;
+      if (new File(subpath).isDirectory()) {
+        succeeded = deleteDirectory(fullPath);
+        if (!succeeded) return false;
+      }
+      else{
+        succeeded = deleteFile(fullPath);
+        if (!succeeded) return false;
+      }
+    }
+    succeeded = deleteFile(dirPath);
+    return succeeded;
+  }
+  
+
   private static boolean deletableFile(String name, boolean deleteAll, boolean deleteJars) {
     boolean is_jar = isJarFile(name);
     if (is_jar && !deleteJars) return false;
     return deleteAll || (is_jar && deleteJars) || isClassFile(name) || name.equals("MANIFEST.MF");
   }
 
-  public static String findMainClass() {
-    char file_separator = System.getProperty("file.separator").charAt(0);
-    return findMainClass("src", file_separator);
-  }
-
   //Autodetect project's main class by trying to find main.java, then return path
   //Path follows the sytle of e.g yuuka/main
+  //Messy, should probably be replaced by getFiles() and filterFiles()
   private static String findMainClass(String path, char file_separator) {
     String[] paths = new File(path).list();
     if (paths == null) return null;
@@ -183,6 +219,7 @@ public class fileops {
     return copied_licenses > 0;
   }
 
+  //Legacy function and messy, should be replaced by filterFiles()
   //Generic function for getting files that match an extension, optionally also get license files
   //Returns the files in relative paths
   private static ArrayList<String> getFiles_generic(String root_path, boolean checklicenses, String file_extension) {
