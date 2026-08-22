@@ -7,7 +7,7 @@ import java.util.ArrayList;
 //Each setting follows the style of key=value
 //Comments are represented with character "#"
 public class Config {
-  public boolean isEmpty = true;
+  boolean isEmpty = true;
   private String[] keys = null;
   private String[] values = null;
   
