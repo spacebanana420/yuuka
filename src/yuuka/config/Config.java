@@ -65,6 +65,7 @@ public class Config {
   }
 
   public String[] getAllValues(String key) {
+    if (this.isEmpty) return new String[0];
     var filteredValues = new ArrayList<String>();
     for (int i = 0; i < this.keys.length; i++) {
       String currentKey = this.keys[i];
@@ -74,6 +75,7 @@ public class Config {
   }
   
   private int getKeyIndex(String key) {
+    if (this.isEmpty) return -1;
     for (int i = 0; i < this.keys.length; i++) {
       String availableKey = this.keys[i];
       if (key.equals(availableKey)) return i;
