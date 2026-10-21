@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # This script is used as a fallback
 
 function cleanup () {
